@@ -152,3 +152,11 @@ This week UnderCover goes into production on AWS, and the free route uses Render
 | `git checkout week3day4-end` | The agent as an AgentCore app, and Sign off or Send back for a claim waiting on a handler |
 | `git checkout week3day5-start` | My build so far, with the brief in `docs/COPILOT.md` |
 | `git checkout week3day5-end` | The finished product, with the UnderCover Copilot, a chat for handlers in the dashboard's sidebar |
+
+## Running the claims pilot
+
+- `npm run dev` starts the backend on port 8000 and the dashboard at http://localhost:5173.
+- The agent runs from the dashboard: "Run agent" on a claim, "Run trial" for a run capped at a number of claims, or "Run agent on all waiting claims". From the command line: `uv run -m agent.main CLM-1001` for one claim, `uv run -m agent.main queue --limit 5` for a capped run. It needs `OPENROUTER_API_KEY` in `.env`.
+- The queue lives in `backend/undercover.db`, created from `data/` on first start. Delete the file to reset it.
+- `npm run check` runs every check, including the end-to-end tests, which use their own ports and a throwaway database.
+- `docs/STATUS.md` says what is built.

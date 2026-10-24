@@ -3,7 +3,7 @@ answer is right, what a mistake costs, and an evaluation's measures."""
 
 from typing import NamedTuple
 
-from backend.models import DecisionKind, Measures, ScoredClaim
+from backend.models import DecisionKind, Measures, ScoredClaim, Scores
 
 WRONGFUL_DECLINE = 1500
 NEEDLESS_REFERRAL = 50
@@ -69,4 +69,18 @@ def measures(
         model_cost_per_claim=model_cost / count,
         seconds_per_claim=sum(c.seconds for c in claims) / count,
         run_seconds=run_seconds,
+    )
+
+
+def average(runs: list[Measures]) -> Scores | None:
+    """Average the measures of several evaluations of one set, or nothing with no
+    evaluations."""
+    if not runs:
+        return None
+    count = len(runs)
+    fields = [name for name in Scores.model_fields if name not in ("runs", "grade")]
+    return Scores(
+        runs=count,
+        grade=None,
+        **{name: sum(getattr(run, name) for run in runs) / count for name in fields},
     )

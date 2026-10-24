@@ -2,7 +2,8 @@ import { generatePath } from "react-router";
 
 // The routes of the pages, and the links to the pages that show one thing.
 export const QUEUE = "/";
-export const INSTRUCTIONS = "/instructions";
+export const CONFIGURATION = "/configuration";
+export const SETTINGS = "/settings";
 export const SCOREBOARD = "/scoreboard";
 export const CLAIM_PAGE = "/claims/:claimId";
 export const EVALUATION_PAGE = `${SCOREBOARD}/:runId`;

@@ -8,6 +8,8 @@ import type {
   Handler,
   Policy,
   PreviousClaim,
+  Settings,
+  SettingsHistory,
 } from "./api";
 import { SESSION_KEY } from "./supabase";
 
@@ -189,3 +191,29 @@ export const history: PreviousClaim[] = [
     amount_paid: 140,
   },
 ];
+
+export const firstSettings: Settings = {
+  payout_approval_limit: 1000,
+  objectives: { accuracy: 0.6, grade: 1 },
+  noise: {
+    accuracy: 0.1,
+    grade: 0.15,
+    model_cost_per_claim: 0.15,
+    seconds_per_claim: 0.15,
+  },
+  tolerance: {
+    accuracy: 0.1,
+    grade: 0.15,
+    model_cost_per_claim: 1,
+    seconds_per_claim: 0.25,
+  },
+  spending_limit: 0.5,
+  agents: 25,
+  changed_by: "UnderCover",
+  changed_at: "2026-10-24T09:00:00+00:00",
+};
+
+export const settingsHistory: SettingsHistory = {
+  current: firstSettings,
+  changes: [firstSettings],
+};

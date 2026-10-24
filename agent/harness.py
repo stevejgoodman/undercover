@@ -8,6 +8,7 @@ import time
 import uuid
 from collections.abc import Callable, Iterator
 from contextlib import contextmanager
+from dataclasses import dataclass
 from functools import partial
 from typing import Any, cast
 
@@ -54,7 +55,9 @@ Start = Messages | Command | None
 TRANSIENT = (ModelRateLimitError, ModelTimeoutError)
 
 OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
-DEFAULT_MODEL = "openai/gpt-6-luna"
+# How a run records a model given no reasoning effort, since Luna has "none" as a
+# level; the backend's models allowed use the same word.
+DEFAULT_EFFORT = "default"
 SCHEMA = "undercover"
 CONNECTIONS = 4
 CONNECTION_WAIT = 120
@@ -72,14 +75,15 @@ class TooManyModelCalls(Exception):
     """The claim agent made as many model calls as it may without finishing."""
 
 
-def model() -> ChatOpenAI:
-    """Return the model named in MODEL_NAME, or GPT-6 Luna by default."""
+def model(configuration: dict[str, Any]) -> ChatOpenAI:
+    """Return the model a version of the claim agent runs on, at its reasoning
+    effort, or the model in MODEL_NAME at its default effort when that is set."""
     name = os.getenv("MODEL_NAME")
     return ChatOpenAI(
-        model=name or DEFAULT_MODEL,
+        model=name or configuration["model"],
         base_url=OPENROUTER_BASE_URL,
         api_key=SecretStr(os.environ["OPENROUTER_API_KEY"]),
-        reasoning_effort=None if name else "low",
+        reasoning_effort=None if name else configuration["reasoning_effort"],
         timeout=120,
         max_retries=5,
     )
@@ -208,13 +212,18 @@ def after_tools(state: ClaimState) -> str:
     return END
 
 
-def claim_graph(llm: BaseChatModel, saver: BaseCheckpointSaver[Any]) -> ClaimGraph:
+def claim_graph(
+    llm: BaseChatModel, instructions: str, saver: BaseCheckpointSaver[Any]
+) -> ClaimGraph:
     """Build the claim agent's graph, which saves its progress after every step."""
-    instructions = SystemMessage(api.get_instructions()["claim"])
     builder = StateGraph(ClaimState, context_schema=ClaimContext)
     builder.add_node(
         AGENT,
-        partial(call_model, llm=llm.bind_tools(CLAIM_TOOLS), instructions=instructions),
+        partial(
+            call_model,
+            llm=llm.bind_tools(CLAIM_TOOLS),
+            instructions=SystemMessage(instructions),
+        ),
     )
     builder.add_node(
         TOOLS,
@@ -230,14 +239,47 @@ def claim_graph(llm: BaseChatModel, saver: BaseCheckpointSaver[Any]) -> ClaimGra
     return builder.compile(checkpointer=saver)
 
 
-def claim_graphs(llm: BaseChatModel, pool: Pool) -> NewGraph:
+def claim_graphs(llm: BaseChatModel, instructions: str, pool: Pool) -> NewGraph:
     """Return how to build a claim graph with a saver of its own on the pool, since
     a saver lets one claim at a time read or write."""
 
     def new_graph() -> ClaimGraph:
-        return claim_graph(llm, PostgresSaver(pool))
+        return claim_graph(llm, instructions, PostgresSaver(pool))
 
     return new_graph
+
+
+@dataclass
+class ClaimAgents:
+    """The claim agents of one version: its number, the model and reasoning effort
+    a run records, and how to build a claim graph with a saver of its own."""
+
+    version: int
+    model: str
+    reasoning_effort: str
+    new_graph: NewGraph
+
+    def setup(self, agents: int) -> api.RunSetup:
+        """How a run with N of these claim agents at once is recorded."""
+        return api.RunSetup(
+            agents=agents,
+            version=self.version,
+            model=self.model,
+            reasoning_effort=self.reasoning_effort,
+        )
+
+
+def claim_agents_of(version: int, pool: Pool) -> ClaimAgents:
+    """Build the claim agents of a version, from what the backend says it works
+    from, on the process's pool."""
+    configuration = api.get_agent_version(version)
+    llm = model(configuration)
+    return ClaimAgents(
+        version,
+        llm.model_name,
+        llm.reasoning_effort or DEFAULT_EFFORT,
+        claim_graphs(llm, configuration["instructions"], pool),
+    )
 
 
 def thread_of(claim: dict[str, Any]) -> RunnableConfig:
@@ -384,3 +426,8 @@ def finish_held_copy(claim_id: str, graph: ClaimGraph) -> None:
         # claim_graph always compiles the graph with a saver.
         saver = cast(BaseCheckpointSaver[Any], graph.checkpointer)
         saver.delete_thread(claim["thread_id"])
+
+
+def current_claim_agents(pool: Pool) -> ClaimAgents:
+    """Build the claim agents of the version every dispatch uses."""
+    return claim_agents_of(api.get_current_version()["version"], pool)

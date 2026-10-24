@@ -152,6 +152,8 @@ export interface RunDetails {
   number: number;
   kind: RunKind;
   agents: number;
+  version: number;
+  round_id: string | null;
   model: string;
   reasoning_effort: string;
   status: RunStatus;
@@ -203,8 +205,89 @@ export interface Accepted {
   status: "accepted";
 }
 
-export interface Instructions {
-  claim: string;
+export type LineChange = "added" | "removed" | "unchanged";
+
+export interface DiffLine {
+  change: LineChange;
+  text: string;
+}
+
+// A version's measures, averaged over the whole-set evaluations rounds ran on it.
+export interface Scores {
+  runs: number;
+  decision_accuracy: number;
+  accuracy: number;
+  cost_of_mistakes: number;
+  straight_through: number;
+  model_cost_per_claim: number;
+  seconds_per_claim: number;
+  grade: number | null;
+}
+
+export type VersionVerdict = "kept" | "rolled_back";
+
+export interface AgentVersion {
+  version: number;
+  instructions: string;
+  model: string;
+  reasoning_effort: string;
+  change: string;
+  reason: string;
+  proposed_by: string;
+  approved_by: string;
+  approved_at: string;
+  round_id: string | null;
+  verdict: VersionVerdict | null;
+  created_at: string;
+}
+
+export interface VersionSummary extends AgentVersion {
+  current: boolean;
+  scores: { evaluation: Scores | null; held_out: Scores | null };
+}
+
+export interface VersionDetails extends VersionSummary {
+  diff: DiffLine[];
+}
+
+export interface Objectives {
+  accuracy: number;
+  grade: number;
+}
+
+// How far each measure must move to count: a difference for accuracy and the
+// grade, a fraction of the old value for cost and time.
+export interface Limits {
+  accuracy: number;
+  grade: number;
+  model_cost_per_claim: number;
+  seconds_per_claim: number;
+}
+
+export interface SettingsRequest {
+  payout_approval_limit: number;
+  objectives: Objectives;
+  noise: Limits;
+  tolerance: Limits;
+  spending_limit: number;
+  agents: number;
+}
+
+export interface Settings extends SettingsRequest {
+  changed_by: string;
+  changed_at: string;
+}
+
+export interface SettingsHistory {
+  current: Settings;
+  changes: Settings[];
+}
+
+export interface AllowedModel {
+  model: string;
+  reasoning_efforts: string[];
+  input_price: number;
+  output_price: number;
 }
 
 export const REQUEST_FAILED = "The request failed";
@@ -238,17 +321,21 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   return (await response.json()) as T;
 }
 
-function post<T>(path: string, body?: object): Promise<T> {
+function send<T>(method: "POST" | "PUT", path: string, body?: object) {
   return request<T>(path, {
-    method: "POST",
+    method,
     headers: { "Content-Type": "application/json" },
     body: body && JSON.stringify(body),
   });
 }
 
+const post = <T>(path: string, body?: object) => send<T>("POST", path, body);
+
 const claimPath = (claimId: string) =>
   `/api/claims/${encodeURIComponent(claimId)}`;
 const DISPATCHES = "/api/dispatches";
+const VERSIONS = "/api/configuration/versions";
+const SETTINGS = "/api/settings";
 const EVALUATIONS = "/api/evaluations";
 
 export const api = {
@@ -262,7 +349,13 @@ export const api = {
     request<PreviousClaim[]>(
       `/api/customers/${encodeURIComponent(customerId)}/claims`,
     ),
-  getInstructions: () => request<Instructions>("/api/instructions"),
+  listVersions: () => request<VersionSummary[]>(VERSIONS),
+  getVersion: (version: number) =>
+    request<VersionDetails>(`${VERSIONS}/${String(version)}`),
+  getSettings: () => request<SettingsHistory>(SETTINGS),
+  updateSettings: (settings: SettingsRequest) =>
+    send<Settings>("PUT", SETTINGS, settings),
+  listModels: () => request<AllowedModel[]>("/api/models"),
   getSignedInHandler: () => request<Handler>("/api/handlers/me"),
   getLatestDispatch: () => request<Run | null>(`${DISPATCHES}/latest`),
   startDispatch: (agents: number) => post<Accepted>(DISPATCHES, { agents }),

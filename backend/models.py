@@ -33,6 +33,21 @@ class RunStatus(StrEnum):
     STOPPED = "stopped"
 
 
+class LineChange(StrEnum):
+    """How a line of a text changed from one version to the next."""
+
+    ADDED = "added"
+    REMOVED = "removed"
+    UNCHANGED = "unchanged"
+
+
+class VersionVerdict(StrEnum):
+    """Whether a round kept the version of the claim agent it tried."""
+
+    KEPT = "kept"
+    ROLLED_BACK = "rolled_back"
+
+
 class EvaluationSet(StrEnum):
     """The labeled sets of claims an evaluation can work."""
 
@@ -167,10 +182,6 @@ class Step(BaseModel):
     kind: StepKind
     content: str
     created_at: str
-
-
-class Instructions(BaseModel):
-    claim: str
 
 
 class Section(BaseModel):
@@ -320,8 +331,9 @@ class StartDispatchRequest(BaseModel):
 
 
 class CreateDispatchRequest(StartDispatchRequest):
+    version: int = Field(ge=1, description="The claim agent's version")
     model: str = Field(min_length=1)
-    reasoning_effort: str = Field(min_length=1, description="Or none")
+    reasoning_effort: str = Field(min_length=1, description="Or default")
 
 
 class RunClaimsRequest(BaseModel):
@@ -353,6 +365,8 @@ class RunDetails(BaseModel):
     number: int
     kind: RunKind
     agents: int
+    version: int
+    round_id: str | None
     model: str
     reasoning_effort: str
     status: RunStatus
@@ -410,3 +424,105 @@ class ScoredEvaluation(Evaluation):
 
 class Accepted(BaseModel):
     status: Literal["accepted"] = "accepted"
+
+
+class DiffLine(BaseModel):
+    change: LineChange
+    text: str
+
+
+class Objectives(BaseModel):
+    """The floors a new version must reach on the held-out set."""
+
+    accuracy: float = Field(ge=0, le=1)
+    grade: float = Field(ge=0, le=3)
+
+
+class Limits(BaseModel):
+    """How far each measure must move to count: a difference for accuracy and the
+    grade, and a fraction of the old value for cost and time."""
+
+    accuracy: float = Field(ge=0, le=1)
+    grade: float = Field(ge=0, le=3)
+    model_cost_per_claim: float = Field(ge=0)
+    seconds_per_claim: float = Field(ge=0)
+
+
+class SettingsRequest(BaseModel):
+    payout_approval_limit: float = Field(gt=0, description="In US dollars")
+    objectives: Objectives
+    noise: Limits
+    tolerance: Limits
+    spending_limit: float = Field(gt=0, description="For each round, in US dollars")
+    agents: Agents
+
+
+class Settings(SettingsRequest):
+    changed_by: str
+    changed_at: str
+
+
+class SettingsHistory(BaseModel):
+    current: Settings
+    changes: list[Settings] = Field(description="Every version, newest first")
+
+
+class AllowedModel(BaseModel):
+    model: str
+    reasoning_efforts: list[str]
+    input_price: float = Field(description="US dollars per million input tokens")
+    output_price: float = Field(description="US dollars per million output tokens")
+
+
+class Scores(BaseModel):
+    """A version's measures, averaged over the whole-set evaluations rounds ran on
+    it on one set."""
+
+    runs: int
+    decision_accuracy: float
+    accuracy: float
+    cost_of_mistakes: float
+    straight_through: float
+    model_cost_per_claim: float
+    seconds_per_claim: float
+    grade: float | None
+
+
+class VersionScores(BaseModel):
+    evaluation: Scores | None
+    held_out: Scores | None
+
+
+class AgentConfiguration(BaseModel):
+    """What the claim agent works from: its instructions, ending with the
+    documents' contents, its model and its reasoning effort. No scores."""
+
+    version: int
+    instructions: str
+    model: str
+    reasoning_effort: str
+
+
+class AgentVersion(BaseModel):
+    version: int
+    instructions: str
+    model: str
+    reasoning_effort: str
+    based_on: int | None = Field(description="The version it was proposed against")
+    change: str
+    reason: str
+    proposed_by: str
+    approved_by: str
+    approved_at: str
+    round_id: str | None
+    verdict: VersionVerdict | None
+    created_at: str
+
+
+class VersionSummary(AgentVersion):
+    current: bool
+    scores: VersionScores
+
+
+class VersionDetails(VersionSummary):
+    diff: list[DiffLine] = Field(description="From the version before, if any")

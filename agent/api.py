@@ -2,7 +2,7 @@
 
 import os
 from enum import StrEnum
-from typing import Any, Literal
+from typing import Any, Literal, TypedDict
 
 import httpx
 from pydantic import BaseModel, Field
@@ -114,8 +114,12 @@ def get_claim_history(customer_id: str) -> list[dict[str, Any]]:
     return _call("GET", f"/customers/{customer_id}/claims")
 
 
-def get_instructions() -> dict[str, str]:
-    return _call("GET", "/instructions")
+def get_current_version() -> dict[str, Any]:
+    return _call("GET", "/configuration/current")
+
+
+def get_agent_version(version: int) -> dict[str, Any]:
+    return _call("GET", f"/configuration/versions/{version}/agent")
 
 
 def search_documents(query: str) -> list[dict[str, Any]]:
@@ -189,25 +193,24 @@ def record_work_time(
     return _call("POST", f"/claims/{claim_id}/work-times", json=body)
 
 
-def create_dispatch(agents: int, model: str, reasoning_effort: str) -> dict[str, Any]:
-    body = {"agents": agents, "model": model, "reasoning_effort": reasoning_effort}
-    return _call("POST", "/runs/dispatches", json=body)
+class RunSetup(TypedDict):
+    """How a run is worked: N claim agents at once, on a version of the claim agent
+    and the model it runs on."""
+
+    agents: int
+    version: int
+    model: str
+    reasoning_effort: str
+
+
+def create_dispatch(setup: RunSetup) -> dict[str, Any]:
+    return _call("POST", "/runs/dispatches", json=setup)
 
 
 def create_evaluation(
-    evaluation_set: EvaluationSet,
-    tiny: bool,
-    agents: int,
-    model: str,
-    reasoning_effort: str,
+    evaluation_set: EvaluationSet, tiny: bool, setup: RunSetup
 ) -> dict[str, Any]:
-    body = {
-        "evaluation_set": evaluation_set,
-        "tiny": tiny,
-        "agents": agents,
-        "model": model,
-        "reasoning_effort": reasoning_effort,
-    }
+    body = {"evaluation_set": evaluation_set, "tiny": tiny, **setup}
     return _call("POST", "/runs/evaluations", json=body)
 
 

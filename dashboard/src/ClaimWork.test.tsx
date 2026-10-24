@@ -21,6 +21,7 @@ import {
   panel,
   policy,
   renderAt,
+  settingsHistory,
   stubApi,
 } from "./testing";
 import { REFRESH_MS } from "./useLoad";
@@ -64,6 +65,7 @@ function showClaim(shown: Claim, stepsShown: Step[] = [], handler = dana) {
     "GET /api/claims/CLM-1002/steps": stepsShown,
     "GET /api/policies/POL-2002": policy,
     "GET /api/customers/CUS-3002/claims": history,
+    "GET /api/settings": settingsHistory,
   };
   const fetchMock = stubApi(routes);
   renderAt("/claims/CLM-1002");
@@ -289,7 +291,7 @@ it("says why a handler who can't sign off over the limit can't", async () => {
   showClaim(held, [], marcus);
   const panel = await decisionPanel();
   expect((await panel.findByRole("note")).textContent).toBe(
-    "Marcus Oyelaran can't sign off payouts over the approval limit. A senior handler can.",
+    "Marcus Oyelaran can't sign off payouts over $1,000.00. A senior handler can.",
   );
   expect(panel.queryByRole("button")).toBeNull();
 });

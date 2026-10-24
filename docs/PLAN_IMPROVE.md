@@ -59,6 +59,7 @@ A version, in `agent_versions`:
 | `version` | 1, 2, 3 and on |
 | `instructions` | The claim agent's instructions, without the documents' contents, which are added when the claim agent fetches it |
 | `model`, `reasoning_effort` | As the claim agent runs it |
+| `based_on` | The version it was proposed against, which its diff is from; none for version 1 |
 | `change` | What changed, in a line: "Instructions", "Model", "Reasoning effort" or a mix, worked out by the backend |
 | `reason` | Why: "The claim agent as it was on Week 2 Day 4" for version 1, or the improver's reason |
 | `proposed_by` | "UnderCover" for version 1, or the round, such as "The improver, round 2" |
@@ -224,6 +225,7 @@ Every page is built from the same parts, styled to `docs/BRAND.md` in light and 
 - `StatusBadge`: a color and a word, for claims, runs, rounds, verdicts and proposals.
 - `DiffView`: the lines added in Sea Green and removed in Raspberry, each with a plus or minus too, so color is never the only sign, in JetBrains Mono, with unchanged lines dimmed and long runs of them folded.
 - `ConfirmDialog`: the dashboard's own dialog on the `<dialog>` element, before any action that changes the agent or a setting.
+- `useAction`, the one way a page sends a request that does something and shows its refusal, which `ActionForm` uses too; and `permissions.ts`, the one owner of what a handler who can't sign off over the limit is told.
 - `DataTable` styles: numbers right-aligned in JetBrains Mono with their units, fixed column widths so refreshes don't shift them.
 - `LoadingState`, `EmptyState` and `ErrorState`, each saying what to do next. Panels keep their height while they refresh, and data stays on screen until the new data arrives.
 - One button style in primary, secondary and danger forms.
@@ -237,7 +239,7 @@ Pages:
 - **Settings** (`/settings`): the settings, editable by a senior handler with a confirmation, each with who last changed it and when; the models allowed, read only; and the appearance, light, dark or the same as the computer, remembered by the browser.
 - Where a handler can't act, the page says what they can't do and why, such as "Marcus Oyelaran can't sign off payouts over $1,000.00. A senior handler can.", and the action's button is not offered.
 - The Scoreboard adds the average grade; an evaluation's page shows each claim's letter, score and the two checks as yes or no, or "Not graded", and the judge's cost.
-- The theme: `styles.css` sets the colors from `data-theme` on the page as well as from `prefers-color-scheme`, so the switch overrides the computer's choice.
+- The theme: `styles.css` gives each color for light and dark with `light-dark()`, and `data-theme` on the page sets `color-scheme` to light or dark, overriding the computer's choice.
 
 ### End-to-end tests
 
@@ -299,23 +301,23 @@ Sign-in first, so every later page is built signed in.
 
 ## Phase 2: The configuration's versions and the Settings page
 
-- [ ] Seeding makes version 1 from `backend/instructions/claim.md` with `openai/gpt-6-luna` at `low`, kept, and the settings from `data/company.json` and `data/improvement.json`, with the lab's values and 25 agents at once
-- [ ] pytest: `create_dispatch` and `create_evaluation` record their version, and the dispatch and the evaluation in responses show it
-- [ ] Stub model test: the service starts a dispatch and an evaluation on the current version, and the claim agent's system prompt is that version's instructions followed by the documents' contents
-- [ ] Stub model test: with `MODEL_NAME` set, the claim agent's model is that model with no reasoning effort sent, and the run records `default`
-- [ ] pytest: `get_agent_version` and `get_current_version` hold no scores, and `test_the_agent_cant_read_the_scoreboard` still passes with `list_versions` and `get_version` added to its names
-- [ ] pytest: a version's scores count only finished whole-set evaluations that rounds ran on it: a Scoreboard evaluation, a tiny one and a stopped one on the same version leave them as they were
-- [ ] pytest: `get_version` returns its diff from the one before, from `difflib`, as added, removed and unchanged lines
-- [ ] pytest: `update_settings` by Dana Whitfield records a new version of the settings with her name and the time; by Marcus Oyelaran it returns 403 and records nothing; with no token 401; a negative limit or noise returns 422
-- [ ] pytest: after the approval limit changes to $2,000, a $1,350 approval recorded next is paid without a sign-off, and one recorded before the change stays held
-- [ ] pytest: `list_models` returns the three models with their efforts and prices as numbers; with `MODEL_NAME=openrouter/free` it returns that model alone at `default` with prices of 0
-- [ ] `curl -s localhost:8000/api/instructions` returns 404
-- [ ] vitest: the Configuration page shows the current version and each version with its held-out scores, and opens a version's diff; the Settings page shows each setting with who changed it and when, saves a change after the confirmation dialog, says why Marcus Oyelaran can't change them and offers him no fields, and lists the models allowed read only
-- [ ] vitest: the appearance switch sets `data-theme` on the page and keeps the choice in `localStorage`; "Same as the computer" removes it
-- [ ] e2e: signed in as Dana Whitfield, a change to the approval limit is saved after the confirmation and shows with her name; switching to dark sets the page dark and stays so after a reload
-- [ ] Browser: the Configuration page shows version 1; the Settings page in light and dark mode
-- [ ] `npm run seed`, then Supabase MCP: `agent_versions` has version 1, `settings` one row, and `runs` has `version` and `round_id`
-- [ ] `npm run check` passes
+- [x] Seeding makes version 1 from `backend/instructions/claim.md` with `openai/gpt-6-luna` at `low`, kept, and the settings from `data/company.json` and `data/improvement.json`, with the lab's values and 25 agents at once
+- [x] pytest: `create_dispatch` and `create_evaluation` record their version, and the dispatch and the evaluation in responses show it
+- [x] Stub model test: the service starts a dispatch and an evaluation on the current version, and the claim agent's system prompt is that version's instructions followed by the documents' contents
+- [x] Stub model test: with `MODEL_NAME` set, the claim agent's model is that model with no reasoning effort sent, and the run records `default`
+- [x] pytest: `get_agent_version` and `get_current_version` hold no scores, and `test_the_agent_cant_read_the_scoreboard` still passes with `list_versions` and `get_version` added to its names
+- [x] pytest: a version's scores count only finished whole-set evaluations that rounds ran on it: a Scoreboard evaluation, a tiny one and a stopped one on the same version leave them as they were
+- [x] pytest: `get_version` returns its diff from the one before, from `difflib`, as added, removed and unchanged lines
+- [x] pytest: `update_settings` by Dana Whitfield records a new version of the settings with her name and the time; by Marcus Oyelaran it returns 403 and records nothing; with no token 401; a negative limit or noise returns 422
+- [x] pytest: after the approval limit changes to $2,000, a $1,350 approval recorded next is paid without a sign-off, and one recorded before the change stays held
+- [x] pytest: `list_models` returns the three models with their efforts and prices as numbers; with `MODEL_NAME=openrouter/free` it returns that model alone at `default` with prices of 0
+- [x] `curl -s localhost:8000/api/instructions` returns 404
+- [x] vitest: the Configuration page shows the current version and each version with its held-out scores, and opens a version's diff from the version it was based on; the Settings page shows each setting with who changed it and when, saves a change after the confirmation dialog, refuses to save a value out of its range or not a number, says why Marcus Oyelaran can't change them and offers him no fields, and lists the models allowed read only
+- [x] vitest: the appearance switch sets `data-theme` on the page and keeps the choice in `localStorage`; "Same as the computer" removes it
+- [x] e2e: signed in as Dana Whitfield, a change to a setting is saved after the confirmation and shows with her name; switching to dark sets the page dark and stays so after a reload, and light stays light on a computer set to dark. The test changes the claim agents at once in a round rather than the approval limit, since the specs share one database and others depend on the $1,000.00 limit
+- [x] Browser: the Configuration page shows version 1; the Settings page in light and dark mode
+- [x] `npm run seed`, then a read-only query: `agent_versions` has version 1, `settings` one row, and `runs` has `version` and `round_id`
+- [x] `npm run check` passes
 
 ## Phase 3: The judge
 

@@ -10,6 +10,7 @@ from backend.tests.claim_requests import (
     sign_off,
     start,
 )
+from backend.tests.rounds_played import TINY_HELD_OUT
 from backend.tests.run_requests import (
     create_dispatch,
     create_evaluation,
@@ -18,8 +19,6 @@ from backend.tests.run_requests import (
     queue,
     record_claims,
 )
-
-TINY_HELD_OUT = ["CLM-1114", "CLM-1106", "CLM-1112", "CLM-1104", "CLM-1110"]
 
 
 def test_an_evaluation_works_copies_of_its_claims(client):

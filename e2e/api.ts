@@ -5,7 +5,11 @@ import type { DecisionKind, EvaluationSet, Run } from "../dashboard/src/api";
 // each backend operation the tests use, sent through the dashboard's proxy.
 type Request = APIRequestContext;
 
-const MODEL = { model: "openai/gpt-6-luna", reasoning_effort: "low" };
+const MODEL = {
+  version: 1,
+  model: "openai/gpt-6-luna",
+  reasoning_effort: "low",
+};
 const claimPath = (claimId: string) =>
   `/api/claims/${encodeURIComponent(claimId)}`;
 const runPath = (runId: string) => `/api/runs/${runId}`;

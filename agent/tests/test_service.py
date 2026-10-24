@@ -4,6 +4,7 @@ from contextlib import nullcontext
 import pytest
 from fastapi.testclient import TestClient
 from langgraph.checkpoint.memory import InMemorySaver
+from sqlalchemy import insert
 
 from agent import harness, service
 from agent.tests.dispatching import new_dispatch
@@ -11,6 +12,8 @@ from agent.tests.queue_setup import leave_waiting
 from agent.tests.records import claim_of, steps_of
 from agent.tests.stubs import decide, graph_on, stub, swarm
 from api_rules import rule_breaks
+from backend.database import agent_versions, engine
+from backend.tests.rounds_played import TINY_HELD_OUT
 from backend.tests.run_requests import latest_dispatch
 
 
@@ -116,7 +119,7 @@ def test_start_a_dispatch(client, serve):
 
     dispatch = latest_dispatch(client)
     assert (dispatch["status"], dispatch["agents"]) == ("finished", 2)
-    assert (dispatch["model"], dispatch["reasoning_effort"]) == ("stub", "none")
+    assert (dispatch["model"], dispatch["reasoning_effort"]) == ("stub", "default")
     assert [c["status"] for c in dispatch["claims"]] == ["decided"] * 3
     assert model.most_at_once == 2
 
@@ -172,3 +175,48 @@ def test_starting_the_service_stops_the_runs_left_running(client, monkeypatch):
     with TestClient(service.app):
         dispatch = latest_dispatch(client)
         assert (dispatch["run_id"], dispatch["status"]) == (run_id, "stopped")
+
+
+def test_the_service_works_runs_on_the_current_version(client, monkeypatch):
+    with engine().begin() as db:
+        db.execute(
+            insert(agent_versions).values(
+                version=2,
+                instructions="Decide the claim, reading the manual first.",
+                model="google/gemini-3.5-flash-lite",
+                reasoning_effort="minimal",
+                based_on=1,
+                change="Instructions and model",
+                reason="Cheaper",
+                proposed_by="The improver, round 1",
+                approved_by="Dana Whitfield",
+                approved_at="2026-10-24T10:00:00+00:00",
+                verdict="kept",
+                created_at="2026-10-24T10:00:00+00:00",
+            )
+        )
+    queue = [c["claim_id"] for c in client.get("/api/claims").json()]
+    copies = [f"{claim_id}-E2" for claim_id in TINY_HELD_OUT]
+    model = swarm({claim_id: decide("refer", 0) for claim_id in queue + copies})
+    configured = []
+
+    def model_of(configuration):
+        configured.append(configuration)
+        return model
+
+    saver = InMemorySaver()
+    monkeypatch.setattr(harness, "model", model_of)
+    monkeypatch.setattr(harness, "PostgresSaver", lambda pool: saver)
+    monkeypatch.setattr(service.app.state, "pool", None, raising=False)
+    served = TestClient(service.app)
+    assert served.post("/api/dispatches", json={"agents": 5}).status_code == 202
+    evaluation = {"evaluation_set": "held_out", "tiny": True, "agents": 5}
+    assert served.post("/api/evaluations", json=evaluation).status_code == 202
+
+    dispatch = client.get("/api/dispatches/latest").json()
+    [scored] = client.get("/api/evaluations").json()
+    assert (dispatch["version"], scored["version"]) == (2, 2)
+    assert (dispatch["model"], dispatch["reasoning_effort"]) == ("stub", "default")
+    assert {c["model"] for c in configured} == {"google/gemini-3.5-flash-lite"}
+    agent = client.get("/api/configuration/versions/2/agent").json()
+    assert {prompt[0].text for prompt in model.prompts} == {agent["instructions"]}

@@ -6,7 +6,6 @@ import logging
 import threading
 from collections.abc import AsyncIterator, Callable
 from contextlib import asynccontextmanager
-from dataclasses import dataclass
 from functools import partial
 from typing import Annotated, Any
 
@@ -18,11 +17,10 @@ from agent import api
 from agent.console import show_reports
 from agent.dispatcher import work_run
 from agent.harness import (
-    NewGraph,
+    ClaimAgents,
     carry_on,
     checkpoint_pool,
-    claim_graphs,
-    model,
+    current_claim_agents,
     work_in_run,
 )
 
@@ -30,7 +28,6 @@ ALREADY_RUNNING = "A dispatch or an evaluation is already running"
 ACCEPTED = {"status": "accepted"}
 # The most claim agents at once, as the backend and the dashboard also allow.
 MOST_AGENTS = 25
-NO_REASONING_EFFORT = "none"
 
 log = logging.getLogger(__name__)
 
@@ -60,24 +57,10 @@ def refused(_: Request, error: api.Refused) -> JSONResponse:
     return JSONResponse({"detail": error.detail}, status_code=error.status_code)
 
 
-@dataclass
-class ClaimAgents:
-    """The service's claim agents: their model, its reasoning effort, and how to
-    build a claim graph with a saver of its own."""
-
-    model: str
-    reasoning_effort: str
-    new_graph: NewGraph
-
-
 def build_claim_agents(request: Request) -> ClaimAgents:
-    """Build the model for one request, and claim graphs on the service's pool."""
-    llm = model()
-    return ClaimAgents(
-        llm.model_name,
-        llm.reasoning_effort or NO_REASONING_EFFORT,
-        claim_graphs(llm, request.app.state.pool),
-    )
+    """Build the current version's claim agents for one request, on the service's
+    pool."""
+    return current_claim_agents(request.app.state.pool)
 
 
 ClaimAgentsDep = Annotated[ClaimAgents, Depends(build_claim_agents)]
@@ -125,12 +108,7 @@ def start_dispatch(
 ) -> dict[str, str]:
     """Start a dispatch with up to N claim agents at once."""
     take_the_run()
-    create = partial(
-        api.create_dispatch,
-        request.agents,
-        claim_agents.model,
-        claim_agents.reasoning_effort,
-    )
+    create = partial(api.create_dispatch, claim_agents.setup(request.agents))
     background.add_task(work_in_background, create, claim_agents)
     return ACCEPTED
 
@@ -169,9 +147,7 @@ def start_evaluation(
         api.create_evaluation,
         request.evaluation_set,
         request.tiny,
-        request.agents,
-        claim_agents.model,
-        claim_agents.reasoning_effort,
+        claim_agents.setup(request.agents),
     )
     background.add_task(work_in_background, create, claim_agents)
     return ACCEPTED

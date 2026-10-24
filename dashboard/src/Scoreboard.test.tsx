@@ -30,6 +30,8 @@ const finished: Evaluation = {
   number: 7,
   kind: "evaluation",
   agents: 25,
+  version: 1,
+  round_id: null,
   model: "openai/gpt-6-luna",
   reasoning_effort: "low",
   evaluation_set: "evaluation",

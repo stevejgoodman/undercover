@@ -59,7 +59,7 @@ test("a handler who can't sign off over the limit is told why", async ({
   await page.goto("/claims/CLM-1021");
   await expect(
     page.getByText(
-      "Marcus Oyelaran can't sign off payouts over the approval limit. A senior handler can.",
+      "Marcus Oyelaran can't sign off payouts over $1,000.00. A senior handler can.",
     ),
   ).toBeVisible();
   await expect(page.getByRole("button", { name: /Sign off as/ })).toHaveCount(

@@ -1,5 +1,11 @@
-import type { DecisionKind, RunStatus, Status } from "../api";
-import { decisionLabels, money, runLabels, statusLabels } from "../format";
+import type { DecisionKind, RunStatus, Status, VersionVerdict } from "../api";
+import {
+  decisionLabels,
+  money,
+  runLabels,
+  statusLabels,
+  verdictLabels,
+} from "../format";
 
 export function StatusChip({ status }: Readonly<{ status: Status }>) {
   return (
@@ -39,5 +45,19 @@ export function DecisionPayout({
       <DecisionChip decision={decision} />{" "}
       <span className="mono">{money(payout)}</span>
     </>
+  );
+}
+
+// Where a version stands: the current one, kept before, rolled back, or still
+// being tried in a round.
+export function VerdictChip({
+  verdict,
+  current,
+}: Readonly<{ verdict: VersionVerdict | null; current: boolean }>) {
+  if (current) return <span className="chip verdict-current">Current</span>;
+  if (verdict === null)
+    return <span className="chip verdict-trying">Being tried</span>;
+  return (
+    <span className={`chip verdict-${verdict}`}>{verdictLabels[verdict]}</span>
   );
 }

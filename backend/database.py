@@ -32,10 +32,25 @@ from sqlalchemy.engine import URL, make_url
 from sqlalchemy.pool import NullPool
 from sqlalchemy.schema import CreateSchema
 
-from backend.models import EvaluationSet, Status
+from backend.models import EvaluationSet, Status, VersionVerdict
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
+INSTRUCTIONS = Path(__file__).parent / "instructions"
+# Who made the first version of the agent and the settings: the business itself.
+UNDERCOVER = "UnderCover"
+FIRST_VERSION = {
+    "version": 1,
+    "model": "openai/gpt-6-luna",
+    "reasoning_effort": "low",
+    "based_on": None,
+    "change": "The first version",
+    "reason": "The claim agent as it was on Week 2 Day 4",
+    "proposed_by": UNDERCOVER,
+    "approved_by": UNDERCOVER,
+    "round_id": None,
+    "verdict": VersionVerdict.KEPT,
+}
 DOCUMENTS = {"policy_wording": "Policy wording", "claims_manual": "Claims manual"}
 HELD_OUT_CLAIMS = "evals/held_out_claims.json"
 SCHEMA = "undercover"
@@ -47,11 +62,48 @@ RETIRED = ["todos"]
 
 metadata = MetaData()
 
+# Each change to the settings is a new row; the newest is the current one.
 settings = Table(
     "settings",
     metadata,
+    Column("settings_id", Integer, primary_key=True),
     Column("payout_approval_limit", Float, nullable=False),
-    Column("plans", JSON, nullable=False),
+    Column("objectives", JSON, nullable=False),
+    Column("noise", JSON, nullable=False),
+    Column("tolerance", JSON, nullable=False),
+    Column("spending_limit", Float, nullable=False),
+    Column("agents", Integer, nullable=False),
+    Column("changed_by", Text, nullable=False),
+    Column("changed_at", Text, nullable=False),
+)
+plans = Table("plans", metadata, Column("plans", JSON, nullable=False))
+allowed_models = Table(
+    "allowed_models",
+    metadata,
+    Column("model", Text, primary_key=True),
+    Column("position", Integer, nullable=False),
+    Column("reasoning_efforts", JSON, nullable=False),
+    Column("input_price", Float, nullable=False),
+    Column("output_price", Float, nullable=False),
+)
+# The claim agent's configuration, in versions; the current one is the newest kept.
+agent_versions = Table(
+    "agent_versions",
+    metadata,
+    Column("version", Integer, primary_key=True),
+    Column("instructions", Text, nullable=False),
+    Column("model", Text, nullable=False),
+    Column("reasoning_effort", Text, nullable=False),
+    # The version it was proposed against, and is shown changing.
+    Column("based_on", Integer),
+    Column("change", Text, nullable=False),
+    Column("reason", Text, nullable=False),
+    Column("proposed_by", Text, nullable=False),
+    Column("approved_by", Text, nullable=False),
+    Column("approved_at", Text, nullable=False),
+    Column("round_id", Text),
+    Column("verdict", Text),
+    Column("created_at", Text, nullable=False),
 )
 documents = Table(
     "documents",
@@ -146,6 +198,8 @@ runs = Table(
     Column("run_id", Text, nullable=False, unique=True),
     Column("kind", Text, nullable=False),
     Column("agents", Integer, nullable=False),
+    Column("version", Integer, ForeignKey("agent_versions.version"), nullable=False),
+    Column("round_id", Text),
     Column("model", Text, nullable=False),
     Column("reasoning_effort", Text, nullable=False),
     Column("evaluation_set", Text),
@@ -305,7 +359,6 @@ def waiting_claim(record: dict[str, Any], **columns: Any) -> dict[str, Any]:
 
 def seed(db: Engine) -> dict[str, int]:
     """Build the tables afresh from data/ and count what they hold."""
-    company = load("company.json")
     handler_rows = load("handlers.json")
     customer_rows = load("customers.json")
     policy_rows = load("policies.json")
@@ -317,13 +370,9 @@ def seed(db: Engine) -> dict[str, int]:
             Table(name, MetaData()).drop(connection, checkfirst=True)
         metadata.drop_all(connection)
         metadata.create_all(connection)
-        connection.execute(
-            insert(settings),
-            {
-                "payout_approval_limit": company["payout_approval_limit"],
-                "plans": load("plans.json"),
-            },
-        )
+        seed_settings(connection)
+        seed_models(connection)
+        seed_configuration(connection)
         connection.execute(
             insert(documents),
             [
@@ -368,6 +417,43 @@ def seed(db: Engine) -> dict[str, int]:
         "customers": len(customer_rows),
         "handlers": len(handler_rows),
     } | labeled
+
+
+def seed_settings(connection: Connection) -> None:
+    """Store the first settings, from company.json and improvement.json, and the
+    plans."""
+    connection.execute(
+        insert(settings),
+        {
+            "payout_approval_limit": load("company.json")["payout_approval_limit"],
+            **load("improvement.json"),
+            "changed_by": UNDERCOVER,
+            "changed_at": now(),
+        },
+    )
+    connection.execute(insert(plans), {"plans": load("plans.json")})
+
+
+def seed_models(connection: Connection) -> None:
+    """Store the models the claim agent may use, from models.json."""
+    connection.execute(
+        insert(allowed_models),
+        [
+            {"position": position, **model}
+            for position, model in enumerate(load("models.json"))
+        ],
+    )
+
+
+def seed_configuration(connection: Connection) -> None:
+    """Store the claim agent's first version, from its instructions file."""
+    instructions = (INSTRUCTIONS / "claim.md").read_text(encoding="utf-8")
+    stamped = now()
+    connection.execute(
+        insert(agent_versions),
+        FIRST_VERSION
+        | {"instructions": instructions, "approved_at": stamped, "created_at": stamped},
+    )
 
 
 def seed_evaluations(connection: Connection) -> dict[str, int]:

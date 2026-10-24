@@ -2,11 +2,13 @@ import type { RunDetails } from "../api";
 
 export function ModelName({
   run,
-}: Readonly<{ run: Pick<RunDetails, "model" | "reasoning_effort"> }>) {
+}: Readonly<{
+  run: Pick<RunDetails, "version" | "model" | "reasoning_effort">;
+}>) {
   return (
     <>
-      <span className="mono">{run.model}</span>, reasoning effort{" "}
-      {run.reasoning_effort}
+      version {run.version}, <span className="mono">{run.model}</span>,
+      reasoning effort {run.reasoning_effort}
     </>
   );
 }

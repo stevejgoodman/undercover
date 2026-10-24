@@ -12,7 +12,9 @@ from sqlalchemy import select
 
 from backend.database import handlers
 from backend.dependencies import Database
+from backend.lookups import current_settings
 from backend.models import Handler
+from backend.views import dollars
 
 # PyJWT needs an address to start with, so with VITE_SUPABASE_URL unset, as in the
 # unit tests, it gets Supabase's own address on this computer, where nothing runs.
@@ -25,6 +27,8 @@ ALGORITHMS = ["ES256", "RS256"]
 KEYS_TIMEOUT = 5
 NOT_SIGNED_IN = "Please sign in"
 NO_KEYS = "The sign-in can't be checked, because Supabase Auth can't be reached"
+CANT_SIGN_OFF = "{name} can't sign off payouts over {limit}"
+SENIOR_ONLY = CANT_SIGN_OFF + ", so only a senior handler can do this"
 
 keys = jwt.PyJWKClient(PUBLIC_KEYS, cache_keys=True, timeout=KEYS_TIMEOUT)
 bearer = HTTPBearer(auto_error=False)
@@ -67,3 +71,15 @@ def signed_in(
 
 
 SignedIn = Annotated[Handler, Depends(signed_in)]
+
+
+def senior(handler: SignedIn, db: Database) -> Handler:
+    """Return the handler signed in if they can sign off payouts over the limit, who
+    alone may change the agent or a setting, or raise a 403."""
+    if not handler.can_approve_over_limit:
+        limit = dollars(current_settings(db).payout_approval_limit)
+        raise HTTPException(403, SENIOR_ONLY.format(name=handler.name, limit=limit))
+    return handler
+
+
+Senior = Annotated[Handler, Depends(senior)]

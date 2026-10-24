@@ -1,4 +1,10 @@
-import type { DecisionKind, EvaluationSet, RunStatus, Status } from "./api";
+import type {
+  DecisionKind,
+  EvaluationSet,
+  RunStatus,
+  Status,
+  VersionVerdict,
+} from "./api";
 
 const dollars = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -40,6 +46,11 @@ export function money(amount: number): string {
 // A share, such as 0.8, as a whole percentage: 80%.
 export function percent(share: number): string {
   return `${String(Math.round(share * 100))}%`;
+}
+
+// The judge's average grade, from 0 for F to 3 for A.
+export function grade(score: number | null): string {
+  return score === null ? "Not graded" : score.toFixed(2);
 }
 
 export function modelCost(amount: number): string {
@@ -97,6 +108,14 @@ export const evaluationSetLabels: Record<EvaluationSet, string> = {
 export function evaluationSetName(set: EvaluationSet, size: number): string {
   return `${evaluationSetLabels[set]}, ${String(size)} claims`;
 }
+
+export const verdictLabels: Record<VersionVerdict, string> = {
+  kept: "Kept",
+  rolled_back: "Rolled back",
+};
+
+// What a table shows for a measure there's nothing yet to work out from.
+export const NONE_YET = "–";
 
 export const decisionLabels: Record<DecisionKind, string> = {
   approve: "Approved",

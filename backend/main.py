@@ -3,14 +3,13 @@
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from datetime import UTC, datetime, timedelta
-from pathlib import Path
 from typing import Annotated
 
 from fastapi import BackgroundTasks, FastAPI, HTTPException, Query
 from sqlalchemy import Connection, RowMapping, insert, select, update
 
-from backend import agent_service
-from backend.auth import SignedIn
+from backend import agent_service, configuration, platform_settings, runs
+from backend.auth import CANT_SIGN_OFF, SignedIn
 from backend.database import (
     claim_view,
     claims,
@@ -21,16 +20,16 @@ from backend.database import (
     model_calls,
     now,
     payments,
+    plans,
     policies,
     seed,
-    settings,
     stamp,
     steps,
     work_times,
 )
 from backend.dependencies import Database
-from backend.documents import contents, search, sections, titles
-from backend.lookups import CLAIM_NOT_FOUND, run_row
+from backend.documents import search, sections, titles
+from backend.lookups import CLAIM_NOT_FOUND, current_settings, run_row
 from backend.models import (
     Claim,
     ClaimSummary,
@@ -39,7 +38,6 @@ from backend.models import (
     DocumentName,
     FailureRequest,
     Handler,
-    Instructions,
     ModelCall,
     ModelCallRequest,
     PaymentRequest,
@@ -58,10 +56,8 @@ from backend.models import (
     WorkTimeRequest,
 )
 from backend.payout import needs_sign_off, work_out_payout
-from backend.runs import router
-from backend.views import to_claim, to_summary
+from backend.views import dollars, to_claim, to_summary
 
-INSTRUCTIONS = Path(__file__).parent / "instructions"
 ATTEMPTS = 2
 
 
@@ -74,22 +70,20 @@ async def lifespan(_: FastAPI) -> AsyncIterator[None]:
 
 
 app = FastAPI(title="UnderCover", lifespan=lifespan)
-app.include_router(router)
-
-
-def dollars(amount: float) -> str:
-    """Format an amount like $1,250.00."""
-    return f"${amount:,.2f}"
+app.include_router(runs.router)
+app.include_router(configuration.router)
+app.include_router(platform_settings.router)
 
 
 def approval_limit(db: Connection) -> float:
-    """Return the largest payout that can be paid without a handler's sign-off."""
-    return db.execute(select(settings.c.payout_approval_limit)).scalar_one()
+    """Return the largest payout that can be paid without a handler's sign-off, as
+    the settings stand now."""
+    return current_settings(db).payout_approval_limit
 
 
-def plans(db: Connection) -> Plans:
+def plans_of(db: Connection) -> Plans:
     """Return the plans and add-ons, and the benefits the deductible applies to."""
-    return Plans(**db.execute(select(settings.c.plans)).scalar_one())
+    return Plans(**db.execute(select(plans.c.plans)).scalar_one())
 
 
 def find_claim(db: Connection, claim_id: str) -> RowMapping:
@@ -183,13 +177,6 @@ def get_claim_history(customer_id: str, db: Database) -> list[PreviousClaim]:
     if record is None:
         raise HTTPException(404, f"Customer {customer_id} not found")
     return [PreviousClaim(**claim) for claim in record["previous_claims"]]
-
-
-@app.get("/api/instructions", operation_id="get_instructions")
-def get_instructions(db: Database) -> Instructions:
-    """Get the claim agent's instructions, ending with the documents' contents."""
-    claim = (INSTRUCTIONS / "claim.md").read_text(encoding="utf-8")
-    return Instructions(claim=f"{claim}\n{contents(db)}")
 
 
 @app.get("/api/documents/search", operation_id="search_documents")
@@ -320,7 +307,7 @@ def record_decision(claim_id: str, request: DecisionRequest, db: Database) -> Cl
 def calculate_payout(claim_id: str, request: PayoutRequest, db: Database) -> Payout:
     """Work out an approval's payout with UnderCover's payout rules; records nothing."""
     policy = find_policy(db, to_claim(find_claim(db, claim_id)).policy_id)
-    return work_out_payout(policy, plans(db), request, approval_limit(db))
+    return work_out_payout(policy, plans_of(db), request, approval_limit(db))
 
 
 @app.post("/api/claims/{claim_id}/payment", operation_id="pay_claim")
@@ -365,10 +352,8 @@ def sign_off_claim(
     if claim["status"] != Status.WAITING_FOR_SIGN_OFF:
         raise HTTPException(409, f"Claim {claim_id} is not waiting for sign-off")
     if not handler.can_approve_over_limit:
-        raise HTTPException(
-            403,
-            f"{handler.name} can't sign off payouts over {dollars(approval_limit(db))}",
-        )
+        limit = dollars(approval_limit(db))
+        raise HTTPException(403, CANT_SIGN_OFF.format(name=handler.name, limit=limit))
     db.execute(
         update(decisions)
         .where(decisions.c.claim_id == claim_id)

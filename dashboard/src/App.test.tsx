@@ -110,24 +110,6 @@ it("shows other errors loading a claim", async () => {
   expect((await screen.findByRole("alert")).textContent).toBe("Server error");
 });
 
-it("shows the claim agent's instructions read only", async () => {
-  stubApi({
-    "GET /api/instructions": {
-      claim: "# Working a claim\n\n## Contents of the claims manual",
-    },
-  });
-  renderAt("/instructions");
-  const claim = await screen.findByRole("region", { name: "Working a claim" });
-  expect(await within(claim).findByText(/# Working a claim/)).toBeDefined();
-  expect(screen.getAllByRole("region")).toHaveLength(1);
-  expect(
-    within(claim).getByText(/## Contents of the claims manual/),
-  ).toBeDefined();
-  const main = within(screen.getByRole("main"));
-  expect(main.queryByRole("textbox")).toBeNull();
-  expect(main.queryByRole("button")).toBeNull();
-});
-
 it("says when a page doesn't exist", async () => {
   stubApi({});
   renderAt("/nowhere");

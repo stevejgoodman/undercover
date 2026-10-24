@@ -1,12 +1,16 @@
 """The command line, and the model and the checkpoint pool it builds."""
 
 from contextlib import nullcontext
+from typing import cast
 
 import pytest
 
 from agent import __main__ as cli
 from agent import api, harness
 from agent.tests.stubs import stub
+
+# Building a version's claim agents opens no connection until a graph is built.
+NO_POOL = cast(harness.Pool, None)
 
 
 class FakePool:
@@ -76,17 +80,20 @@ def test_the_checkpoint_pool_settings(fakes):
 def test_each_claim_graph_has_a_saver_of_its_own(fakes, monkeypatch):
     built = []
     monkeypatch.setattr(
-        harness, "claim_graph", lambda llm, saver: built.append((llm, saver))
+        harness,
+        "claim_graph",
+        lambda llm, instructions, saver: built.append((llm, instructions, saver)),
     )
     model = stub()
     with harness.checkpoint_pool() as pool:
-        new_graph = harness.claim_graphs(model, pool)
+        new_graph = harness.claim_graphs(model, "Decide the claim.", pool)
         new_graph()
         new_graph()
     [first, second] = built
     assert first[0] is second[0] is model
-    assert first[1] is not second[1]
-    assert {first[1].pool, second[1].pool} == {pool}
+    assert first[1] == second[1] == "Decide the claim."
+    assert first[2] is not second[2]
+    assert {first[2].pool, second[2].pool} == {pool}
     assert [saver.set_up for saver in FakeSaver.made] == [True, False, False]
 
 
@@ -94,17 +101,17 @@ def test_command_line_works_one_claim(monkeypatch, capsys):
     pool = object()
     built = []
     monkeypatch.setattr(cli, "checkpoint_pool", lambda: nullcontext(pool))
-    monkeypatch.setattr(cli, "model", lambda: "model")
 
-    def claim_graphs(llm, on):
-        built.append((llm, on))
-        return lambda: "graph"
+    def current_claim_agents(on):
+        built.append(on)
+        graph = cast(harness.ClaimGraph, "graph")
+        return harness.ClaimAgents(1, "stub", "default", lambda: graph)
 
-    monkeypatch.setattr(cli, "claim_graphs", claim_graphs)
+    monkeypatch.setattr(cli, "current_claim_agents", current_claim_agents)
     worked = []
     monkeypatch.setattr(cli, "work_claim", lambda *args: worked.append(args))
     cli.main(["CLM-1001"])
-    assert built == [("model", pool)]
+    assert built == [pool]
     assert worked == [("CLM-1001", None, "graph")]
 
     def refuse(claim_id, run_id, graph):
@@ -125,14 +132,29 @@ def test_command_line_needs_a_claim(capsys):
     assert "the following arguments are required: claim_id" in capsys.readouterr().err
 
 
-def test_model_name(monkeypatch):
+def test_a_versions_model(monkeypatch):
     monkeypatch.setenv("OPENROUTER_API_KEY", "test-key")
     monkeypatch.delenv("MODEL_NAME", raising=False)
-    default = harness.model()
-    assert default.model_name == "openai/gpt-6-luna"
-    assert default.reasoning_effort == "low"
-    assert default.request_timeout == 120
-    assert default.max_retries == 5
+    version = {"model": "google/gemini-3.5-flash-lite", "reasoning_effort": "minimal"}
+    llm = harness.model(version)
+    assert (llm.model_name, llm.reasoning_effort) == tuple(version.values())
+    assert llm.request_timeout == 120
+    assert llm.max_retries == 5
     monkeypatch.setenv("MODEL_NAME", "openrouter/free")
-    assert harness.model().model_name == "openrouter/free"
-    assert harness.model().reasoning_effort is None
+    assert harness.model(version).model_name == "openrouter/free"
+    assert harness.model(version).reasoning_effort is None
+
+
+def test_a_versions_claim_agents(client, monkeypatch):
+    monkeypatch.setenv("OPENROUTER_API_KEY", "test-key")
+    monkeypatch.delenv("MODEL_NAME", raising=False)
+    agents = harness.claim_agents_of(1, NO_POOL)
+    assert agents.setup(7) == {
+        "agents": 7,
+        "version": 1,
+        "model": "openai/gpt-6-luna",
+        "reasoning_effort": "low",
+    }
+    monkeypatch.setenv("MODEL_NAME", "openrouter/free")
+    free = harness.claim_agents_of(1, NO_POOL)
+    assert (free.model, free.reasoning_effort) == ("openrouter/free", "default")

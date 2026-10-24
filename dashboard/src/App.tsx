@@ -1,15 +1,17 @@
 import { Link, NavLink, Route, Routes } from "react-router";
 import { ClaimPage } from "./pages/ClaimPage";
 import { EvaluationPage } from "./pages/EvaluationPage";
-import { InstructionsPage } from "./pages/InstructionsPage";
+import { ConfigurationPage } from "./pages/ConfigurationPage";
 import { QueuePage } from "./pages/QueuePage";
 import { ScoreboardPage } from "./pages/ScoreboardPage";
+import { SettingsPage } from "./pages/SettingsPage";
 import {
   CLAIM_PAGE,
+  CONFIGURATION,
   EVALUATION_PAGE,
-  INSTRUCTIONS,
   QUEUE,
   SCOREBOARD,
+  SETTINGS,
 } from "./paths";
 import { SessionGate } from "./components/SessionGate";
 import { useHandler } from "./session";
@@ -48,7 +50,8 @@ export function App() {
             Queue
           </NavLink>
           <NavLink to={SCOREBOARD}>Scoreboard</NavLink>
-          <NavLink to={INSTRUCTIONS}>Instructions</NavLink>
+          <NavLink to={CONFIGURATION}>Configuration</NavLink>
+          <NavLink to={SETTINGS}>Settings</NavLink>
         </nav>
         <SignedIn />
       </header>
@@ -58,7 +61,8 @@ export function App() {
           <Route path={CLAIM_PAGE} element={<ClaimPage />} />
           <Route path={SCOREBOARD} element={<ScoreboardPage />} />
           <Route path={EVALUATION_PAGE} element={<EvaluationPage />} />
-          <Route path={INSTRUCTIONS} element={<InstructionsPage />} />
+          <Route path={CONFIGURATION} element={<ConfigurationPage />} />
+          <Route path={SETTINGS} element={<SettingsPage />} />
           <Route path="*" element={<p className="message">Page not found</p>} />
         </Routes>
       </main>

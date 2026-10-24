@@ -14,13 +14,14 @@ export default defineConfig(({ mode }) => ({
   },
   test: {
     environment: "jsdom",
+    setupFiles: ["src/test_setup.ts"],
     env: {
       VITE_SUPABASE_URL: "http://auth.test",
       VITE_SUPABASE_PUBLISHABLE_KEY: "sb_publishable_test",
     },
     coverage: {
       include: ["src/**"],
-      exclude: ["src/main.tsx"],
+      exclude: ["src/main.tsx", "src/test_setup.ts"],
       thresholds: { statements: 80 },
     },
   },

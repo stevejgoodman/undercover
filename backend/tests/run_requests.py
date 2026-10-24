@@ -6,6 +6,7 @@ def create_dispatch(client, agents=3):
         "/api/runs/dispatches",
         json={
             "agents": agents,
+            "version": 1,
             "model": "openai/gpt-6-luna",
             "reasoning_effort": "low",
         },
@@ -38,6 +39,7 @@ def create_evaluation(client, evaluation_set="held_out", tiny=True, agents=5):
             "evaluation_set": evaluation_set,
             "tiny": tiny,
             "agents": agents,
+            "version": 1,
             "model": "openai/gpt-6-luna",
             "reasoning_effort": "low",
         },

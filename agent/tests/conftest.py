@@ -56,7 +56,9 @@ def serve():
 
     def with_model(model, saver=None):
         saver = saver or InMemorySaver()
-        agents = service.ClaimAgents("stub", "none", lambda: graph_on(model, saver))
+        agents = harness.ClaimAgents(
+            1, "stub", "default", lambda: graph_on(model, saver)
+        )
         service.app.dependency_overrides[service.build_claim_agents] = lambda: agents
         return TestClient(service.app)
 

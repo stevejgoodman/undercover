@@ -1,3 +1,5 @@
+/* Each color is given for light and for dark: the page follows the computer's
+   choice, unless the handler chose light or dark in Settings. */
 :root {
   --sea-green: #06d6a0;
   --marigold: #ffc145;
@@ -7,16 +9,18 @@
   --midnight: #073b4c;
   --sea-mist: #cdd8db;
 
-  --page: #f0f4f5;
-  --panel: #ffffff;
-  --inset: #f4f7f8;
-  --ink: var(--midnight);
-  --muted: #4b6f7b;
-  --link: #0b6e8f;
-  --green-text: #037a5b;
+  --page: light-dark(#f0f4f5, #04232e);
+  --panel: light-dark(#ffffff, #000000);
+  --inset: light-dark(#f4f7f8, #0a1d24);
+  --ink: light-dark(var(--midnight), var(--sea-mist));
+  --muted: light-dark(#4b6f7b, #93aab1);
+  --link: light-dark(#0b6e8f, #6fcbe8);
+  --green-text: light-dark(#037a5b, #6ff0c9);
+  --diff-added: rgb(6 214 160 / 22%);
+  --diff-removed: rgb(239 71 111 / 16%);
   --mono: "JetBrains Mono", ui-monospace, monospace;
 
-  color-scheme: light;
+  color-scheme: light dark;
   font-family: "Instrument Sans", system-ui, sans-serif;
   font-size: 15px;
   line-height: 1.5;
@@ -24,18 +28,12 @@
   background: var(--page);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --page: #04232e;
-    --panel: #000000;
-    --inset: #0a1d24;
-    --ink: var(--sea-mist);
-    --muted: #93aab1;
-    --link: #6fcbe8;
-    --green-text: #6ff0c9;
+:root[data-theme="light"] {
+  color-scheme: light;
+}
 
-    color-scheme: dark;
-  }
+:root[data-theme="dark"] {
+  color-scheme: dark;
 }
 
 * {
@@ -625,4 +623,208 @@ p {
   border: none;
   border-radius: 10px;
   padding: 9px 12px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.page-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.page-header h1 {
+  margin-bottom: 8px;
+}
+
+.page-header .lead {
+  margin: 0;
+  max-width: 72ch;
+}
+
+.page-action {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.panel-heading {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.panel-heading h2 {
+  margin: 0;
+}
+
+.subheading {
+  margin: 24px 0 6px;
+}
+
+.button.danger {
+  background: var(--raspberry);
+  color: #ffffff;
+}
+
+.small-button {
+  font-size: 0.85rem;
+  padding: 4px 12px;
+  white-space: nowrap;
+}
+
+.verdict-current {
+  background: var(--cerulean);
+  color: #ffffff;
+}
+
+.verdict-kept {
+  background: var(--sea-green);
+}
+
+.verdict-rolled_back {
+  background: var(--coral);
+}
+
+.verdict-trying {
+  background: var(--marigold);
+}
+
+.instructions-details {
+  margin: 12px 0;
+}
+
+.instructions-details summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.diff {
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  background: var(--inset);
+  border-radius: 12px;
+  padding: 10px 0;
+  overflow-x: auto;
+  margin-top: 12px;
+}
+
+.diff-line {
+  padding: 1px 14px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.diff-sign {
+  display: inline-block;
+  width: 1.5ch;
+  user-select: none;
+}
+
+.diff-unchanged {
+  color: var(--muted);
+}
+
+.diff-added {
+  background: var(--diff-added);
+}
+
+.diff-removed {
+  background: var(--diff-removed);
+  text-decoration: line-through;
+  text-decoration-color: var(--raspberry);
+}
+
+.diff-folded {
+  color: var(--muted);
+  font-style: italic;
+  font-family: "Instrument Sans", system-ui, sans-serif;
+}
+
+.confirm {
+  border: none;
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 480px;
+  background: var(--panel);
+  color: var(--ink);
+}
+
+.confirm::backdrop {
+  background: rgb(4 35 46 / 55%);
+}
+
+.confirm-body {
+  margin: 8px 0 20px;
+  display: grid;
+  gap: 10px;
+}
+
+.confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.number-input {
+  width: 9ch;
+  text-align: right;
+  font: inherit;
+  font-family: var(--mono);
+  color: var(--ink);
+  background: var(--inset);
+  border: none;
+  border-radius: 8px;
+  padding: 5px 8px;
+}
+
+.number-input[readonly] {
+  background: transparent;
+}
+
+.settings-table th[scope="row"] {
+  font-weight: 500;
+  text-align: left;
+}
+
+.segmented {
+  display: inline-flex;
+  gap: 4px;
+  background: var(--inset);
+  border-radius: 999px;
+  padding: 4px;
+  margin-top: 10px;
+}
+
+.segment {
+  border-radius: 999px;
+  padding: 6px 14px;
+  cursor: pointer;
+}
+
+.segment input {
+  position: absolute;
+  opacity: 0;
+}
+
+.segment:has(input:checked) {
+  background: var(--panel);
+  font-weight: 600;
+}
+
+.segment:has(input:focus-visible) {
+  outline: 2px solid var(--cerulean);
 }

@@ -400,11 +400,29 @@ class Measures(BaseModel):
     model_cost_per_claim: float
     seconds_per_claim: float
     run_seconds: float | None
+    grade: float | None = Field(description="The judge's average, or none graded")
+    judge_cost: float = Field(description="In US dollars, apart from the model's")
+
+
+Letter = Literal["F", "C", "B", "A"]
+
+
+class Grade(BaseModel):
+    """The judge's grade on the agent's reason against the handler's: its score
+    from 0 for F to 3 for A, the most likely letter, and the two checks as
+    probabilities."""
+
+    score: float
+    letter: Letter
+    same_grounds: float
+    same_section: float
 
 
 class ScoredClaim(RunClaim):
     copy_of: str
     reason: str | None
+    section: str | None
+    grade: Grade | None = Field(description="None when the judge couldn't grade it")
     handler_decision: DecisionKind
     handler_payout: float
     right: bool

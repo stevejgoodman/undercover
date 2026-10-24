@@ -828,3 +828,21 @@ p {
 .segment:has(input:focus-visible) {
   outline: 2px solid var(--cerulean);
 }
+
+.letter {
+  min-width: 2ch;
+  text-align: center;
+}
+
+.letter-A,
+.letter-B {
+  background: var(--sea-green);
+}
+
+.letter-C {
+  background: var(--marigold);
+}
+
+.letter-F {
+  background: var(--coral);
+}

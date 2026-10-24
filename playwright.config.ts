@@ -1,9 +1,15 @@
 import { defineConfig } from "@playwright/test";
-import { AGENT_STAND_IN, AUTH_STAND_IN, HANDLER_PASSWORD } from "./e2e/api";
+import {
+  AGENT_STAND_IN,
+  AUTH_STAND_IN,
+  HANDLER_PASSWORD,
+  JUDGE_STAND_IN,
+} from "./e2e/api";
 
 // The tests run their own backend and dashboard, on their own ports and
-// database, with stand-ins for the agent's service and Supabase Auth, so they
-// never touch the servers started by `npm run dev`, Supabase or `.env`.
+// database, with stand-ins for the agent's service, Supabase Auth and the judge,
+// so they never touch the servers started by `npm run dev`, Supabase, OpenRouter
+// or `.env`.
 export default defineConfig({
   testDir: "e2e",
   outputDir: "e2e/test-results",
@@ -16,6 +22,11 @@ export default defineConfig({
       env: { PORT: new URL(AUTH_STAND_IN).port, HANDLER_PASSWORD },
     },
     {
+      command: "node e2e/judge_stand_in.ts",
+      url: `${JUDGE_STAND_IN}/health`,
+      env: { PORT: new URL(JUDGE_STAND_IN).port },
+    },
+    {
       command:
         "uv run -m backend.seed && uv run -m uvicorn backend.main:app --port 8001",
       url: "http://127.0.0.1:8001/api/health",
@@ -25,6 +36,10 @@ export default defineConfig({
         DATABASE_URL: "",
         UNDERCOVER_AGENT: AGENT_STAND_IN,
         VITE_SUPABASE_URL: AUTH_STAND_IN,
+        OPENROUTER_URL: JUDGE_STAND_IN,
+        OPENROUTER_API_KEY: "e2e-key",
+        // The judge is only called when no free model is set.
+        MODEL_NAME: "",
       },
     },
     {

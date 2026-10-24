@@ -1,5 +1,5 @@
 import type { Measures } from "./api";
-import { duration, modelCost, money, percent } from "./format";
+import { duration, grade, modelCost, money, percent } from "./format";
 
 // A run that's running or stopped has no run time.
 const NOT_FINISHED = "Not finished";
@@ -11,6 +11,7 @@ export const MEASURES: {
 }[] = [
   { label: "Decision accuracy", show: (m) => percent(m.decision_accuracy) },
   { label: "Accuracy", show: (m) => percent(m.accuracy) },
+  { label: "Grade", show: (m) => grade(m.grade) },
   { label: "Cost of mistakes", show: (m) => money(m.cost_of_mistakes) },
   { label: "Straight-through", show: (m) => percent(m.straight_through) },
   {

@@ -1,7 +1,14 @@
 import pytest
 
-from backend.models import DecisionKind, ScoredClaim, Status
-from backend.scoring import Answer, answer_of, is_right, measures, mistake_cost
+from backend.models import DecisionKind, Grade, ScoredClaim, Status
+from backend.scoring import (
+    Answer,
+    answer_of,
+    average,
+    is_right,
+    measures,
+    mistake_cost,
+)
 
 APPROVE, DECLINE, REFER = DecisionKind.APPROVE, DecisionKind.DECLINE, DecisionKind.REFER
 
@@ -59,6 +66,8 @@ def scored(decision, payout, handler_decision, handler_payout, seconds):
         model_cost=0.01,
         copy_of="CLM-1104",
         reason=None,
+        section=None,
+        grade=None,
         handler_decision=handler_decision,
         handler_payout=handler_payout,
         right=is_right(answer, expected),
@@ -73,7 +82,7 @@ def test_the_measures_of_an_evaluation():
         scored(DECLINE, 0, REFER, 0, 40),
         scored(None, None, APPROVE, 100, 0),
     ]
-    result = measures(claims, model_cost=0.08, run_seconds=95)
+    result = measures(claims, model_cost=0.08, run_seconds=95, judge_cost=0.0004)
     assert result.decision_accuracy == 0.5
     assert result.accuracy == 0.25
     assert result.cost_of_mistakes == 80 + 1500 + 50
@@ -81,3 +90,39 @@ def test_the_measures_of_an_evaluation():
     assert result.model_cost_per_claim == pytest.approx(0.02)
     assert result.seconds_per_claim == 30
     assert result.run_seconds == 95
+
+
+def graded(score):
+    grade = Grade(score=score, letter="B", same_grounds=0.9, same_section=0.8)
+    return scored(APPROVE, 420, APPROVE, 420, 30).model_copy(update={"grade": grade})
+
+
+def test_an_ungraded_claim_is_left_out_of_the_average_grade():
+    claims = [
+        graded(3.0),
+        graded(1.5),
+        scored(APPROVE, 420, APPROVE, 420, 30),
+    ]
+    result = measures(claims, model_cost=0, run_seconds=None, judge_cost=0.0002)
+    assert result.grade == 2.25
+    assert result.judge_cost == 0.0002
+
+
+def test_an_evaluation_with_no_graded_claim_has_no_grade():
+    claims = [scored(APPROVE, 420, APPROVE, 420, 30)]
+    assert measures(claims, model_cost=0, run_seconds=None, judge_cost=0).grade is None
+
+
+def test_a_version_with_a_run_not_graded_has_no_grade():
+    graded_run = measures([graded(2.0)], model_cost=0, run_seconds=1, judge_cost=0)
+    ungraded = measures(
+        [scored(APPROVE, 420, APPROVE, 420, 30)],
+        model_cost=0,
+        run_seconds=1,
+        judge_cost=0,
+    )
+    both, one = average([graded_run, graded_run]), average([graded_run, ungraded])
+    assert both is not None
+    assert one is not None
+    assert (both.grade, one.grade) == (2.0, None)
+    assert average([]) is None

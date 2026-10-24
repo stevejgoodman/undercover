@@ -33,10 +33,15 @@ def current_settings(db: Connection) -> Settings:
     return Settings(**db.execute(query).mappings().one())
 
 
+def free_model() -> str | None:
+    """Return the model in MODEL_NAME, set for students on free models, if any."""
+    return os.getenv("MODEL_NAME") or None
+
+
 def models_allowed(db: Connection) -> list[AllowedModel]:
     """Return the models the claim agent may use, with their reasoning efforts and
     prices, or MODEL_NAME alone when it is set."""
-    if name := os.getenv("MODEL_NAME"):
+    if name := free_model():
         return [
             AllowedModel(
                 model=name,

@@ -50,10 +50,21 @@ def mistake_cost(answer: Answer, expected: Answer) -> float:
     return NEEDLESS_REFERRAL
 
 
+def average_grade(claims: list[ScoredClaim]) -> float | None:
+    """The judge's average score on the claims it graded, or none if it graded
+    none."""
+    graded = [claim.grade.score for claim in claims if claim.grade is not None]
+    return sum(graded) / len(graded) if graded else None
+
+
 def measures(
-    claims: list[ScoredClaim], model_cost: float, run_seconds: float | None
+    claims: list[ScoredClaim],
+    model_cost: float,
+    run_seconds: float | None,
+    judge_cost: float,
 ) -> Measures:
-    """Score an evaluation from its claims, its model cost and its time."""
+    """Score an evaluation from its claims, its model cost, its time and what the
+    judge cost."""
     count = len(claims)
     agreed = [
         answer_of(c.decision, c.payout).decision == c.handler_decision for c in claims
@@ -69,18 +80,24 @@ def measures(
         model_cost_per_claim=model_cost / count,
         seconds_per_claim=sum(c.seconds for c in claims) / count,
         run_seconds=run_seconds,
+        grade=average_grade(claims),
+        judge_cost=judge_cost,
     )
 
 
 def average(runs: list[Measures]) -> Scores | None:
     """Average the measures of several evaluations of one set, or nothing with no
-    evaluations."""
+    evaluations. A run with no grade leaves the average with none, so a version is
+    never kept on the grades of some of its runs."""
     if not runs:
         return None
     count = len(runs)
     fields = [name for name in Scores.model_fields if name not in ("runs", "grade")]
+    grades = [run.grade for run in runs]
     return Scores(
         runs=count,
-        grade=None,
+        grade=None
+        if None in grades
+        else sum(g for g in grades if g is not None) / count,
         **{name: sum(getattr(run, name) for run in runs) / count for name in fields},
     )

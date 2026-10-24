@@ -11,6 +11,7 @@ from backend import scoring
 from backend.database import (
     claim_view,
     claims,
+    grades,
     handler_decisions,
     model_calls,
     run_claims,
@@ -20,6 +21,7 @@ from backend.database import (
 from backend.lookups import run_row
 from backend.models import (
     EvaluationSet,
+    Grade,
     Run,
     RunClaim,
     RunKind,
@@ -36,7 +38,8 @@ Expected = dict[tuple[str, str], scoring.Answer]
 
 def claims_of(db: Connection, run_id: str) -> list[RowMapping]:
     """Return the rows of a run's claims, in order, with each one's model cost, its
-    seconds of work and the start of its first spell in this run."""
+    seconds of work, the start of its first spell in this run, and the judge's
+    grade, if any."""
     cost = (
         select(model_calls.c.claim_id, func.sum(model_calls.c.cost).label("cost"))
         .where(model_calls.c.run_id == run_id)
@@ -58,10 +61,15 @@ def claims_of(db: Connection, run_id: str) -> list[RowMapping]:
             func.coalesce(cost.c.cost, 0).label("model_cost"),
             spells.c.first_started_at,
             func.coalesce(spells.c.seconds, 0).label("seconds"),
+            grades.c.score,
+            grades.c.letter,
+            grades.c.same_grounds,
+            grades.c.same_section,
         )
         .join(run_claims, run_claims.c.claim_id == claims.c.claim_id)
         .outerjoin(cost, cost.c.claim_id == claims.c.claim_id)
         .outerjoin(spells, spells.c.claim_id == claims.c.claim_id)
+        .outerjoin(grades, grades.c.claim_id == claims.c.claim_id)
         .where(run_claims.c.run_id == run_id)
         .order_by(run_claims.c.position)
     )
@@ -107,6 +115,24 @@ def find_run(db: Connection, run_id: str) -> Run:
     )
 
 
+def grade_of(row: RowMapping) -> Grade:
+    """The judge's grade on a copy, from its row."""
+    return Grade(
+        score=row["score"],
+        letter=row["letter"],
+        same_grounds=row["same_grounds"],
+        same_section=row["same_section"],
+    )
+
+
+def judge_cost(db: Connection, run_id: str) -> float:
+    """Return what the judge's calls on an evaluation cost in all."""
+    query = select(func.coalesce(func.sum(grades.c.cost), 0)).where(
+        grades.c.run_id == run_id
+    )
+    return db.execute(query).scalar_one()
+
+
 def scored_claim(row: RowMapping, expected: scoring.Answer) -> ScoredClaim:
     """Put an evaluation's copy beside the handler's decision on its original."""
     answer = scoring.answer_of(row["decision"], row["payout"])
@@ -114,6 +140,8 @@ def scored_claim(row: RowMapping, expected: scoring.Answer) -> ScoredClaim:
         **to_run_claim(row).model_dump(),
         copy_of=row["copy_of"],
         reason=row["reason"],
+        section=row["section"],
+        grade=None if row["letter"] is None else grade_of(row),
         handler_decision=expected.decision,
         handler_payout=expected.payout,
         right=scoring.is_right(answer, expected),
@@ -138,12 +166,11 @@ def score(db: Connection, row: RowMapping, expected: Expected) -> ScoredEvaluati
         for claim in claims_of(db, row["run_id"])
     ]
     run = cost_and_time(db, row)
+    measures = scoring.measures(
+        scored, run["model_cost"], run["seconds"], judge_cost(db, row["run_id"])
+    )
     return ScoredEvaluation(
-        **row,
-        **run,
-        size=len(scored),
-        measures=scoring.measures(scored, run["model_cost"], run["seconds"]),
-        claims=scored,
+        **row, **run, size=len(scored), measures=measures, claims=scored
     )
 
 

@@ -178,12 +178,27 @@ export interface Measures {
   model_cost_per_claim: number;
   seconds_per_claim: number;
   run_seconds: number | null;
+  // The judge's average grade from 0 to 3, or null when it graded nothing.
+  grade: number | null;
+  judge_cost: number;
+}
+
+export type Letter = "F" | "C" | "B" | "A";
+
+// The judge's grade on the agent's reason, with its two checks as probabilities.
+export interface Grade {
+  score: number;
+  letter: Letter;
+  same_grounds: number;
+  same_section: number;
 }
 
 // An evaluation's copy of a claim beside the handler's decision on it.
 export interface ScoredClaim extends RunClaim {
   copy_of: string;
   reason: string | null;
+  section: string | null;
+  grade: Grade | null;
   handler_decision: DecisionKind;
   handler_payout: number;
   right: boolean;

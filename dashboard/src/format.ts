@@ -48,9 +48,16 @@ export function percent(share: number): string {
   return `${String(Math.round(share * 100))}%`;
 }
 
-// The judge's average grade, from 0 for F to 3 for A.
+export const NOT_GRADED = "Not graded";
+
+// The judge's grade, from 0 for F to 3 for A.
 export function grade(score: number | null): string {
-  return score === null ? "Not graded" : score.toFixed(2);
+  return score === null ? NOT_GRADED : score.toFixed(2);
+}
+
+// One of the judge's checks, a probability, as yes when it's more likely than not.
+export function check(probability: number): string {
+  return probability > 0.5 ? "Yes" : "No";
 }
 
 export function modelCost(amount: number): string {

@@ -8,18 +8,19 @@ from typing import Any
 from fastapi import APIRouter, HTTPException
 from sqlalchemy import Connection, RowMapping, delete, insert, select, update
 
-from backend import agent_service
+from backend import agent_service, judge
 from backend.auth import SignedIn
 from backend.database import (
     LABELED_SETS,
     claims,
+    grades,
     handler_decisions,
     now,
     run_claims,
     runs,
     waiting_claim,
 )
-from backend.dependencies import Database
+from backend.dependencies import Database, DatabaseEngine
 from backend.lookups import CLAIM_NOT_FOUND, RUN_NOT_FOUND, find_version, run_row
 from backend.models import (
     Accepted,
@@ -157,6 +158,41 @@ def evaluation_row(db: Connection, run_id: str) -> RowMapping:
     return row
 
 
+def copies_to_grade(db: Connection, run: RowMapping) -> list[judge.ToGrade]:
+    """Put each of an evaluation's copies beside the handler's answer on its
+    original, for the judge."""
+    query = select(handler_decisions).where(
+        handler_decisions.c.evaluation_set == run["evaluation_set"]
+    )
+    handlers = {
+        d["claim_id"]: judge.HandlersAnswer(d["decision"], d["reason"], d["reference"])
+        for d in db.execute(query).mappings()
+    }
+    return [
+        judge.ToGrade(
+            copy["claim_id"],
+            handlers[copy["copy_of"]],
+            None
+            if copy["decision"] is None
+            else judge.AgentsAnswer(copy["decision"], copy["reason"], copy["section"]),
+        )
+        for copy in claims_of(db, run["run_id"])
+    ]
+
+
+def record_grades(
+    db: Connection, run_id: str, graded: dict[str, judge.Graded | None]
+) -> None:
+    """Record each grade the judge gave, leaving out the claims it couldn't grade."""
+    rows = [
+        {"claim_id": claim_id, "run_id": run_id, **grade._asdict()}
+        for claim_id, grade in graded.items()
+        if grade is not None
+    ]
+    if rows:
+        db.execute(insert(grades), rows)
+
+
 @router.post("/api/runs/dispatches", operation_id="create_dispatch")
 def create_dispatch(request: CreateDispatchRequest, db: Database) -> Run:
     """Record a new dispatch, running, on a version, with its claims to come."""
@@ -189,18 +225,28 @@ def record_run_claims(run_id: str, request: RunClaimsRequest, db: Database) -> R
 
 
 @router.post("/api/runs/{run_id}/finish", operation_id="finish_run")
-def finish_run(run_id: str, db: Database) -> Run:
-    """Finish a running run; a dispatch gets its summary from its claims as they are."""
-    row = running_run(db, run_id)
-    summary = None
-    if row["kind"] == RunKind.DISPATCH:
-        summary = summarize(claims_of(db, run_id)).model_dump()
-    db.execute(
-        update(runs)
-        .where(runs.c.run_id == run_id)
-        .values(status=RunStatus.FINISHED, finished_at=now(), summary=summary)
-    )
-    return find_run(db, run_id)
+def finish_run(run_id: str, databases: DatabaseEngine) -> Run:
+    """Finish a running run: a dispatch gets its summary, an evaluation its grades."""
+    with databases.begin() as db:
+        row = running_run(db, run_id)
+        evaluation = row["kind"] == RunKind.EVALUATION
+        to_grade = copies_to_grade(db, row) if evaluation else []
+    # The judge can take seconds, so it's asked with no connection held.
+    graded = judge.grade(to_grade)
+    with databases.begin() as db:
+        running_run(db, run_id)
+        summary = None if evaluation else summarize(claims_of(db, run_id))
+        record_grades(db, run_id, graded)
+        db.execute(
+            update(runs)
+            .where(runs.c.run_id == run_id, runs.c.status == RunStatus.RUNNING)
+            .values(
+                status=RunStatus.FINISHED,
+                finished_at=now(),
+                summary=summary and summary.model_dump(),
+            )
+        )
+        return find_run(db, run_id)
 
 
 @router.post("/api/runs/stop", operation_id="stop_runs")

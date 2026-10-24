@@ -91,6 +91,8 @@ The lab's judge, moved into the backend because the backend holds the handlers' 
 - `grades`: one row per graded copy, with its score, letter, the two checks and the call's cost from the response's `usage.cost`. The judge's cost is recorded with the evaluation, apart from the claim agent's cost.
 - Seeding stores each label's `reason` and `reference` in `handler_decisions`, from `data/evals/`.
 - With `MODEL_NAME` set, the judge isn't called, and every claim shows as not graded.
+- The judge is asked with no database connection held: `finish_run` reads the copies in one short transaction, grades them, then records the grades and finishes the run in a second, which refuses a run stopped meanwhile. An answer that isn't a grade leaves its claim ungraded, and the whole batch stops waiting after 15 seconds.
+- An evaluation whose judge calls all fail still grades its undecided copies F, so its grade is 0 rather than none, and the rule reads it as missing the objectives. A version's grade averages its runs only when every one of them has a grade; otherwise it has none and is rolled back.
 - The tests replace the judge's client with one on httpx's `MockTransport`, so they check the request the SDK sends and never reach OpenRouter. The end-to-end tests point `OPENROUTER_URL` at a stand-in.
 
 `Measures` gains `grade` (the average score, or none when no claim was graded) and `judge_cost`. A scored claim gains its score, letter and two checks, or none when it wasn't graded.
@@ -321,18 +323,18 @@ Sign-in first, so every later page is built signed in.
 
 ## Phase 3: The judge
 
-- [ ] Seeding stores each label's `reason` and `reference` in `handler_decisions`
-- [ ] pytest, with the stub judge: finishing an evaluation sends one request per decided copy with the handler's decision, reason and reference beside the agent's decision, reason and section, the lab's three questions, the `server_url` from `OPENROUTER_URL` and a 10 second timeout, and records each grade
-- [ ] pytest: with probabilities `{"0": 0.1, "1": 0.2, "2": 0.45, "3": 0.25}` and a score of 1.85, the letter is B and the score 1.85; with the most probable level 1 and a score of 1.6, the letter is C, not the rounded B
-- [ ] pytest: an undecided copy is graded F with a score of 0 and no call; a call that fails or times out leaves its claim not graded and out of the average; an evaluation with no graded claim has no grade
-- [ ] pytest: the judge's cost is recorded with the evaluation and is apart from its model cost
-- [ ] pytest: grading 25 claims, with the stub judge taking a second each, finishes in under 5 seconds, so the calls run in parallel
-- [ ] pytest: with `MODEL_NAME` set, no call is made and every claim is not graded
-- [ ] pytest: `get_claim` on a copy, and every response the claim agent's `api.py` reads, still hold nothing from `handler_decisions`
-- [ ] `grep -rn "jev-1.13\|decisions.create\|OPENROUTER_URL" backend --include=*.py` finds them only in `backend/judge.py`
-- [ ] vitest: the Scoreboard shows the average grade beside the other measures, or "Not graded"; an evaluation's page shows each claim's letter and score and the two checks as Yes or No, or "Not graded", and the judge's cost
-- [ ] e2e: an evaluation played out through the API, with the judge stand-in, shows its grades on the Scoreboard and its page
-- [ ] `npm run check` passes
+- [x] Seeding stores each label's `reason` and `reference` in `handler_decisions`
+- [x] pytest, with the stub judge: finishing an evaluation sends one request per decided copy with the handler's decision, reason and reference beside the agent's decision, reason and section, the lab's three questions, the `server_url` from `OPENROUTER_URL` and a 10 second timeout, and records each grade
+- [x] pytest: with probabilities `{"0": 0.1, "1": 0.2, "2": 0.45, "3": 0.25}` and a score of 1.85, the letter is B and the score 1.85; with the most probable level 1 and a score of 1.6, the letter is C, not the rounded B
+- [x] pytest: an undecided copy is graded F with a score of 0 and no call; a call that fails or times out leaves its claim not graded and out of the average; an evaluation with no graded claim has no grade
+- [x] pytest: the judge's cost is recorded with the evaluation and is apart from its model cost
+- [x] pytest: grading 25 claims, with the stub judge taking a second each, finishes in under 5 seconds, so the calls run in parallel
+- [x] pytest: with `MODEL_NAME` set, no call is made and every claim is not graded
+- [x] pytest: `get_claim` on a copy, and every response the claim agent's `api.py` reads, still hold nothing from `handler_decisions`
+- [x] `grep -rn "jev-1.13\|decisions.create\|OPENROUTER_URL" backend --include=*.py` finds them only in `backend/judge.py`
+- [x] vitest: the Scoreboard shows the average grade beside the other measures, or "Not graded"; an evaluation's page shows each claim's letter and score and the two checks as Yes or No, or "Not graded", and the judge's cost
+- [x] e2e: an evaluation played out through the API, with the judge stand-in, shows its grades on the Scoreboard and its page
+- [x] `npm run check` passes
 
 ## Phase 4: The improver's records in the backend
 

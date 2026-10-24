@@ -5,10 +5,12 @@ import json
 import httpx
 import pytest
 from fastapi.testclient import TestClient
+from openrouter import OpenRouter
 
-from backend import agent_service, auth
+from backend import agent_service, auth, judge
 from backend.database import engine, seed
 from backend.main import app
+from backend.tests.judging import StandInJudge
 from backend.tests.signing import DANA, StandInKeys, signed_in_as
 
 
@@ -50,6 +52,16 @@ def agent_calls(agent_answers):
 
     agent_answers(accept)
     return calls
+
+
+@pytest.fixture(autouse=True)
+def jev(monkeypatch):
+    """Stand in for the judge on OpenRouter, whatever the shell's MODEL_NAME."""
+    stand_in = StandInJudge()
+    http = httpx.Client(transport=httpx.MockTransport(stand_in.handle))
+    monkeypatch.setattr(judge, "jev", OpenRouter(api_key="test-key", client=http))
+    monkeypatch.delenv("MODEL_NAME", raising=False)
+    return stand_in
 
 
 @pytest.fixture(autouse=True)

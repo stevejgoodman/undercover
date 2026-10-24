@@ -50,6 +50,8 @@ const finished: Evaluation = {
     model_cost_per_claim: 0.0125,
     seconds_per_claim: 40,
     run_seconds: 161,
+    grade: 1.86,
+    judge_cost: 0.0005,
   },
 };
 
@@ -91,6 +93,7 @@ it("lists the evaluations in the backend's order, with their measures", async ()
   for (const shown of ["80%", "64%", "$1,600.00", "88%", "$0.0125", "40 s"])
     expect(older.getByText(shown)).toBeDefined();
   expect(older.getByText("2 min 41 s")).toBeDefined();
+  expect(older.getByText("1.86")).toBeDefined();
   expect(newest.queryByText("2 min 41 s")).toBeNull();
   expect(older.getByText(/Oct 3, .*, 25 claim agents at once/)).toBeDefined();
   const link = older.getByRole("link", { name: "Evaluation #7" });
@@ -147,6 +150,8 @@ const copy: ScoredClaim = {
   payout: 250,
   copy_of: "CLM-1104",
   reason: "The delay was covered.",
+  section: "Section 3, Trip Delay",
+  grade: { score: 2.4, letter: "B", same_grounds: 0.9, same_section: 0.3 },
   handler_decision: "approve",
   handler_payout: 250,
   right: true,
@@ -180,6 +185,8 @@ const scored: ScoredEvaluation = {
       decision: null,
       payout: null,
       reason: null,
+      section: null,
+      grade: null,
       handler_decision: "decline",
       handler_payout: 0,
       right: false,
@@ -199,6 +206,8 @@ it("shows an evaluation's claims beside the handlers' decisions", async () => {
     measures.getByText(label).nextSibling?.textContent;
   expect(shown("Decision accuracy")).toBe("80%");
   expect(shown("Run time")).toBe("2 min 41 s");
+  expect(shown("Grade")).toBe("1.86");
+  expect(shown("Judge's cost")).toBe("$0.0005");
   const rows = (await panel("Claims")).getAllByRole("row").slice(1);
   const [right, held, undecided] = rows.map((row) => within(row));
   expect(right.getByText("Right").className).toBe("chip score-right");
@@ -210,6 +219,11 @@ it("shows an evaluation's claims beside the handlers' decisions", async () => {
   expect(undecided.getByText("No decision")).toBeDefined();
   expect(undecided.getByText("Declined")).toBeDefined();
   expect(undecided.getByText("Miss")).toBeDefined();
+  expect(right.getByText("B").className).toBe("chip letter letter-B");
+  expect(right.getByText("2.40")).toBeDefined();
+  expect(right.getByText("Yes")).toBeDefined();
+  expect(right.getByText("No")).toBeDefined();
+  expect(undecided.getByText("Not graded")).toBeDefined();
   const link = right.getByRole("link", { name: "CLM-1104-E9" });
   expect(link.getAttribute("href")).toBe("/claims/CLM-1104-E9");
 });

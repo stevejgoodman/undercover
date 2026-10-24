@@ -126,6 +126,8 @@ def test_an_evaluation_not_yet_worked_counts_every_copy_as_a_referral(client):
         "model_cost_per_claim": 0.0,
         "seconds_per_claim": 0.0,
         "run_seconds": None,
+        "grade": None,
+        "judge_cost": 0.0,
     }
     assert "claims" not in listed
 

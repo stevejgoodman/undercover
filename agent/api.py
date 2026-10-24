@@ -1,20 +1,13 @@
-"""The UnderCover backend's API: one function for each operation the agent uses."""
+"""The UnderCover backend's API as the claim agent and the dispatcher use it: one
+function for each operation. It has nothing that reads the scores or the
+handlers' decisions; the improver has a client of its own."""
 
-import os
 from enum import StrEnum
 from typing import Any, Literal, TypedDict
 
-import httpx
 from pydantic import BaseModel, Field
 
-BACKEND_URL = os.getenv("UNDERCOVER_API", "http://127.0.0.1:8000")
-
-# Retries a refused connection for about 7 seconds, while the backend starts.
-backend = httpx.Client(
-    base_url=f"{BACKEND_URL}/api",
-    timeout=30,
-    transport=httpx.HTTPTransport(retries=5),
-)
+from agent.client import call
 
 DecisionKind = Literal["approve", "decline", "refer"]
 APPROVE: DecisionKind = "approve"
@@ -82,52 +75,36 @@ class Line(BaseModel):
     )
 
 
-class Refused(Exception):
-    """The backend refused a request, with its status code and reason."""
-
-    def __init__(self, status_code: int, detail: str) -> None:
-        super().__init__(f"{status_code}: {detail}")
-        self.status_code, self.detail = status_code, detail
-
-
-def _call(method: str, path: str, **request: Any) -> Any:
-    """Send one request to the backend and return its JSON, or raise Refused."""
-    response = backend.request(method, path, **request)
-    if response.is_error:
-        raise Refused(response.status_code, response.json()["detail"])
-    return response.json()
-
-
 def list_claims() -> list[dict[str, Any]]:
-    return _call("GET", "/claims")
+    return call("GET", "/claims")
 
 
 def get_claim(claim_id: str) -> dict[str, Any]:
-    return _call("GET", f"/claims/{claim_id}")
+    return call("GET", f"/claims/{claim_id}")
 
 
 def get_policy(policy_id: str) -> dict[str, Any]:
-    return _call("GET", f"/policies/{policy_id}")
+    return call("GET", f"/policies/{policy_id}")
 
 
 def get_claim_history(customer_id: str) -> list[dict[str, Any]]:
-    return _call("GET", f"/customers/{customer_id}/claims")
+    return call("GET", f"/customers/{customer_id}/claims")
 
 
 def get_current_version() -> dict[str, Any]:
-    return _call("GET", "/configuration/current")
+    return call("GET", "/configuration/current")
 
 
 def get_agent_version(version: int) -> dict[str, Any]:
-    return _call("GET", f"/configuration/versions/{version}/agent")
+    return call("GET", f"/configuration/versions/{version}/agent")
 
 
 def search_documents(query: str) -> list[dict[str, Any]]:
-    return _call("GET", "/documents/search", params={"query": query})
+    return call("GET", "/documents/search", params={"query": query})
 
 
 def read_section(document: DocumentName, number: int) -> dict[str, Any]:
-    return _call("GET", f"/documents/{document}/sections/{number}")
+    return call("GET", f"/documents/{document}/sections/{number}")
 
 
 def calculate_payout(
@@ -138,16 +115,16 @@ def calculate_payout(
         "lines": [line.model_dump() for line in lines],
         "paid_by_others": paid_by_others,
     }
-    return _call("POST", f"/claims/{claim_id}/payout", json=body)
+    return call("POST", f"/claims/{claim_id}/payout", json=body)
 
 
 def start_claim(claim_id: str, thread_id: str) -> dict[str, Any]:
-    return _call("POST", f"/claims/{claim_id}/start", json={"thread_id": thread_id})
+    return call("POST", f"/claims/{claim_id}/start", json={"thread_id": thread_id})
 
 
 def record_step(claim_id: str, kind: StepKind, content: str) -> dict[str, Any]:
     body = {"kind": kind, "content": content}
-    return _call("POST", f"/claims/{claim_id}/steps", json=body)
+    return call("POST", f"/claims/{claim_id}/steps", json=body)
 
 
 def record_decision(
@@ -159,15 +136,15 @@ def record_decision(
         "section": section,
         "reason": reason,
     }
-    return _call("POST", f"/claims/{claim_id}/decision", json=body)
+    return call("POST", f"/claims/{claim_id}/decision", json=body)
 
 
 def pay_claim(claim_id: str, amount: float) -> dict[str, Any]:
-    return _call("POST", f"/claims/{claim_id}/payment", json={"amount": amount})
+    return call("POST", f"/claims/{claim_id}/payment", json={"amount": amount})
 
 
 def fail_claim(claim_id: str, reason: str) -> dict[str, Any]:
-    return _call("POST", f"/claims/{claim_id}/failure", json={"reason": reason})
+    return call("POST", f"/claims/{claim_id}/failure", json={"reason": reason})
 
 
 def record_model_call(
@@ -183,14 +160,14 @@ def record_model_call(
         "output_tokens": output_tokens,
         "cost": cost,
     }
-    return _call("POST", f"/claims/{claim_id}/model-calls", json=body)
+    return call("POST", f"/claims/{claim_id}/model-calls", json=body)
 
 
 def record_work_time(
     claim_id: str, run_id: str | None, seconds: float
 ) -> dict[str, Any]:
     body = {"run_id": run_id, "seconds": seconds}
-    return _call("POST", f"/claims/{claim_id}/work-times", json=body)
+    return call("POST", f"/claims/{claim_id}/work-times", json=body)
 
 
 class RunSetup(TypedDict):
@@ -204,23 +181,23 @@ class RunSetup(TypedDict):
 
 
 def create_dispatch(setup: RunSetup) -> dict[str, Any]:
-    return _call("POST", "/runs/dispatches", json=setup)
+    return call("POST", "/runs/dispatches", json=setup)
 
 
 def create_evaluation(
     evaluation_set: EvaluationSet, tiny: bool, setup: RunSetup
 ) -> dict[str, Any]:
     body = {"evaluation_set": evaluation_set, "tiny": tiny, **setup}
-    return _call("POST", "/runs/evaluations", json=body)
+    return call("POST", "/runs/evaluations", json=body)
 
 
 def record_run_claims(run_id: str, claim_ids: list[str]) -> dict[str, Any]:
-    return _call("PUT", f"/runs/{run_id}/claims", json={"claim_ids": claim_ids})
+    return call("PUT", f"/runs/{run_id}/claims", json={"claim_ids": claim_ids})
 
 
 def finish_run(run_id: str) -> dict[str, Any]:
-    return _call("POST", f"/runs/{run_id}/finish")
+    return call("POST", f"/runs/{run_id}/finish")
 
 
 def stop_runs() -> list[str]:
-    return _call("POST", "/runs/stop")
+    return call("POST", "/runs/stop")

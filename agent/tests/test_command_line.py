@@ -6,7 +6,8 @@ from typing import cast
 import pytest
 
 from agent import __main__ as cli
-from agent import api, harness
+from agent import harness, models
+from agent.client import Refused
 from agent.tests.stubs import stub
 
 # Building a version's claim agents opens no connection until a graph is built.
@@ -115,7 +116,7 @@ def test_command_line_works_one_claim(monkeypatch, capsys):
     assert worked == [("CLM-1001", None, "graph")]
 
     def refuse(claim_id, run_id, graph):
-        raise api.Refused(409, f"Claim {claim_id} is not waiting")
+        raise Refused(409, f"Claim {claim_id} is not waiting")
 
     monkeypatch.setattr(cli, "work_claim", refuse)
     with pytest.raises(SystemExit) as refused:
@@ -136,13 +137,13 @@ def test_a_versions_model(monkeypatch):
     monkeypatch.setenv("OPENROUTER_API_KEY", "test-key")
     monkeypatch.delenv("MODEL_NAME", raising=False)
     version = {"model": "google/gemini-3.5-flash-lite", "reasoning_effort": "minimal"}
-    llm = harness.model(version)
+    llm = models.model(version)
     assert (llm.model_name, llm.reasoning_effort) == tuple(version.values())
     assert llm.request_timeout == 120
     assert llm.max_retries == 5
     monkeypatch.setenv("MODEL_NAME", "openrouter/free")
-    assert harness.model(version).model_name == "openrouter/free"
-    assert harness.model(version).reasoning_effort is None
+    assert models.model(version).model_name == "openrouter/free"
+    assert models.model(version).reasoning_effort is None
 
 
 def test_a_versions_claim_agents(client, monkeypatch):

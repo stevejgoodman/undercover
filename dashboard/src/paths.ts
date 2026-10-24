@@ -4,6 +4,7 @@ import { generatePath } from "react-router";
 export const QUEUE = "/";
 export const CONFIGURATION = "/configuration";
 export const SETTINGS = "/settings";
+export const IMPROVEMENT = "/improvement";
 export const SCOREBOARD = "/scoreboard";
 export const CLAIM_PAGE = "/claims/:claimId";
 export const EVALUATION_PAGE = `${SCOREBOARD}/:runId`;

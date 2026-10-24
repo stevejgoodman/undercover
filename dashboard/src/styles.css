@@ -846,3 +846,211 @@ p {
 .letter-F {
   background: var(--coral);
 }
+
+.stages {
+  list-style: none;
+  padding: 0;
+  margin: 16px 0 4px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 8px;
+}
+
+.stage {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 10px;
+  border-radius: 12px;
+  background: var(--inset);
+  font-size: 0.87rem;
+}
+
+.stage-mark {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: var(--page);
+}
+
+.stage-done .stage-mark {
+  background: var(--sea-green);
+  color: var(--midnight);
+}
+
+.stage-current {
+  outline: 2px solid var(--cerulean);
+  font-weight: 600;
+}
+
+.stage-current .stage-mark {
+  background: var(--cerulean);
+  color: #ffffff;
+}
+
+.stage-to-come {
+  color: var(--muted);
+}
+
+.stage-stopped .stage-mark {
+  background: var(--raspberry);
+  color: #ffffff;
+}
+
+.round-open {
+  background: var(--marigold);
+}
+
+.round-finished {
+  background: var(--sea-green);
+}
+
+.round-stopped {
+  background: var(--coral);
+}
+
+.before-after {
+  max-width: 520px;
+  margin-top: 12px;
+}
+
+.review {
+  margin-top: 16px;
+  display: grid;
+  gap: 10px;
+}
+
+.stacked-label {
+  display: grid;
+  gap: 4px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.stacked-label textarea {
+  font: inherit;
+  color: var(--ink);
+  background: var(--inset);
+  border: none;
+  border-radius: 10px;
+  padding: 9px 12px;
+  resize: vertical;
+}
+
+.review-actions,
+.start-round {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.charts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+.chart {
+  margin: 0;
+}
+
+.chart figcaption {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.chart svg {
+  width: 100%;
+  height: auto;
+}
+
+.chart-grid {
+  stroke: var(--inset);
+  stroke-width: 1;
+}
+
+.chart-axis,
+.chart-label {
+  fill: var(--muted);
+  font-family: var(--mono);
+  font-size: 11px;
+}
+
+.chart-axis {
+  text-anchor: end;
+}
+
+.chart-label {
+  text-anchor: middle;
+}
+
+.chart-floor {
+  stroke: var(--raspberry);
+  stroke-dasharray: 4 4;
+  stroke-width: 1.5;
+}
+
+.chart-line {
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 1.5;
+}
+
+.chart-dot {
+  stroke: var(--panel);
+  stroke-width: 2;
+}
+
+.chart-start,
+.key-start {
+  fill: var(--cerulean);
+  background: var(--cerulean);
+}
+
+.chart-kept,
+.key-kept {
+  fill: var(--sea-green);
+  background: var(--sea-green);
+}
+
+.chart-rolled_back,
+.key-rolled_back {
+  fill: var(--coral);
+  background: var(--coral);
+}
+
+.key {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  margin: 0 4px 0 12px;
+  vertical-align: middle;
+}
+
+.key-floor {
+  border-radius: 0;
+  height: 0;
+  border-top: 2px dashed var(--raspberry);
+}
+
+.recipe {
+  padding: 10px 0;
+}
+
+.recipe + .recipe {
+  border-top: 1px solid var(--inset);
+}
+
+.recipe-line {
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  align-items: center;
+}

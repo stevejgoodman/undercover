@@ -265,6 +265,86 @@ export interface VersionDetails extends VersionSummary {
   diff: DiffLine[];
 }
 
+export const roundStages = [
+  "first_evaluations",
+  "improving",
+  "waiting_for_change",
+  "evaluations",
+  "verdict",
+  "waiting_for_recipe",
+  "finished",
+  "stopped",
+] as const;
+export type RoundStage = (typeof roundStages)[number];
+export type ProposalKind = "change" | "recipe";
+export type ProposalStatus = "waiting" | "approved" | "rejected";
+export type Review = "approve" | "reject";
+
+export interface Progress {
+  done: number;
+  of: number;
+}
+
+export interface Round {
+  round_id: string;
+  number: number;
+  thread_id: string;
+  stage: RoundStage;
+  progress: Progress | null;
+  recipe_version: number;
+  version_before: number;
+  version_tried: number | null;
+  reason: string | null;
+  scores_before: Scores | null;
+  scores_after: Scores | null;
+  verdict: VersionVerdict | null;
+  why: string | null;
+  started_by: string;
+  started_at: string;
+  stopped_by: string | null;
+  finished_at: string | null;
+  cost: number;
+  spending_limit: number;
+}
+
+export interface Proposal {
+  proposal_id: number;
+  kind: ProposalKind;
+  status: ProposalStatus;
+  reason: string;
+  based_on: number;
+  instructions: string | null;
+  model_before: string | null;
+  model: string | null;
+  reasoning_effort_before: string | null;
+  reasoning_effort: string | null;
+  recipe: string | null;
+  diff: DiffLine[];
+  decided_by: string | null;
+  decided_at: string | null;
+  rejection: string | null;
+  created_at: string;
+}
+
+export interface RoundDetails extends Round {
+  settings: Settings;
+  models_allowed: AllowedModel[];
+  first_evaluations_missing: EvaluationSet[];
+  proposals: Proposal[];
+}
+
+export interface Recipe {
+  version: number;
+  recipe: string;
+  reason: string;
+  proposed_by: string;
+  approved_by: string;
+  approved_at: string;
+  round_id: string | null;
+  created_at: string;
+  diff: DiffLine[];
+}
+
 export interface Objectives {
   accuracy: number;
   grade: number;
@@ -351,6 +431,9 @@ const claimPath = (claimId: string) =>
 const DISPATCHES = "/api/dispatches";
 const VERSIONS = "/api/configuration/versions";
 const SETTINGS = "/api/settings";
+const ROUNDS = "/api/rounds";
+const roundPath = (roundId: string) =>
+  `${ROUNDS}/${encodeURIComponent(roundId)}`;
 const EVALUATIONS = "/api/evaluations";
 
 export const api = {
@@ -371,6 +454,21 @@ export const api = {
   updateSettings: (settings: SettingsRequest) =>
     send<Settings>("PUT", SETTINGS, settings),
   listModels: () => request<AllowedModel[]>("/api/models"),
+  listRounds: () => request<Round[]>(ROUNDS),
+  getRound: (roundId: string) => request<RoundDetails>(roundPath(roundId)),
+  startRound: () => post<Accepted>(ROUNDS),
+  stopRound: (roundId: string) => post<Round>(`${roundPath(roundId)}/stop`),
+  decideProposal: (
+    roundId: string,
+    proposalId: number,
+    decision: Review,
+    reason: string,
+  ) =>
+    post<Accepted>(
+      `${roundPath(roundId)}/proposals/${String(proposalId)}/decision`,
+      { decision, reason },
+    ),
+  listRecipes: () => request<Recipe[]>("/api/recipes"),
   getSignedInHandler: () => request<Handler>("/api/handlers/me"),
   getLatestDispatch: () => request<Run | null>(`${DISPATCHES}/latest`),
   startDispatch: (agents: number) => post<Accepted>(DISPATCHES, { agents }),

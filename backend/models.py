@@ -652,6 +652,12 @@ class ImproverInstructions(BaseModel):
     instructions: str
 
 
+class StopRoundsRequest(BaseModel):
+    stopped_by: str = Field(
+        min_length=1, description="Why, such as a restart or an error in the improver"
+    )
+
+
 class CreateRoundRequest(BaseModel):
     started_by: str = Field(min_length=1, description="The handler who started it")
 

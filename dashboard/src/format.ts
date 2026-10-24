@@ -1,6 +1,7 @@
 import type {
   DecisionKind,
   EvaluationSet,
+  RoundStage,
   RunStatus,
   Status,
   VersionVerdict,
@@ -115,6 +116,17 @@ export const evaluationSetLabels: Record<EvaluationSet, string> = {
 export function evaluationSetName(set: EvaluationSet, size: number): string {
   return `${evaluationSetLabels[set]}, ${String(size)} claims`;
 }
+
+export const roundStageLabels: Record<RoundStage, string> = {
+  first_evaluations: "First evaluations",
+  improving: "The improver is working",
+  waiting_for_change: "A change is waiting for approval",
+  evaluations: "Evaluations",
+  verdict: "The verdict",
+  waiting_for_recipe: "A recipe is waiting for approval",
+  finished: "Finished",
+  stopped: "Stopped",
+};
 
 export const verdictLabels: Record<VersionVerdict, string> = {
   kept: "Kept",

@@ -62,6 +62,7 @@ from backend.models import (
     RunKind,
     RunStatus,
     Scores,
+    StopRoundsRequest,
     VersionVerdict,
 )
 from backend.new_runs import new_evaluation
@@ -84,7 +85,6 @@ EVALUATIONS_NEEDED = {EvaluationSet.EVALUATION: 1, EvaluationSet.HELD_OUT: 2}
 ALL_EVALUATIONS = sum(EVALUATIONS_NEEDED.values())
 FINISHED = {RunStatus.FINISHED}
 STARTED = {RunStatus.FINISHED, RunStatus.RUNNING}
-RESTART = "A restart"
 ROUND_CLOSED = "Round {number} is {stage}"
 NOT_NOW = "Round {number} is at the {stage} stage, so it can't {what}"
 OPEN_ROUND = "Round {number} is open, and only one round is open at a time"
@@ -758,10 +758,10 @@ def finish_round(round_id: str, db: Database) -> Round:
 
 
 @router.post("/api/runs/rounds/stop", operation_id="stop_working_rounds")
-def stop_working_rounds(db: Database) -> list[str]:
+def stop_working_rounds(request: StopRoundsRequest, db: Database) -> list[str]:
     """Stop the rounds the service was working, keeping those waiting for a handler."""
     query = select(rounds).where(rounds.c.stage.in_(WORKING))
     stopped = list(db.execute(query).mappings())
     for row in stopped:
-        stop(db, row, RESTART)
+        stop(db, row, request.stopped_by)
     return [row["round_id"] for row in stopped]

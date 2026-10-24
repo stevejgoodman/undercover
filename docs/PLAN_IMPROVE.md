@@ -31,11 +31,13 @@ The agent gains a sixth part, the improver, and its own client:
 
 - `improver.py` (new): the improver, a LangChain `create_agent` on GPT-6 Luna at medium reasoning effort, with the lab's four tools, `read_results`, `propose_change`, `run_evaluation` and `propose_recipe`, its middleware and its context. `work_round` runs a round's first evaluations and the improver up to its first pause; `carry_on_round` resumes it after a handler's decision. It uses `dispatcher.work_run` for evaluations and `improver_api` for the backend.
 - `improver_api.py` (new): the improver's way to the backend, one function per operation it uses (its view, proposals, evaluations, the verdict, the round's stage and its model calls). The claim agent's `api.py` gains nothing that reaches the scores or the handlers' decisions, so `test_the_agent_cant_read_the_scoreboard` still holds.
-- `harness.py`: `model(version)` and `claim_graphs(version, pool)` build the claim agent from a version: its model and reasoning effort, or `MODEL_NAME` at `default` when that is set, and its instructions from `api.get_agent_version`. `claim_config` tags a claim's trace with its run and, in a round, the round.
+- `client.py` (new): the one httpx client for the backend, with its address, and `Refused`, which both APIs send through. It moves out of `api.py`.
+- `models.py` (new): the chat models the agent's parts run on through OpenRouter, the claim agent's from a version and the improver's, moved out of the harness so the improver doesn't borrow the harness's helper.
+- `harness.py`: `claim_agents_of(version, pool)` builds the claim agents of a version: its model and reasoning effort, or `MODEL_NAME` at `default` when that is set, and its instructions from `api.get_agent_version`. `claim_config` tags a claim's trace with its run and, in a round, the round.
 - `service.py`: the one-run rule now also covers a round's stretches of work, and a refusal names what is running. It gains `start_round` and `decide_proposal`, and on startup stops any round that was working, leaving one waiting for a handler.
 - `api.py`: `get_instructions` gives way to `get_agent_version` and `get_current_version`; `create_dispatch` and `create_evaluation` take the version.
 
-Inside the agent: `service` uses `improver`, `dispatcher`, `harness` and `api`; `improver` uses `dispatcher`, `harness` and `improver_api`; `dispatcher` uses `harness` and `api`. No cycles, and only `improver` uses `improver_api`.
+Inside the agent: `service` uses `improver`, `dispatcher`, `harness` and `api`; `improver` uses `dispatcher`, `harness`, `models` and `improver_api`; `harness` uses `models`, `tools` and `api`; `dispatcher` uses `harness` and `api`; `api` and `improver_api` use `client`. No cycles, and only `improver` uses `improver_api`: the service asks the improver to create a round, record a decision and stop working rounds. A round whose work fails is stopped with the error as its reason.
 
 The dashboard gains `supabase.ts`, its only way to Supabase, with one function for each thing it does (sign in, sign out, follow the session, the access token); `session.ts`, the signed-in handler as a React context, and `components/SessionGate.tsx`, which shows the sign-in page to anyone not signed in; a sign-in page; the Configuration page in place of the Instructions page; the Improvement and Settings pages; and shared components for the page header, status badges, the diff, the confirmation dialog, tables, buttons and the loading, empty and error states. `api.ts` sends the session's access token with each request.
 
@@ -108,8 +110,9 @@ The lab's judge, moved into the backend because the backend holds the handlers' 
 - **Middleware**, in order:
   - `ModelCallLimitMiddleware(thread_limit=IMPROVER_MODEL_CALLS, exit_behavior="error")`, so a round's model calls are capped across its stretches, as the claim agent's are; each round has a thread of its own.
   - A `before_model` hook that stops the improver when the backend says its round is no longer open, so a stopped round makes no new model calls.
-  - An `after_model` hook that records each reply's tokens and `usage.cost` with the round, through `improver_api.record_round_model_call`. The backend refuses it for a stopped round, which ends the improver.
-  - `HumanInTheLoopMiddleware` on `propose_change` and `propose_recipe`, allowing approve and reject. `propose_change` has a `when` that interrupts only a proposal within the models allowed, so one outside them runs at once and the tool answers the improver that it isn't allowed, without reaching a handler. The backend refuses such a version too.
+  - A `wrap_model_call` hook that records each model call's tokens and `usage.cost` with the round, once per call, through `improver_api.record_round_model_call`. The backend refuses it for a stopped round, which ends the improver.
+  - A `wrap_tool_call` hook that answers the improver with the backend's refusal of a tool, such as an evaluation the round can't afford, rather than ending its round.
+  - `HumanInTheLoopMiddleware` on `propose_change` and `propose_recipe`, allowing approve and reject. `propose_change` has a `when` that interrupts only a proposal within the models allowed in a round that hasn't tried a version, so any other runs at once and the tool answers the improver, without reaching a handler. The backend refuses such a version too. A second `run_evaluation` after the verdict is answered with the verdict.
 - **Checkpointer:** a `PostgresSaver` of its own on the service's pool, saving with `durability="sync"`. Each round has a new thread id, so a reseed never meets an old round's checkpoints, and a round waiting for approval survives a restart. The tests use an `InMemorySaver`.
 - **Tools**, with the lab's names, since the recipe names them:
   - `read_results`: the backend's view for the round, as JSON. It holds the current version and its scores on both sets; from the current version's latest round evaluation of the evaluation set, the wrong claims and the five right ones with the lowest grades, each with the claim's summary, the agent's decision, payout, reason and section, the handler's decision, payout, reason and reference, and the judge's score, letter and two checks; the earlier rounds; the objectives, the noise, the tolerance and the rule; what's left of the spending limit; and the models allowed with their reasoning efforts and prices. From the held-out set it holds the scores only.
@@ -359,24 +362,24 @@ The rounds, proposals, recipes, spending and the rule, with the service's operat
 
 ## Phase 5: The improver and the Improvement page
 
-- [ ] `agent/improver.py` builds the improver with `create_agent`, the four tools named as in the lab, `HumanInTheLoopMiddleware` on `propose_change` and `propose_recipe`, `ModelCallLimitMiddleware` and `parallel_tool_calls=False`; a pytest test checks each, and that its model is `openai/gpt-6-luna` at `medium`
-- [ ] `grep -rn "improver_api" agent` finds it only in `agent/improver.py` and the tests, and `agent/api.py` has no function for rounds, versions' scores or results
-- [ ] Stub model test, a whole round: with no evaluations yet, the round runs the first three evaluations (stage `first_evaluations`, 1 to 3 of 3), the improver calls `read_results` and `propose_change`, and the round waits with the proposal recorded and the one-run rule free
-- [ ] Stub model test: a proposal changes nothing until it is approved: while it waits, the current version and `agent_versions` are as they were
-- [ ] Stub model test: a rejection's reason reaches the improver as the tool's answer, and its next proposal is recorded as a new waiting proposal
-- [ ] Stub model test: a proposal outside the models allowed never reaches a handler: no proposal is recorded, and the improver's next message holds the refusal
-- [ ] Stub model test: after approval the service records the decision and the handler first, then the improver runs the three evaluations (1 to 3 of 3), the verdict, and pauses for the recipe; after the recipe's approval the round finishes, with recipe version 2 recorded
-- [ ] Stub model test: an approval while a dispatch runs is refused with "Dispatch #N is running", and nothing is recorded; a dispatch or an evaluation started while a round waits is accepted
-- [ ] Stub model test: an evaluation refused for the limit ends `run_evaluation` with the version rolled back and the reason
-- [ ] Stub model test: stopping a round while its evaluation runs starts no more claims and no more model calls, the current version stays, and the next start is accepted once the work in hand ends
-- [ ] Stub model test: a round whose improver ends without a proposal finishes with no version tried
-- [ ] Stub model test: a round waiting for approval survives a restart of the service (a new service on the same saver resumes it); a round that was working is stopped by the restart
-- [ ] Stub model test: the improver's model calls are recorded with the round; its traces carry the round's Langfuse session; each claim of its evaluations is tagged with its run and the round; `run_evaluation` runs the dispatcher in a fresh `contextvars.Context`, so no claim checkpoint lands on the improver's thread
-- [ ] Stub model test: the improver's model calls stop at the cap
-- [ ] vitest: the Improvement page shows each stage as it happens, from a stubbed `get_round`; a waiting proposal with its diff in color, the model and effort before and after, and Approve and Reject, each behind the confirmation dialog, with Reject needing a reason; the rounds newest first with scores before and after, verdict and cost; the chart with one point per version tried; the recipe's versions with their diffs; and for Marcus Oyelaran, why he can't start, stop or decide, with no buttons
-- [ ] e2e: signed in as Dana Whitfield, a round and a proposal played out through the API show on the Improvement page; approving it after the confirmation reaches the agent's stand-in with the decision and her name
-- [ ] Browser: the Improvement page with no rounds says how to start one, in light and dark mode
-- [ ] `npm run check` passes
+- [x] `agent/improver.py` builds the improver with `create_agent`, the four tools named as in the lab, `HumanInTheLoopMiddleware` on `propose_change` and `propose_recipe`, `ModelCallLimitMiddleware` and `parallel_tool_calls=False`; a pytest test checks each, and that its model is `openai/gpt-6-luna` at `medium`
+- [x] `grep -rn "improver_api" agent` finds it only in `agent/improver.py` and the tests, and `agent/api.py` has no function for rounds, versions' scores or results
+- [x] Stub model test, a whole round: with no evaluations yet, the round runs the first three evaluations (stage `first_evaluations`, 1 to 3 of 3), the improver calls `read_results` and `propose_change`, and the round waits with the proposal recorded and the one-run rule free
+- [x] Stub model test: a proposal changes nothing until it is approved: while it waits, the current version and `agent_versions` are as they were
+- [x] Stub model test: a rejection's reason reaches the improver as the tool's answer, and its next proposal is recorded as a new waiting proposal
+- [x] Stub model test: a proposal outside the models allowed never reaches a handler: no proposal is recorded, and the improver's next message holds the refusal
+- [x] Stub model test: after approval the service records the decision and the handler first, then the improver runs the three evaluations (1 to 3 of 3), the verdict, and pauses for the recipe; after the recipe's approval the round finishes, with recipe version 2 recorded
+- [x] Stub model test: an approval while a dispatch runs is refused with "Dispatch #N is running", and nothing is recorded; a dispatch or an evaluation started while a round waits is accepted
+- [x] Stub model test: an evaluation refused for the limit ends `run_evaluation` with the version rolled back and the reason
+- [x] Stub model test: stopping a round while its evaluation runs starts no more claims and no more model calls, the current version stays, and the next start is accepted once the work in hand ends
+- [x] Stub model test: a round whose improver ends without a proposal finishes with no version tried
+- [x] Stub model test: a round waiting for approval survives a restart of the service (a new service on the same saver resumes it); a round that was working is stopped by the restart
+- [x] Stub model test: the improver's model calls are recorded with the round; its traces carry the round's Langfuse session; each claim of its evaluations is tagged with its run and the round; `run_evaluation` runs the dispatcher in a fresh `contextvars.Context`, so no claim checkpoint lands on the improver's thread
+- [x] Stub model test: the improver's model calls stop at the cap
+- [x] vitest: the Improvement page shows each stage as it happens, from a stubbed `get_round`; a waiting proposal with its diff in color, the model and effort before and after, and Approve and Reject, each behind the confirmation dialog, with Reject needing a reason; the rounds newest first with scores before and after, verdict and cost; the chart with one point per version tried; the recipe's versions with their diffs; and for Marcus Oyelaran, why he can't start, stop or decide, with no buttons
+- [x] e2e: signed in as Dana Whitfield, a round and a proposal played out through the API show on the Improvement page; approving it after the confirmation reaches the agent's stand-in with the decision and her name
+- [x] Browser: the Improvement page with no rounds says how to start one, in light and dark mode
+- [x] `npm run check` passes
 
 ## Phase 6: The look of the whole dashboard, the documents and the live runs
 

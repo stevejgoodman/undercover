@@ -1,6 +1,7 @@
 import { Link, NavLink, Route, Routes } from "react-router";
 import { ClaimPage } from "./pages/ClaimPage";
 import { EvaluationPage } from "./pages/EvaluationPage";
+import { ImprovementPage } from "./pages/ImprovementPage";
 import { ConfigurationPage } from "./pages/ConfigurationPage";
 import { QueuePage } from "./pages/QueuePage";
 import { ScoreboardPage } from "./pages/ScoreboardPage";
@@ -9,6 +10,7 @@ import {
   CLAIM_PAGE,
   CONFIGURATION,
   EVALUATION_PAGE,
+  IMPROVEMENT,
   QUEUE,
   SCOREBOARD,
   SETTINGS,
@@ -51,6 +53,7 @@ export function App() {
           </NavLink>
           <NavLink to={SCOREBOARD}>Scoreboard</NavLink>
           <NavLink to={CONFIGURATION}>Configuration</NavLink>
+          <NavLink to={IMPROVEMENT}>Improvement</NavLink>
           <NavLink to={SETTINGS}>Settings</NavLink>
         </nav>
         <SignedIn />
@@ -62,6 +65,7 @@ export function App() {
           <Route path={SCOREBOARD} element={<ScoreboardPage />} />
           <Route path={EVALUATION_PAGE} element={<EvaluationPage />} />
           <Route path={CONFIGURATION} element={<ConfigurationPage />} />
+          <Route path={IMPROVEMENT} element={<ImprovementPage />} />
           <Route path={SETTINGS} element={<SettingsPage />} />
           <Route path="*" element={<p className="message">Page not found</p>} />
         </Routes>

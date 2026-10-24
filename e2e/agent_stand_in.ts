@@ -1,13 +1,15 @@
 // Stands in for the agent's service in the end-to-end tests: it accepts each claim
-// the backend asks it to resume, listing them at /api/resumed, and each dispatch
-// or evaluation it asks it to start, listing them at /api/started.
+// the backend asks it to resume, listing them at /api/resumed, and each dispatch,
+// evaluation, round or decision on a proposal it asks it to start, listing them
+// at /api/started.
 import { createServer, type ServerResponse } from "node:http";
 import { json } from "node:stream/consumers";
 import type { Started } from "./api";
 
 const resumed: string[] = [];
 const started: Started[] = [];
-const STARTS = new Set(["/api/dispatches", "/api/evaluations"]);
+const STARTS =
+  /^\/api\/(dispatches|evaluations|rounds(\/[^/]+\/proposals\/\d+\/decision)?)$/;
 
 function reply(response: ServerResponse, status: number, body: unknown) {
   response.writeHead(status, { "Content-Type": "application/json" });
@@ -20,7 +22,7 @@ createServer((request, response) => {
   if (request.method === "POST" && resume) {
     resumed.push(decodeURIComponent(resume[1]));
     reply(response, 202, { status: "accepted" });
-  } else if (request.method === "POST" && STARTS.has(url)) {
+  } else if (request.method === "POST" && STARTS.test(url)) {
     json(request).then(
       (body) => {
         started.push({ path: url, body });

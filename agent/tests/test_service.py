@@ -141,7 +141,7 @@ def test_one_run_at_a_time(client, serve, held_run):
 
     refused = start_dispatch(agent, 3)
     assert refused.status_code == 409
-    assert refused.json()["detail"] == "A dispatch or an evaluation is already running"
+    assert refused.json()["detail"] == "Dispatch #1 is running"
     assert latest_dispatch(client)["number"] == 1
 
     held_run.release.set()

@@ -33,11 +33,14 @@ class StubModel(GenericFakeChatModel):
     raises a scripted error, and keeps the prompts it was sent."""
 
     prompts: list[list[BaseMessage]] = []
+    # The settings each binding of the tools was given, such as parallel_tool_calls.
+    bound: list[dict[str, Any]] = []
     # What a run records of the model, as ChatOpenAI has them.
     model_name: str = "stub"
     reasoning_effort: str | None = None
 
     def bind_tools(self, tools, **kwargs):
+        self.bound.append(kwargs)
         return self
 
     def next_reply(self, messages):

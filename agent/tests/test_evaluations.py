@@ -8,7 +8,7 @@ import pytest
 from langchain_core.exceptions import ModelRateLimitError
 from langgraph.checkpoint.memory import InMemorySaver
 
-from agent import api, dispatcher, harness
+from agent import api, dispatcher, harness, tools
 from agent.tests.dispatching import dispatch
 from agent.tests.queue_setup import leave_waiting
 from agent.tests.records import claim_of, evaluations, model_calls_of, work_times_of
@@ -73,28 +73,29 @@ def test_a_dispatch_leaves_an_evaluations_copies_alone(client):
 
 
 @pytest.mark.parametrize(
-    ("first", "second"),
+    "starts",
     [
-        ("/api/dispatches", "/api/evaluations"),
-        ("/api/evaluations", "/api/dispatches"),
+        ("/api/dispatches", "/api/evaluations", "Dispatch #1 is running"),
+        ("/api/evaluations", "/api/dispatches", "Evaluation #1 is running"),
     ],
 )
 def test_a_dispatch_and_an_evaluation_never_run_together(
-    client, serve, held_run, first, second
+    client, serve, held_run, starts
 ):
+    first, second, running = starts
     leave_waiting()
     agent = serve(stub())
     body = {"evaluation_set": "held_out", "tiny": True, "agents": 3}
-    running = threading.Thread(target=agent.post, args=(first,), kwargs={"json": body})
-    running.start()
+    working = threading.Thread(target=agent.post, args=(first,), kwargs={"json": body})
+    working.start()
     assert held_run.working.wait(5)
 
     refused = agent.post(second, json=body)
     assert refused.status_code == 409
-    assert refused.json()["detail"] == "A dispatch or an evaluation is already running"
+    assert refused.json()["detail"] == running
     held_run.release.set()
-    running.join(5)
-    assert not running.is_alive()
+    working.join(5)
+    assert not working.is_alive()
 
 
 def test_the_agent_cant_read_the_scoreboard():
@@ -105,8 +106,15 @@ def test_the_agent_cant_read_the_scoreboard():
         "start_evaluation",
         "list_versions",
         "get_version",
+        "read_results",
+        "get_round",
+        "create_round",
+        "record_verdict",
     ):
         assert not hasattr(api, name)
+    claim_agents_modules = [harness, tools, dispatcher]
+    for module in claim_agents_modules:
+        assert not hasattr(module, "improver_api")
 
 
 def test_a_copy_still_failing_after_its_tries_is_left_in_progress(client):

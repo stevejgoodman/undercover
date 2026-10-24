@@ -1,7 +1,14 @@
-import type { DecisionKind, RunStatus, Status, VersionVerdict } from "../api";
+import type {
+  DecisionKind,
+  Round,
+  RunStatus,
+  Status,
+  VersionVerdict,
+} from "../api";
 import {
   decisionLabels,
   money,
+  roundStageLabels,
   runLabels,
   statusLabels,
   verdictLabels,
@@ -57,6 +64,26 @@ export function VerdictChip({
   if (current) return <span className="chip verdict-current">Current</span>;
   if (verdict === null)
     return <span className="chip verdict-trying">Being tried</span>;
+  return (
+    <span className={`chip verdict-${verdict}`}>{verdictLabels[verdict]}</span>
+  );
+}
+
+// A round open, finished or stopped.
+export function RoundChip({ round }: Readonly<{ round: Round }>) {
+  if (round.stage === "finished" || round.stage === "stopped")
+    return (
+      <span className={`chip round-${round.stage}`}>
+        {roundStageLabels[round.stage]}
+      </span>
+    );
+  return <span className="chip round-open">Open</span>;
+}
+
+// A round's verdict on the version it tried.
+export function RoundVerdictChip({
+  verdict,
+}: Readonly<{ verdict: VersionVerdict }>) {
   return (
     <span className={`chip verdict-${verdict}`}>{verdictLabels[verdict]}</span>
   );

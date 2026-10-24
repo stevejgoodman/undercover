@@ -25,6 +25,7 @@ from backend.tests.settings_requests import FIRST
 from backend.tests.signing import MARCUS
 
 LUNA, GEMINI = "openai/gpt-6-luna", "google/gemini-3.5-flash-lite"
+RESTART = {"stopped_by": "A restart"}
 
 
 @pytest.fixture
@@ -408,11 +409,11 @@ def test_a_restart_stops_working_rounds_and_keeps_waiting_ones(client, round_id)
     first_evaluations(client, round_id)
     client.post(round_path(round_id, "improving"))
     propose_change(client, round_id)
-    assert client.post("/api/runs/rounds/stop").json() == []
+    assert client.post("/api/runs/rounds/stop", json=RESTART).json() == []
     assert round_of(client, round_id)["stage"] == "waiting_for_change"
     client.post(f"/api/rounds/{round_id}/stop")
     working = create_round(client).json()["round_id"]
-    assert client.post("/api/runs/rounds/stop").json() == [working]
+    assert client.post("/api/runs/rounds/stop", json=RESTART).json() == [working]
     assert round_of(client, working)["stopped_by"] == "A restart"
 
 

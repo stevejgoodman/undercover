@@ -48,6 +48,37 @@ class VersionVerdict(StrEnum):
     ROLLED_BACK = "rolled_back"
 
 
+class RoundStage(StrEnum):
+    """Where a round of improvement has got to."""
+
+    FIRST_EVALUATIONS = "first_evaluations"
+    IMPROVING = "improving"
+    WAITING_FOR_CHANGE = "waiting_for_change"
+    EVALUATIONS = "evaluations"
+    VERDICT = "verdict"
+    WAITING_FOR_RECIPE = "waiting_for_recipe"
+    FINISHED = "finished"
+    STOPPED = "stopped"
+
+
+class ProposalKind(StrEnum):
+    CHANGE = "change"
+    RECIPE = "recipe"
+
+
+class ProposalStatus(StrEnum):
+    WAITING = "waiting"
+    APPROVED = "approved"
+    REJECTED = "rejected"
+
+
+class Review(StrEnum):
+    """A handler's decision on one of the improver's proposals."""
+
+    APPROVE = "approve"
+    REJECT = "reject"
+
+
 class EvaluationSet(StrEnum):
     """The labeled sets of claims an evaluation can work."""
 
@@ -511,14 +542,18 @@ class VersionScores(BaseModel):
     held_out: Scores | None
 
 
-class AgentConfiguration(BaseModel):
-    """What the claim agent works from: its instructions, ending with the
-    documents' contents, its model and its reasoning effort. No scores."""
+class Configuration(BaseModel):
+    """A version's instructions, model and reasoning effort."""
 
     version: int
     instructions: str
     model: str
     reasoning_effort: str
+
+
+class AgentConfiguration(Configuration):
+    """What the claim agent works from: its instructions, ending with the
+    documents' contents, its model and its reasoning effort. No scores."""
 
 
 class AgentVersion(BaseModel):
@@ -544,3 +579,178 @@ class VersionSummary(AgentVersion):
 
 class VersionDetails(VersionSummary):
     diff: list[DiffLine] = Field(description="From the version before, if any")
+
+
+class Progress(BaseModel):
+    """How many of a stage's evaluations have started or finished."""
+
+    done: int
+    of: int
+
+
+class Round(BaseModel):
+    round_id: str
+    number: int
+    thread_id: str
+    stage: RoundStage
+    progress: Progress | None
+    recipe_version: int
+    version_before: int
+    version_tried: int | None
+    reason: str | None = Field(description="The improver's reason for its version")
+    scores_before: Scores | None
+    scores_after: Scores | None
+    verdict: VersionVerdict | None
+    why: str | None
+    started_by: str
+    started_at: str
+    stopped_by: str | None
+    finished_at: str | None
+    cost: float = Field(description="What the round has spent, in US dollars")
+    spending_limit: float
+
+
+class Proposal(BaseModel):
+    proposal_id: int
+    kind: ProposalKind
+    status: ProposalStatus
+    reason: str = Field(description="The improver's reason")
+    based_on: int = Field(description="The version or recipe it was proposed against")
+    instructions: str | None
+    model_before: str | None
+    model: str | None
+    reasoning_effort_before: str | None
+    reasoning_effort: str | None
+    recipe: str | None
+    diff: list[DiffLine]
+    decided_by: str | None
+    decided_at: str | None
+    rejection: str | None
+    created_at: str
+
+
+class RoundDetails(Round):
+    settings: Settings
+    models_allowed: list[AllowedModel]
+    first_evaluations_missing: list[EvaluationSet]
+    proposals: list[Proposal] = Field(description="Oldest first")
+
+
+class Recipe(BaseModel):
+    version: int
+    recipe: str
+    reason: str
+    proposed_by: str
+    approved_by: str
+    approved_at: str
+    round_id: str | None
+    created_at: str
+    diff: list[DiffLine] = Field(description="From the recipe before, if any")
+
+
+class ImproverInstructions(BaseModel):
+    instructions: str
+
+
+class CreateRoundRequest(BaseModel):
+    started_by: str = Field(min_length=1, description="The handler who started it")
+
+
+class ChangeProposalRequest(BaseModel):
+    instructions: str = Field(min_length=1, description="The complete instructions")
+    model: str = Field(min_length=1)
+    reasoning_effort: str = Field(min_length=1)
+    reason: str = Field(min_length=1)
+
+
+class RecipeProposalRequest(BaseModel):
+    recipe: str = Field(min_length=1, description="The complete recipe")
+    reason: str = Field(min_length=1)
+
+
+class ReviewRequest(BaseModel):
+    decision: Review
+    reason: str = Field(description="Why, which a rejection needs; or empty")
+
+    @model_validator(mode="after")
+    def check_reason(self) -> Self:
+        """A rejection carries the handler's reason back to the improver."""
+        if self.decision == Review.REJECT and not self.reason.strip():
+            raise ValueError("A rejection needs a reason")
+        return self
+
+
+class RecordReviewRequest(ReviewRequest):
+    handler: str = Field(min_length=1, description="The handler who decided")
+
+
+class FromProposalRequest(BaseModel):
+    proposal_id: int
+
+
+class RoundEvaluationRequest(BaseModel):
+    evaluation_set: EvaluationSet
+    version: int
+    model: str = Field(min_length=1)
+    reasoning_effort: str = Field(min_length=1)
+
+
+class RoundModelCallRequest(BaseModel):
+    input_tokens: int = Field(ge=0)
+    output_tokens: int = Field(ge=0)
+    cost: float = Field(ge=0, description="In US dollars, as OpenRouter reports it")
+
+
+class AgentsAnswer(BaseModel):
+    decision: DecisionKind | None
+    payout: float | None
+    reason: str | None
+    section: str | None
+
+
+class HandlersAnswer(BaseModel):
+    decision: DecisionKind
+    payout: float
+    reason: str
+    reference: str
+
+
+class ClaimBeside(BaseModel):
+    """One claim of the evaluation set, with the agent's answer beside the
+    handler's and the judge's grade, as the improver reads it."""
+
+    claim_id: str
+    summary: str
+    agent: AgentsAnswer
+    handler: HandlersAnswer
+    judge: Grade | None
+
+
+class EarlierRound(BaseModel):
+    round: int
+    recipe_version: int
+    version: int | None
+    model: str | None
+    reasoning_effort: str | None
+    reason: str | None
+    verdict: VersionVerdict | None
+    why: str | None
+    held_out_before: Scores | None
+    held_out_after: Scores | None
+
+
+class ImproverResults(BaseModel):
+    """What the improver reads: everything it needs, and from the held-out set
+    only the scores."""
+
+    current_version: Configuration
+    scores: VersionScores
+    wrong: list[ClaimBeside]
+    explained_least_well: list[ClaimBeside]
+    earlier_rounds: list[EarlierRound]
+    objectives_on_the_held_out_set: Objectives
+    noise: Limits
+    tolerance: Limits
+    rule: str
+    spending_left: float
+    models_allowed: list[AllowedModel]

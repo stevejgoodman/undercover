@@ -8,7 +8,13 @@ from typing import Annotated
 from fastapi import BackgroundTasks, FastAPI, HTTPException, Query
 from sqlalchemy import Connection, RowMapping, insert, select, update
 
-from backend import agent_service, configuration, platform_settings, runs
+from backend import (
+    agent_service,
+    configuration,
+    platform_settings,
+    rounds,
+    runs,
+)
 from backend.auth import CANT_SIGN_OFF, SignedIn
 from backend.database import (
     claim_view,
@@ -29,7 +35,14 @@ from backend.database import (
 )
 from backend.dependencies import Database
 from backend.documents import search, sections, titles
-from backend.lookups import CLAIM_NOT_FOUND, current_settings, run_row
+from backend.lookups import (
+    CLAIM_NOT_FOUND,
+    SPENT,
+    current_settings,
+    round_left,
+    round_row,
+    run_row,
+)
 from backend.models import (
     Claim,
     ClaimSummary,
@@ -46,6 +59,7 @@ from backend.models import (
     Plans,
     Policy,
     PreviousClaim,
+    RunStatus,
     Section,
     SectionMatch,
     StartRequest,
@@ -73,6 +87,7 @@ app = FastAPI(title="UnderCover", lifespan=lifespan)
 app.include_router(runs.router)
 app.include_router(configuration.router)
 app.include_router(platform_settings.router)
+app.include_router(rounds.router)
 
 
 def approval_limit(db: Connection) -> float:
@@ -123,6 +138,18 @@ def check_run(db: Connection, run_id: str | None) -> None:
     """Check that the run named, if any, exists, or raise a 404."""
     if run_id is not None:
         run_row(db, run_id)
+
+
+def check_evaluation_goes_on(db: Connection, run_id: str) -> None:
+    """Refuse to start a copy in an evaluation that has stopped, or in a round that
+    has spent its limit."""
+    run = run_row(db, run_id)
+    if run["status"] != RunStatus.RUNNING:
+        raise HTTPException(409, f"Evaluation #{run['number']} isn't running")
+    if run["round_id"] is not None:
+        row = round_row(db, run["round_id"])
+        if round_left(db, row) <= 0:
+            raise HTTPException(409, SPENT.format(number=row["number"]))
 
 
 def add_step(
@@ -206,8 +233,11 @@ def get_signed_in_handler(handler: SignedIn) -> Handler:
 @app.post("/api/claims/{claim_id}/start", operation_id="start_claim")
 def start_claim(claim_id: str, request: StartRequest, db: Database) -> Claim:
     """Start work on a waiting claim, which moves it to in progress."""
-    if find_claim(db, claim_id)["status"] != Status.WAITING:
+    claim = find_claim(db, claim_id)
+    if claim["status"] != Status.WAITING:
         raise HTTPException(409, f"Claim {claim_id} is not waiting")
+    if claim["evaluation_id"] is not None:
+        check_evaluation_goes_on(db, claim["evaluation_id"])
     db.execute(
         update(claims)
         .where(claims.c.claim_id == claim_id)

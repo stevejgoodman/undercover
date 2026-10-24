@@ -197,7 +197,7 @@ def test_the_judge_is_asked_with_no_transaction_open(client, jev):
 
     jev.reply = stop_meanwhile
     response = finish(client, run_id)
-    assert response.status_code == 409
+    assert response.status_code == 200
     assert get_evaluation(client, run_id)["status"] == "stopped"
     assert graded_claims(client, run_id)["CLM-1104"]["grade"] is None
 

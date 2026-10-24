@@ -1,26 +1,8 @@
 import pytest
 
 from backend.tests.claim_requests import decide, pay, start
+from backend.tests.settings_requests import FIRST
 from backend.tests.signing import MARCUS
-
-FIRST = {
-    "payout_approval_limit": 1000.0,
-    "objectives": {"accuracy": 0.6, "grade": 1.0},
-    "noise": {
-        "accuracy": 0.1,
-        "grade": 0.15,
-        "model_cost_per_claim": 0.15,
-        "seconds_per_claim": 0.15,
-    },
-    "tolerance": {
-        "accuracy": 0.1,
-        "grade": 0.15,
-        "model_cost_per_claim": 1.0,
-        "seconds_per_claim": 0.25,
-    },
-    "spending_limit": 0.5,
-    "agents": 25,
-}
 
 
 def test_the_settings_start_with_the_labs_values(client):

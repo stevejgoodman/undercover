@@ -2,26 +2,27 @@
 service works. Only the service writes them, under /api/runs; the dashboard reads
 them under /api/dispatches and /api/evaluations."""
 
-import uuid
-from typing import Any
-
 from fastapi import APIRouter, HTTPException
-from sqlalchemy import Connection, RowMapping, delete, insert, select, update
+from sqlalchemy import Connection, RowMapping, insert, select, update
 
 from backend import agent_service, judge
 from backend.auth import SignedIn
 from backend.database import (
-    LABELED_SETS,
     claims,
     grades,
     handler_decisions,
     now,
-    run_claims,
     runs,
-    waiting_claim,
 )
 from backend.dependencies import Database, DatabaseEngine
-from backend.lookups import CLAIM_NOT_FOUND, RUN_NOT_FOUND, find_version, run_row
+from backend.lookups import (
+    CLAIM_NOT_FOUND,
+    RUN_NOT_FOUND,
+    find_version,
+    round_left,
+    round_row,
+    run_row,
+)
 from backend.models import (
     Accepted,
     CreateDispatchRequest,
@@ -29,7 +30,6 @@ from backend.models import (
     DecisionKind,
     DispatchSummary,
     Evaluation,
-    EvaluationSet,
     HeldPayout,
     Run,
     RunClaimsRequest,
@@ -40,10 +40,9 @@ from backend.models import (
     StartEvaluationRequest,
     Status,
 )
+from backend.new_runs import new_evaluation, new_run, put_claims
 from backend.run_views import claims_of, expected_answers, find_run, score
 
-# A copy's id is its original's with the evaluation's number, such as CLM-1104-E7.
-COPY_ID = "{claim_id}-E{number}"
 # Claims a dispatch left that the next one picks up.
 UNFINISHED = {Status.IN_PROGRESS, Status.WAITING}
 
@@ -79,75 +78,6 @@ def summarize(rows: list[RowMapping]) -> DispatchSummary:
         ],
         unfinished=unfinished,
     )
-
-
-def new_run(db: Connection, kind: RunKind, fields: dict[str, Any]) -> RowMapping:
-    """Record a new run, running, and return its row."""
-    run_id = str(uuid.uuid4())
-    db.execute(
-        insert(runs).values(
-            run_id=run_id,
-            kind=kind,
-            **fields,
-            status=RunStatus.RUNNING,
-            started_at=now(),
-        )
-    )
-    return run_row(db, run_id)
-
-
-def put_claims(db: Connection, run_id: str, claim_ids: list[str]) -> None:
-    """Record a run's claims in order, in place of any recorded before."""
-    db.execute(delete(run_claims).where(run_claims.c.run_id == run_id))
-    if claim_ids:
-        db.execute(
-            insert(run_claims),
-            [
-                {"run_id": run_id, "position": position, "claim_id": claim_id}
-                for position, claim_id in enumerate(claim_ids)
-            ],
-        )
-
-
-def originals(
-    db: Connection, evaluation_set: EvaluationSet, tiny: bool
-) -> list[dict[str, Any]]:
-    """Return the records of a labeled set's claims, all or its tiny ones, oldest
-    submitted first."""
-    chosen = select(handler_decisions.c.claim_id).where(
-        handler_decisions.c.evaluation_set == evaluation_set
-    )
-    if tiny:
-        chosen = chosen.where(handler_decisions.c.tiny)
-    table = LABELED_SETS[evaluation_set].claims
-    records = db.execute(select(table.c.record).where(table.c.claim_id.in_(chosen)))
-    return sorted(records.scalars(), key=lambda r: (r["submitted_on"], r["claim_id"]))
-
-
-def make_copies(
-    db: Connection, run: RowMapping, records: list[dict[str, Any]]
-) -> list[str]:
-    """Copy each claim, waiting, as the evaluation's own, with a new id in its record
-    too, and return the copies' ids in order."""
-    copies = [
-        record
-        | {
-            "claim_id": COPY_ID.format(
-                claim_id=record["claim_id"], number=run["number"]
-            )
-        }
-        for record in records
-    ]
-    db.execute(
-        insert(claims),
-        [
-            waiting_claim(
-                copy, evaluation_id=run["run_id"], copy_of=original["claim_id"]
-            )
-            for copy, original in zip(copies, records, strict=True)
-        ],
-    )
-    return [copy["claim_id"] for copy in copies]
 
 
 def evaluation_row(db: Connection, run_id: str) -> RowMapping:
@@ -205,9 +135,7 @@ def create_dispatch(request: CreateDispatchRequest, db: Database) -> Run:
 def create_evaluation(request: CreateEvaluationRequest, db: Database) -> Run:
     """Record a new evaluation, running, with a waiting copy of each of its claims."""
     find_version(db, request.version)
-    row = new_run(db, RunKind.EVALUATION, request.model_dump())
-    records = originals(db, request.evaluation_set, request.tiny)
-    put_claims(db, row["run_id"], make_copies(db, row, records))
+    row = new_evaluation(db, request.model_dump() | {"round_id": None})
     return find_run(db, row["run_id"])
 
 
@@ -224,25 +152,41 @@ def record_run_claims(run_id: str, request: RunClaimsRequest, db: Database) -> R
     return find_run(db, run_id)
 
 
+def cut_short(db: Connection, run: RowMapping) -> bool:
+    """Say whether an evaluation in a round was cut short by the round's limit,
+    leaving copies never started."""
+    if run["round_id"] is None:
+        return False
+    if round_left(db, round_row(db, run["round_id"])) > 0:
+        return False
+    return any(copy["attempts"] == 0 for copy in claims_of(db, run["run_id"]))
+
+
 @router.post("/api/runs/{run_id}/finish", operation_id="finish_run")
 def finish_run(run_id: str, databases: DatabaseEngine) -> Run:
     """Finish a running run: a dispatch gets its summary, an evaluation its grades."""
     with databases.begin() as db:
+        row = run_row(db, run_id)
+        if row["status"] == RunStatus.STOPPED:
+            return find_run(db, run_id)
         row = running_run(db, run_id)
         evaluation = row["kind"] == RunKind.EVALUATION
         to_grade = copies_to_grade(db, row) if evaluation else []
     # The judge can take seconds, so it's asked with no connection held.
     graded = judge.grade(to_grade)
     with databases.begin() as db:
-        running_run(db, run_id)
+        row = run_row(db, run_id)
+        if row["status"] == RunStatus.STOPPED:
+            return find_run(db, run_id)
         summary = None if evaluation else summarize(claims_of(db, run_id))
         record_grades(db, run_id, graded)
+        stopped = evaluation and cut_short(db, row)
         db.execute(
             update(runs)
             .where(runs.c.run_id == run_id, runs.c.status == RunStatus.RUNNING)
             .values(
-                status=RunStatus.FINISHED,
-                finished_at=now(),
+                status=RunStatus.STOPPED if stopped else RunStatus.FINISHED,
+                finished_at=None if stopped else now(),
                 summary=summary and summary.model_dump(),
             )
         )

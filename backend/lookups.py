@@ -1,18 +1,21 @@
-"""What more than one of the backend's modules looks up: a run, the current
-settings, the models allowed and the claim agent's versions, with the messages for
-what isn't found."""
+"""What more than one of the backend's modules looks up: a run, a round, the
+current settings, the models allowed and the claim agent's versions, with the
+messages for what isn't found."""
 
 import os
 
 from fastapi import HTTPException
 from sqlalchemy import Connection, RowMapping, select
 
-from backend.database import agent_versions, allowed_models, runs, settings
+from backend import spending
+from backend.database import agent_versions, allowed_models, rounds, runs, settings
 from backend.models import AgentVersion, AllowedModel, Settings, VersionVerdict
 
 RUN_NOT_FOUND = "Run {run_id} not found"
 CLAIM_NOT_FOUND = "Claim {claim_id} not found"
 VERSION_NOT_FOUND = "Version {version} not found"
+ROUND_NOT_FOUND = "Round {round_id} not found"
+SPENT = "Round {number} has spent its limit"
 # With MODEL_NAME set, as for students on free models, that model is the only one
 # allowed, at its default reasoning effort and a price of 0. The agent records a
 # run's effort with the same word.
@@ -25,6 +28,25 @@ def run_row(db: Connection, run_id: str) -> RowMapping:
     if row is None:
         raise HTTPException(404, RUN_NOT_FOUND.format(run_id=run_id))
     return row
+
+
+def round_row(db: Connection, round_id: str) -> RowMapping:
+    """Return one round's row, or raise a 404."""
+    query = select(rounds).where(rounds.c.round_id == round_id)
+    row = db.execute(query).mappings().first()
+    if row is None:
+        raise HTTPException(404, ROUND_NOT_FOUND.format(round_id=round_id))
+    return row
+
+
+def round_settings(row: RowMapping) -> Settings:
+    """The settings a round works to, as they stood when it started."""
+    return Settings(**row["settings"])
+
+
+def round_left(db: Connection, row: RowMapping) -> float:
+    """What's left of a round's spending limit."""
+    return spending.left(db, row["round_id"], round_settings(row).spending_limit)
 
 
 def current_settings(db: Connection) -> Settings:

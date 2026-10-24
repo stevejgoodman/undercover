@@ -16,6 +16,8 @@ The backend gains five modules and two routers, each with one job:
 - `judge.py` (new): Jev, `typesafe/jev-1.13`, through OpenRouter's Decisions endpoint with the `openrouter` package and the lab's three questions. It reads the endpoint's origin once from `OPENROUTER_URL` (default `https://openrouter.ai`) and passes it as `server_url` on each call, with `timeout_ms=10_000` and retries off. The call is written once, here. It grades a list of claims in parallel and returns each one's grade, or "not graded".
 - `verdict.py` (new): UnderCover's rule as plain functions, like `scoring.py`: which measures got better by more than their noise, which got worse by more than their tolerance, and whether a version is kept. It uses `models.py` and nothing else.
 - `diffs.py` (new): the lines that change between two texts, with Python's `difflib` as in the lab, as a list of added, removed and unchanged lines. Both the configuration and the recipe show their diffs through it.
+- `new_runs.py` (new): recording a new run, a dispatch or an evaluation with its copies, which `runs.py` and `rounds.py` both do. It moves out of `runs.py`.
+- `improver_view.py` (new): what the improver reads in a round, built for `read_results`.
 - `spending.py` (new): what a round has spent (the improver's model calls, its evaluations' model calls and the judge's calls on them), what's left of its limit, and an evaluation's estimate. Three modules need it: the rounds router, `runs.py` (an evaluation cut short) and `main.py` (no new claim starts in a round that has spent its limit), so it has a module of its own.
 - `configuration.py` (new `APIRouter`): the claim agent's versions: the current version, each version with its held-out scores and its diff from the one before, and the one operation the claim agent uses to fetch a version, which holds no scores.
 - `rounds.py` (new `APIRouter`): rounds, proposals and the recipe's versions: starting, stopping, approving and rejecting for the dashboard; the improver's view, its proposals, its evaluations and the verdict for the agent's service, under `/api/runs/rounds`.
@@ -48,7 +50,7 @@ The dashboard gains `supabase.ts`, its only way to Supabase, with one function f
 7. **The recipe.** The improver proposes a new recipe with `propose_recipe`, which pauses for a handler in the same way, shown as a diff. On approval it becomes the newest recipe, for the next round.
 8. The improver ends its turn, and the service marks the round finished. A round in which the improver proposes nothing finishes with no version tried.
 
-A handler can stop an open round at any point. The backend marks it stopped and then refuses anything the round records; the service starts no more claims or model calls for it, and lets go of the one-run rule when the work in hand ends. A round stopped before its verdict leaves the current version as it was; one stopped after it keeps the verdict. A restart stops a round that was working and keeps one waiting for a handler, whose improver resumes from its checkpoint.
+A handler can stop an open round at any point. The backend marks it stopped and then refuses anything the round records; the service starts no more claims or model calls for it, and lets go of the one-run rule when the work in hand ends. A round stopped before its verdict leaves the current version as it was, and the version it was trying is rolled back; one stopped after it keeps the verdict. A round whose first evaluations never all finish, for want of money or a stop, finishes with no version tried and says why. A restart stops a round that was working and keeps one waiting for a handler, whose improver resumes from its checkpoint.
 
 ### The configuration's versions
 
@@ -136,7 +138,7 @@ The lab's judge, moved into the backend because the backend holds the handlers' 
 
 Its cost is worked out from the records, never stored. Its stage's "1, 2 or 3 of 3" counts the round's evaluations for that stage.
 
-`proposals`: `proposal_id`, `round_id`, `kind` (`change` or `recipe`), what the improver proposed (instructions, model, reasoning effort and reason, or recipe and reason), the version or recipe it was proposed against, `status` (`waiting`, `approved` or `rejected`), `decided_by`, `decided_at` and the rejection's reason. A round has at most one waiting proposal.
+`proposals`: `proposal_id`, `round_id`, `kind` (`change` or `recipe`), what the improver proposed (instructions, model, reasoning effort and reason, or recipe and reason), the version or recipe it was proposed against, `status` (`waiting`, `approved` or `rejected`), `decided_by`, `decided_at` and the rejection's reason. A round has at most one waiting proposal, since each service write is taken only in the stage it belongs to: a change only while the improver works and before a version is tried, a version's evaluations only before its verdict and each set no more often than it needs, and the verdict once, with no evaluation running. An approved proposal makes one version or recipe, never two. Finishing or stopping a round rolls back a version it tried with no verdict, and rejects a proposal still waiting.
 
 `round_model_calls`: the improver's tokens and cost for each model call, with its round.
 
@@ -202,18 +204,19 @@ New operations, each with an `operation_id`, a one-line docstring and no optiona
 | `create_round` | POST `/api/runs/rounds` | service | Record a new round with its snapshots |
 | `get_improver_instructions` | GET `/api/runs/rounds/{round_id}/instructions` | service | `improver.md` with the round's recipe |
 | `read_results` | GET `/api/runs/rounds/{round_id}/results` | service | The improver's view |
-| `record_round_stage` | PUT `/api/runs/rounds/{round_id}/stage` | service | The round's stage |
-| `record_proposal` | POST `/api/runs/rounds/{round_id}/proposals` | service | A proposal waiting for a handler |
-| `record_proposal_decision` | POST `/api/runs/rounds/{round_id}/proposals/{proposal_id}/decision` | service | The handler's decision |
-| `create_version` | POST `/api/runs/rounds/{round_id}/versions` | service | The approved version, untried |
-| `create_recipe` | POST `/api/runs/rounds/{round_id}/recipes` | service | The approved recipe |
+| `start_improving` | POST `/api/runs/rounds/{round_id}/improving` | service | Hand the round to the improver once the current version has its first evaluations, recording its held-out scores before |
+| `record_change_proposal` | POST `/api/runs/rounds/{round_id}/proposals/changes` | service | A change waiting for a handler, refused outside the models allowed |
+| `record_recipe_proposal` | POST `/api/runs/rounds/{round_id}/proposals/recipes` | service | A recipe waiting for a handler |
+| `record_proposal_decision` | POST `/api/runs/rounds/{round_id}/proposals/{proposal_id}/review` | service | The handler's decision |
+| `create_version` | POST `/api/runs/rounds/{round_id}/versions` | service | The approved change as a version, untried, from the proposal's id |
+| `create_recipe` | POST `/api/runs/rounds/{round_id}/recipes` | service | The approved recipe, from the proposal's id |
 | `create_round_evaluation` | POST `/api/runs/rounds/{round_id}/evaluations` | service | An evaluation of a set on a version, refused over the limit |
 | `record_verdict` | POST `/api/runs/rounds/{round_id}/verdict` | service | Keep or roll back by the rule |
 | `record_round_model_call` | POST `/api/runs/rounds/{round_id}/model-calls` | service | One improver model call's tokens and cost |
 | `finish_round` | POST `/api/runs/rounds/{round_id}/finish` | service | Mark a round finished |
 | `stop_working_rounds` | POST `/api/runs/rounds/stop` | service | Stop the rounds that were working, as the service does when it starts |
 
-Every service write under `/api/runs/rounds/{round_id}` is refused with 409 once the round is stopped. Changed: `create_dispatch` and `create_evaluation` take `version`; `finish_run` grades an evaluation and leaves a stopped run stopped; `sign_off_claim` takes no body; `get_instructions` goes. The agent's service gains `start_round` (POST `/api/rounds`, body `{handler}`) and `decide_proposal` (POST `/api/rounds/{round_id}/proposals/{proposal_id}/decision`, body `{decision, reason, handler}`), both 202 or 409.
+Every service write under `/api/runs/rounds/{round_id}` is refused with 409 once the round is stopped. Changed: `create_dispatch` and `create_evaluation` take `version`; `finish_run` grades an evaluation, leaves a stopped run stopped, and stops an evaluation its round's limit cut short; `start_claim` refuses a copy in an evaluation that isn't running or whose round has spent its limit; `sign_off_claim` takes no body; `get_instructions` goes. The agent's service gains `start_round` (POST `/api/rounds`, body `{handler}`) and `decide_proposal` (POST `/api/rounds/{round_id}/proposals/{proposal_id}/decision`, body `{decision, reason, handler}`), both 202 or 409.
 
 ### One thing at a time
 
@@ -340,19 +343,19 @@ Sign-in first, so every later page is built signed in.
 
 The rounds, proposals, recipes, spending and the rule, with the service's operations, before the improver itself.
 
-- [ ] Seeding makes recipe version 1 from `backend/instructions/recipe.md`, word for word the lab's, and empties the rounds; `npm run seed` takes the configuration and the recipe back to version 1
-- [ ] pytest, `verdict.py`, with measures worked out by hand against the lab's settings: before `{accuracy 0.72, grade 1.80, cost 0.0010, seconds 20}`, after `{0.84, 1.85, 0.0018, 22}` is kept ("accuracy improved"); after `{0.84, 1.60, 0.0010, 20}` is rolled back ("grade got worse"); after `{0.74, 1.90, 0.0010, 20}` is rolled back ("no measure improved by more than the noise"); after `{0.58, 2.2, 0.0005, 10}` is rolled back ("it missed the objectives on accuracy"); after `{0.72, 1.80, 0.00084, 20}` is kept ("model_cost_per_claim improved", as a fraction); after `{0.72, 1.80, 0.0010, 25.5}` is rolled back ("seconds_per_claim got worse", as a fraction); and a version with no grade is rolled back ("it has no grade")
-- [ ] pytest: `read_results` holds the current version, its scores on both sets, the wrong claims and the five right ones with the lowest grades from its latest round evaluation of the evaluation set with the handlers' reasons, the earlier rounds, the round's objectives, noise, tolerance and rule, what's left of the limit and the models allowed; and nothing from the held-out set but its scores: no held-out claim id, reason, reference or decision appears anywhere in it
-- [ ] pytest: a round keeps its settings when they change: after `update_settings` raises the limit and the floors, the round's view and its verdict still use the ones it started with
-- [ ] pytest: `create_version` refuses a model or an effort outside the round's models allowed with 422; a version is untried and the current version is unchanged until its verdict keeps it
-- [ ] pytest: `create_round_evaluation` is refused with 402 when its estimate is more than what's left, naming both amounts; the estimate is the claims times the highest cost per claim seen for the model, or the current model's scaled by the larger price ratio for a model with no runs
-- [ ] pytest: once a round's spending reaches its limit, `start_claim` on a copy in its evaluation is refused, and `finish_run` marks that evaluation stopped; its version is rolled back by the verdict
-- [ ] pytest: `stop_round` by Dana Whitfield marks the round stopped and its running evaluation stopped, and every service write for that round is then refused with 409; by Marcus Oyelaran it returns 403; a stopped round before its verdict leaves the current version as it was, and one after its verdict keeps it
-- [ ] pytest: `decide_proposal` by Dana Whitfield passes the decision, its reason and her handler id to the agent's service and records nothing itself; a service 409 comes back with its detail; Marcus Oyelaran gets 403 and the service isn't asked; a proposal that isn't waiting returns 409
-- [ ] pytest: `start_round` by Dana Whitfield asks the service with her handler id; `stop_working_rounds` stops the rounds in a working stage and leaves one waiting for approval
-- [ ] pytest: a round's cost is the sum of its improver calls, its evaluations' model calls and the judge's calls on them
-- [ ] The shared OpenAPI test passes, with every new operation
-- [ ] `npm run check` passes
+- [x] Seeding makes recipe version 1 from `backend/instructions/recipe.md`, word for word the lab's, and empties the rounds; `npm run seed` takes the configuration and the recipe back to version 1
+- [x] pytest, `verdict.py`, with measures worked out by hand against the lab's settings: before `{accuracy 0.72, grade 1.80, cost 0.0010, seconds 20}`, after `{0.84, 1.85, 0.0018, 22}` is kept ("accuracy improved"); after `{0.84, 1.60, 0.0010, 20}` is rolled back ("grade got worse"); after `{0.74, 1.90, 0.0010, 20}` is rolled back ("no measure improved by more than the noise"); after `{0.58, 2.2, 0.0005, 10}` is rolled back ("it missed the objectives on accuracy"); after `{0.72, 1.80, 0.00084, 20}` is kept ("model_cost_per_claim improved", as a fraction); after `{0.72, 1.80, 0.0010, 25.5}` is rolled back ("seconds_per_claim got worse", as a fraction); and a version with no grade is rolled back ("it has no grade")
+- [x] pytest: `read_results` holds the current version, its scores on both sets, the wrong claims and the five right ones with the lowest grades from its latest round evaluation of the evaluation set with the handlers' reasons, the earlier rounds, the round's objectives, noise, tolerance and rule, what's left of the limit and the models allowed; and nothing from the held-out set but its scores: no held-out claim id, reason, reference or decision appears anywhere in it
+- [x] pytest: a round keeps its settings when they change: after `update_settings` raises the limit and the floors, the round's view and its verdict still use the ones it started with
+- [x] pytest: `create_version` refuses a model or an effort outside the round's models allowed with 422; a version is untried and the current version is unchanged until its verdict keeps it
+- [x] pytest: `create_round_evaluation` is refused with 402 when its estimate is more than what's left, naming both amounts; the estimate is the claims times the highest cost per claim seen for the model, or the current model's scaled by the larger price ratio for a model with no runs
+- [x] pytest: once a round's spending reaches its limit, `start_claim` on a copy in its evaluation is refused, and `finish_run` marks that evaluation stopped; its version is rolled back by the verdict
+- [x] pytest: `stop_round` by Dana Whitfield marks the round stopped and its running evaluation stopped, and every service write for that round is then refused with 409; by Marcus Oyelaran it returns 403; a stopped round before its verdict leaves the current version as it was, and one after its verdict keeps it
+- [x] pytest: `decide_proposal` by Dana Whitfield passes the decision, its reason and her name to the agent's service and records nothing itself; a service 409 comes back with its detail; Marcus Oyelaran gets 403 and the service isn't asked; a proposal that isn't waiting returns 409
+- [x] pytest: `start_round` by Dana Whitfield asks the service with her name; `stop_working_rounds` stops the rounds in a working stage and leaves one waiting for approval
+- [x] pytest: a round's cost is the sum of its improver calls, its evaluations' model calls and the judge's calls on them
+- [x] The shared OpenAPI test passes, with every new operation
+- [x] `npm run check` passes
 
 ## Phase 5: The improver and the Improvement page
 
@@ -371,7 +374,7 @@ The rounds, proposals, recipes, spending and the rule, with the service's operat
 - [ ] Stub model test: the improver's model calls are recorded with the round; its traces carry the round's Langfuse session; each claim of its evaluations is tagged with its run and the round; `run_evaluation` runs the dispatcher in a fresh `contextvars.Context`, so no claim checkpoint lands on the improver's thread
 - [ ] Stub model test: the improver's model calls stop at the cap
 - [ ] vitest: the Improvement page shows each stage as it happens, from a stubbed `get_round`; a waiting proposal with its diff in color, the model and effort before and after, and Approve and Reject, each behind the confirmation dialog, with Reject needing a reason; the rounds newest first with scores before and after, verdict and cost; the chart with one point per version tried; the recipe's versions with their diffs; and for Marcus Oyelaran, why he can't start, stop or decide, with no buttons
-- [ ] e2e: signed in as Dana Whitfield, a round and a proposal played out through the API show on the Improvement page; approving it after the confirmation reaches the agent's stand-in with the decision and her handler id
+- [ ] e2e: signed in as Dana Whitfield, a round and a proposal played out through the API show on the Improvement page; approving it after the confirmation reaches the agent's stand-in with the decision and her name
 - [ ] Browser: the Improvement page with no rounds says how to start one, in light and dark mode
 - [ ] `npm run check` passes
 

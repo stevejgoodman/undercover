@@ -161,7 +161,10 @@ def test_stop_every_running_run(client):
     stopped = latest_dispatch(client)
     assert (stopped["run_id"], stopped["status"]) == (running[1], "stopped")
     assert (stopped["finished_at"], stopped["seconds"]) == (None, None)
-    assert finish(client, running[0]).status_code == 409
+    finished_again = finish(client, running[0])
+    assert finished_again.status_code == 200
+    assert finished_again.json()["status"] == "stopped"
+    assert finish(client, finished).status_code == 409
     assert client.post("/api/runs/stop").json() == []
 
 

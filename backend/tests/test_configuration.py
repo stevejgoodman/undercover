@@ -16,7 +16,7 @@ SECOND = {
     "proposed_by": "The improver, round 1",
     "approved_by": "Dana Whitfield",
     "approved_at": "2026-10-24T10:00:00+00:00",
-    "round_id": "round-1",
+    "round_id": None,
     "verdict": None,
     "created_at": "2026-10-24T10:00:00+00:00",
 }
@@ -98,7 +98,7 @@ def test_a_versions_scores_count_only_the_whole_set_evaluations_rounds_ran(clien
             (measures[0][name] + measures[1][name]) / 2
         )
 
-    play_evaluation(client, "held_out", right=True, round_id=None)
+    play_evaluation(client, "held_out", right=True, in_round=False)
     play_evaluation(client, "held_out", right=True, tiny=True)
     stopped = create_evaluation(client, "held_out", tiny=False).json()["run_id"]
     client.post("/api/runs/stop")

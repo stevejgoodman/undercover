@@ -49,6 +49,7 @@ FIRST_VERSION = {
     "proposed_by": UNDERCOVER,
     "approved_by": UNDERCOVER,
     "round_id": None,
+    "proposal_id": None,
     "verdict": VersionVerdict.KEPT,
 }
 DOCUMENTS = {"policy_wording": "Policy wording", "claims_manual": "Claims manual"}
@@ -86,6 +87,73 @@ allowed_models = Table(
     Column("input_price", Float, nullable=False),
     Column("output_price", Float, nullable=False),
 )
+# The improver's recipe, in versions; a round follows the newest.
+recipes = Table(
+    "recipes",
+    metadata,
+    Column("version", Integer, primary_key=True),
+    Column("recipe", Text, nullable=False),
+    Column("reason", Text, nullable=False),
+    Column("proposed_by", Text, nullable=False),
+    Column("approved_by", Text, nullable=False),
+    Column("approved_at", Text, nullable=False),
+    Column("round_id", Text, ForeignKey("rounds.round_id")),
+    # The approved proposal it was made from, once only.
+    Column("proposal_id", Integer, ForeignKey("proposals.proposal_id"), unique=True),
+    Column("created_at", Text, nullable=False),
+)
+# A round of improvement, with the settings and models allowed it started with.
+rounds = Table(
+    "rounds",
+    metadata,
+    Column("number", Integer, primary_key=True),
+    Column("round_id", Text, nullable=False, unique=True),
+    Column("thread_id", Text, nullable=False),
+    Column("stage", Text, nullable=False),
+    Column("recipe_version", Integer, nullable=False),
+    Column("settings", JSON, nullable=False),
+    Column("models_allowed", JSON, nullable=False),
+    Column("version_before", Integer, nullable=False),
+    Column("version_tried", Integer),
+    Column("reason", Text),
+    Column("scores_before", JSON),
+    Column("scores_after", JSON),
+    Column("verdict", Text),
+    Column("why", Text),
+    Column("started_by", Text, nullable=False),
+    Column("started_at", Text, nullable=False),
+    Column("stopped_by", Text),
+    Column("finished_at", Text),
+)
+# What the improver proposed in a round, and what a handler decided.
+proposals = Table(
+    "proposals",
+    metadata,
+    Column("proposal_id", Integer, primary_key=True),
+    Column("round_id", Text, ForeignKey("rounds.round_id"), nullable=False),
+    Column("kind", Text, nullable=False),
+    Column("status", Text, nullable=False),
+    Column("reason", Text, nullable=False),
+    Column("based_on", Integer, nullable=False),
+    Column("instructions", Text),
+    Column("model", Text),
+    Column("reasoning_effort", Text),
+    Column("recipe", Text),
+    Column("decided_by", Text),
+    Column("decided_at", Text),
+    Column("rejection", Text),
+    Column("created_at", Text, nullable=False),
+)
+round_model_calls = Table(
+    "round_model_calls",
+    metadata,
+    Column("round_model_call_id", Integer, primary_key=True),
+    Column("round_id", Text, ForeignKey("rounds.round_id"), nullable=False),
+    Column("input_tokens", Integer, nullable=False),
+    Column("output_tokens", Integer, nullable=False),
+    Column("cost", Float, nullable=False),
+    Column("created_at", Text, nullable=False),
+)
 # The claim agent's configuration, in versions; the current one is the newest kept.
 agent_versions = Table(
     "agent_versions",
@@ -101,7 +169,8 @@ agent_versions = Table(
     Column("proposed_by", Text, nullable=False),
     Column("approved_by", Text, nullable=False),
     Column("approved_at", Text, nullable=False),
-    Column("round_id", Text),
+    Column("round_id", Text, ForeignKey("rounds.round_id")),
+    Column("proposal_id", Integer, ForeignKey("proposals.proposal_id"), unique=True),
     Column("verdict", Text),
     Column("created_at", Text, nullable=False),
 )
@@ -202,7 +271,7 @@ runs = Table(
     Column("kind", Text, nullable=False),
     Column("agents", Integer, nullable=False),
     Column("version", Integer, ForeignKey("agent_versions.version"), nullable=False),
-    Column("round_id", Text),
+    Column("round_id", Text, ForeignKey("rounds.round_id")),
     Column("model", Text, nullable=False),
     Column("reasoning_effort", Text, nullable=False),
     Column("evaluation_set", Text),
@@ -462,13 +531,28 @@ def seed_models(connection: Connection) -> None:
 
 
 def seed_configuration(connection: Connection) -> None:
-    """Store the claim agent's first version, from its instructions file."""
+    """Store the claim agent's first version, from its instructions file, and the
+    improver's first recipe, the lab's, from the file beside it."""
     instructions = (INSTRUCTIONS / "claim.md").read_text(encoding="utf-8")
     stamped = now()
     connection.execute(
         insert(agent_versions),
         FIRST_VERSION
         | {"instructions": instructions, "approved_at": stamped, "created_at": stamped},
+    )
+    connection.execute(
+        insert(recipes),
+        {
+            "version": 1,
+            "recipe": (INSTRUCTIONS / "recipe.md").read_text(encoding="utf-8"),
+            "reason": "The lab's first recipe, which adds a rule for each mistake",
+            "proposed_by": UNDERCOVER,
+            "approved_by": UNDERCOVER,
+            "approved_at": stamped,
+            "round_id": None,
+            "proposal_id": None,
+            "created_at": stamped,
+        },
     )
 
 

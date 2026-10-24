@@ -118,6 +118,11 @@ export const finishRun = (request: Request, runId: string) =>
 
 // The stand-in for the agent's service, which Playwright starts on its own port.
 export const AGENT_STAND_IN = "http://127.0.0.1:8003";
+export const AUTH_STAND_IN = "http://127.0.0.1:8004";
+// The handlers' password in the end-to-end tests, which the Auth stand-in checks.
+export const HANDLER_PASSWORD = "e2e-password";
+export const DANA = "dana.whitfield@undercover.example";
+export const MARCUS = "marcus.oyelaran@undercover.example";
 
 export async function resumed(request: Request): Promise<string[]> {
   const response = await request.get(`${AGENT_STAND_IN}/api/resumed`);

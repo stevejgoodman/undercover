@@ -1,41 +1,25 @@
-import { useState } from "react";
 import { api } from "../api";
-import { useLoad } from "../useLoad";
+import { useHandler } from "../session";
 import { ActionForm } from "./ActionForm";
 
+// Signs a held payout off as the handler signed in, or says why they can't.
 export function SignOffForm({
   claimId,
   onSignedOff,
 }: Readonly<{ claimId: string; onSignedOff: () => void }>) {
-  const { data: handlers } = useLoad(api.listHandlers);
-  const [handlerId, setHandlerId] = useState("");
+  const handler = useHandler();
 
+  if (!handler.can_approve_over_limit)
+    return (
+      <p className="notice" role="note">
+        {handler.name} can't sign off payouts over the approval limit. A senior
+        handler can.
+      </p>
+    );
   return (
     <ActionForm
-      label="Sign off"
-      ready={handlerId !== ""}
-      action={() => api.signOff(claimId, handlerId).then(onSignedOff)}
-    >
-      <label>
-        Handler
-        <select
-          value={handlerId}
-          onChange={(event) => {
-            setHandlerId(event.target.value);
-          }}
-        >
-          <option value="" disabled>
-            Choose a handler
-          </option>
-          {handlers
-            ?.filter((handler) => handler.can_approve_over_limit)
-            .map((handler) => (
-              <option key={handler.handler_id} value={handler.handler_id}>
-                {handler.name}
-              </option>
-            ))}
-        </select>
-      </label>
-    </ActionForm>
+      label={`Sign off as ${handler.name}`}
+      action={() => api.signOff(claimId).then(onSignedOff)}
+    />
   );
 }

@@ -7,14 +7,16 @@ import { REQUEST_FAILED } from "../api";
 // try again after a refusal.
 export function ActionForm({
   label,
+  className = "action-form",
   ready = true,
   action,
   children,
 }: Readonly<{
   label: string;
+  className?: string;
   ready?: boolean;
   action: () => Promise<unknown>;
-  children: ReactNode;
+  children?: ReactNode;
 }>) {
   const [error, setError] = useState<string>();
   const [sending, setSending] = useState(false);
@@ -35,9 +37,9 @@ export function ActionForm({
   }
 
   return (
-    <form className="action-form" onSubmit={submit}>
+    <form className={className} onSubmit={submit}>
       {children}
-      <button type="submit" aria-disabled={disabled}>
+      <button type="submit" className="button" aria-disabled={disabled}>
         {label}
       </button>
       {error && (

@@ -99,7 +99,7 @@ def test_a_copy_cant_be_signed_off(client, agent_calls):
     held = client.get("/api/claims/CLM-1112-E1").json()
     assert held["status"] == "waiting_for_sign_off"
 
-    response = sign_off(client, "CLM-1112-E1", "HND-01")
+    response = sign_off(client, "CLM-1112-E1")
     assert response.status_code == 409
     assert response.json()["detail"] == (
         "Claim CLM-1112-E1 is a copy in an evaluation and can't be signed off"

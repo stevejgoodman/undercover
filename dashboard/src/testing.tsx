@@ -2,11 +2,38 @@ import { render, screen, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
 import { vi } from "vitest";
 import { App } from "./App";
-import type { Claim, ClaimSummary, Policy, PreviousClaim } from "./api";
+import type {
+  Claim,
+  ClaimSummary,
+  Handler,
+  Policy,
+  PreviousClaim,
+} from "./api";
+import { SESSION_KEY } from "./supabase";
 
 // Stands in for the backend: answers "METHOD /path" with the JSON given, or
 // with the status and detail given as an error, and a 404 for anything else.
+// The signed-in handler is Dana Whitfield unless the routes say otherwise.
 export type Routes = Record<string, unknown>;
+
+export const dana: Handler = {
+  handler_id: "HND-01",
+  name: "Dana Whitfield",
+  role: "Senior Claims Handler",
+  email: "dana.whitfield@undercover.example",
+  can_approve_over_limit: true,
+};
+
+export const marcus: Handler = {
+  handler_id: "HND-02",
+  name: "Marcus Oyelaran",
+  role: "Claims Handler",
+  email: "marcus.oyelaran@undercover.example",
+  can_approve_over_limit: false,
+};
+
+export const SIGNED_IN = "GET /api/handlers/me";
+export const ACCESS_TOKEN = "a-test-access-token";
 
 export class Refusal {
   constructor(
@@ -17,7 +44,9 @@ export class Refusal {
 
 export function stubApi(routes: Routes) {
   const fetchMock = vi.fn((path: string, init?: RequestInit) => {
-    const answer = routes[`${init?.method ?? "GET"} ${path}`];
+    const route = `${init?.method ?? "GET"} ${path}`;
+    const answer =
+      route === SIGNED_IN ? (routes[route] ?? dana) : routes[route];
     if (answer === undefined)
       return Promise.resolve(
         Response.json({ detail: "Not found" }, { status: 404 }),
@@ -32,6 +61,13 @@ export function stubApi(routes: Routes) {
   return fetchMock;
 }
 
+// The Authorization header of each request sent to the backend, in order.
+export function authorizations(fetchMock: ReturnType<typeof stubApi>) {
+  return fetchMock.mock.calls
+    .filter(([path]) => path.startsWith("/api/"))
+    .map(([, init]) => new Headers(init?.headers).get("Authorization"));
+}
+
 // The bodies of the requests sent to "METHOD /path", in order.
 export function sent(fetchMock: ReturnType<typeof stubApi>, route: string) {
   return fetchMock.mock.calls
@@ -43,7 +79,32 @@ export function sent(fetchMock: ReturnType<typeof stubApi>, route: string) {
     );
 }
 
-export function renderAt(path: string) {
+// Keeps a session in the browser's storage, as Supabase Auth does after a
+// sign-in, with an access token that lasts the test out.
+export function storeSession() {
+  localStorage.setItem(
+    SESSION_KEY,
+    JSON.stringify({
+      access_token: ACCESS_TOKEN,
+      refresh_token: "a-test-refresh-token",
+      token_type: "bearer",
+      expires_in: 3600,
+      expires_at: Math.floor(Date.now() / 1000) + 3600,
+      user: {
+        id: "user-1",
+        aud: "authenticated",
+        email: dana.email,
+        app_metadata: {},
+        user_metadata: {},
+        created_at: "2026-10-01T00:00:00Z",
+      },
+    }),
+  );
+}
+
+export function renderAt(path: string, signedIn = true) {
+  if (signedIn) storeSession();
+  else localStorage.removeItem(SESSION_KEY);
   render(
     <MemoryRouter initialEntries={[path]}>
       <App />

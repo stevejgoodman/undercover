@@ -35,7 +35,7 @@ def test_a_sign_off_picks_the_claim_up_and_pays_it_once(
 ):
     model, saver = stub(*decide("approve", 1350.0)), InMemorySaver()
     harness.work_claim("CLM-1002", None, graph_on(model, saver))
-    signed = client.post("/api/claims/CLM-1002/sign-off", json={"handler_id": "HND-01"})
+    signed = client.post("/api/claims/CLM-1002/sign-off")
     assert agent_calls == [("/api/claims/CLM-1002/resume", None)]
 
     agent = serve(model, saver)
@@ -63,7 +63,7 @@ def test_a_claim_is_kept_from_dispatches_while_it_is_resumed(
 ):
     model, saver = stub(*decide("approve", 1350.0)), InMemorySaver()
     harness.work_claim("CLM-1002", None, graph_on(model, saver))
-    client.post("/api/claims/CLM-1002/sign-off", json={"handler_id": "HND-01"})
+    client.post("/api/claims/CLM-1002/sign-off")
     seen = []
     carry_on = service.carry_on
 

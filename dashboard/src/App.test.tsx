@@ -6,6 +6,7 @@ import {
   history,
   policy,
   renderAt,
+  sent,
   stubApi,
   summary,
 } from "./testing";
@@ -99,7 +100,7 @@ it("says when a claim doesn't exist, and stops asking for it", async () => {
   renderAt("/claims/CLM-9999");
   expect(await screen.findByText("Claim not found")).toBeDefined();
   await vi.advanceTimersByTimeAsync(5000);
-  expect(fetchMock).toHaveBeenCalledTimes(1);
+  expect(sent(fetchMock, "GET /api/claims/CLM-9999")).toHaveLength(1);
   vi.useRealTimers();
 });
 
@@ -122,12 +123,13 @@ it("shows the claim agent's instructions read only", async () => {
   expect(
     within(claim).getByText(/## Contents of the claims manual/),
   ).toBeDefined();
-  expect(screen.queryByRole("textbox")).toBeNull();
-  expect(screen.queryByRole("button")).toBeNull();
+  const main = within(screen.getByRole("main"));
+  expect(main.queryByRole("textbox")).toBeNull();
+  expect(main.queryByRole("button")).toBeNull();
 });
 
-it("says when a page doesn't exist", () => {
+it("says when a page doesn't exist", async () => {
   stubApi({});
   renderAt("/nowhere");
-  expect(screen.getByText("Page not found")).toBeDefined();
+  expect(await screen.findByText("Page not found")).toBeDefined();
 });

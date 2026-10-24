@@ -1,3 +1,5 @@
+import { accessToken, signOut } from "./supabase";
+
 export const statuses = [
   "waiting",
   "in_progress",
@@ -106,6 +108,7 @@ export interface Handler {
   handler_id: string;
   name: string;
   role: string;
+  email: string;
   can_approve_over_limit: boolean;
 }
 
@@ -205,6 +208,7 @@ export interface Instructions {
 }
 
 export const REQUEST_FAILED = "The request failed";
+const NOT_SIGNED_IN = 401;
 
 export class ApiError extends Error {
   constructor(
@@ -215,8 +219,14 @@ export class ApiError extends Error {
   }
 }
 
+// Sends the signed-in handler's token with every request. A refusal for want of
+// a sign-in signs the handler out, which takes them back to the sign-in page.
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(path, init);
+  const token = await accessToken();
+  const headers = new Headers(init?.headers);
+  if (token) headers.set("Authorization", `Bearer ${token}`);
+  const response = await fetch(path, { ...init, headers });
+  if (response.status === NOT_SIGNED_IN) await signOut();
   if (!response.ok) {
     const body = (await response.json().catch(() => ({}))) as {
       detail?: unknown;
@@ -228,11 +238,11 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   return (await response.json()) as T;
 }
 
-function post<T>(path: string, body: object): Promise<T> {
+function post<T>(path: string, body?: object): Promise<T> {
   return request<T>(path, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
+    body: body && JSON.stringify(body),
   });
 }
 
@@ -253,7 +263,7 @@ export const api = {
       `/api/customers/${encodeURIComponent(customerId)}/claims`,
     ),
   getInstructions: () => request<Instructions>("/api/instructions"),
-  listHandlers: () => request<Handler[]>("/api/handlers"),
+  getSignedInHandler: () => request<Handler>("/api/handlers/me"),
   getLatestDispatch: () => request<Run | null>(`${DISPATCHES}/latest`),
   startDispatch: (agents: number) => post<Accepted>(DISPATCHES, { agents }),
   listEvaluations: () => request<Evaluation[]>(EVALUATIONS),
@@ -269,6 +279,5 @@ export const api = {
       tiny,
       agents,
     }),
-  signOff: (claimId: string, handlerId: string) =>
-    post<Claim>(`${claimPath(claimId)}/sign-off`, { handler_id: handlerId }),
+  signOff: (claimId: string) => post<Claim>(`${claimPath(claimId)}/sign-off`),
 };

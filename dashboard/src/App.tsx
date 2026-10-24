@@ -11,10 +11,34 @@ import {
   QUEUE,
   SCOREBOARD,
 } from "./paths";
+import { SessionGate } from "./components/SessionGate";
+import { useHandler } from "./session";
+import { signOut } from "./supabase";
+
+function SignedIn() {
+  const handler = useHandler();
+  return (
+    <div className="signed-in">
+      <span>
+        <span className="signed-in-name">{handler.name}</span>
+        <span className="muted small"> {handler.role}</span>
+      </span>
+      <button
+        type="button"
+        className="button secondary"
+        onClick={() => {
+          void signOut();
+        }}
+      >
+        Sign out
+      </button>
+    </div>
+  );
+}
 
 export function App() {
   return (
-    <>
+    <SessionGate>
       <header className="header">
         <Link to={QUEUE} className="brand">
           UnderCover <span className="tagline">claims pilot</span>
@@ -26,6 +50,7 @@ export function App() {
           <NavLink to={SCOREBOARD}>Scoreboard</NavLink>
           <NavLink to={INSTRUCTIONS}>Instructions</NavLink>
         </nav>
+        <SignedIn />
       </header>
       <main className="page">
         <Routes>
@@ -37,6 +62,6 @@ export function App() {
           <Route path="*" element={<p className="message">Page not found</p>} />
         </Routes>
       </main>
-    </>
+    </SessionGate>
   );
 }

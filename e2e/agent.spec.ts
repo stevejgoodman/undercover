@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./signed_in";
 import {
   askToPay,
   payClaim,
@@ -80,10 +80,9 @@ test("a sign-off on the dashboard reaches the agent's service", async ({
   const heading = page.locator(".claim-heading");
   await expect(heading.getByText("Waiting for sign-off")).toBeVisible();
   expect(await resumed(request)).not.toContain("CLM-1020");
-  await page.getByRole("combobox", { name: "Handler" }).selectOption({
-    label: "Dana Whitfield",
-  });
-  await page.getByRole("button", { name: "Sign off" }).click();
+  await page
+    .getByRole("button", { name: "Sign off as Dana Whitfield" })
+    .click();
   await expect(heading.getByText("In progress")).toBeVisible();
   await expect(page.getByText(/Signed off by Dana Whitfield/)).toBeVisible();
   await expect.poll(() => resumed(request)).toContain("CLM-1020");

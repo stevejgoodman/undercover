@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./signed_in";
 import type { DecisionKind } from "../dashboard/src/api";
 import {
   createEvaluation,

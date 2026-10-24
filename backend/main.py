@@ -10,13 +10,13 @@ from fastapi import BackgroundTasks, FastAPI, HTTPException, Query
 from sqlalchemy import Connection, RowMapping, insert, select, update
 
 from backend import agent_service
+from backend.auth import SignedIn
 from backend.database import (
     claim_view,
     claims,
     customers,
     decisions,
     engine,
-    handlers,
     is_seeded,
     model_calls,
     now,
@@ -50,7 +50,6 @@ from backend.models import (
     PreviousClaim,
     Section,
     SectionMatch,
-    SignOffRequest,
     StartRequest,
     Status,
     Step,
@@ -211,11 +210,10 @@ def read_section(document: DocumentName, number: int, db: Database) -> Section:
     raise HTTPException(404, f"Section {number} of the {title} not found")
 
 
-@app.get("/api/handlers", operation_id="list_handlers")
-def list_handlers(db: Database) -> list[Handler]:
-    """List the claims handlers."""
-    rows = db.execute(select(handlers).order_by(handlers.c.handler_id)).mappings()
-    return [Handler(**row) for row in rows]
+@app.get("/api/handlers/me", operation_id="get_signed_in_handler")
+def get_signed_in_handler(handler: SignedIn) -> Handler:
+    """Get the handler signed in, and whether they can sign off over the limit."""
+    return handler
 
 
 @app.post("/api/claims/{claim_id}/start", operation_id="start_claim")
@@ -356,9 +354,9 @@ def pay_claim(claim_id: str, request: PaymentRequest, db: Database) -> Claim:
 
 @app.post("/api/claims/{claim_id}/sign-off", operation_id="sign_off_claim")
 def sign_off_claim(
-    claim_id: str, request: SignOffRequest, db: Database, background: BackgroundTasks
+    claim_id: str, handler: SignedIn, db: Database, background: BackgroundTasks
 ) -> Claim:
-    """Sign off a held payout as a handler, so the agent picks the claim up and pays."""
+    """Sign off a held payout as the handler signed in, so the agent pays it."""
     claim = find_claim(db, claim_id)
     if claim["evaluation_id"] is not None:
         raise HTTPException(
@@ -366,11 +364,6 @@ def sign_off_claim(
         )
     if claim["status"] != Status.WAITING_FOR_SIGN_OFF:
         raise HTTPException(409, f"Claim {claim_id} is not waiting for sign-off")
-    query = select(handlers).where(handlers.c.handler_id == request.handler_id)
-    row = db.execute(query).mappings().first()
-    if row is None:
-        raise HTTPException(404, f"Handler {request.handler_id} not found")
-    handler = Handler(**row)
     if not handler.can_approve_over_limit:
         raise HTTPException(
             403,

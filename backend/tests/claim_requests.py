@@ -21,10 +21,8 @@ def pay(client, claim_id, amount):
     return client.post(f"/api/claims/{claim_id}/payment", json={"amount": amount})
 
 
-def sign_off(client, claim_id, handler_id):
-    return client.post(
-        f"/api/claims/{claim_id}/sign-off", json={"handler_id": handler_id}
-    )
+def sign_off(client, claim_id):
+    return client.post(f"/api/claims/{claim_id}/sign-off")
 
 
 def fail(client, claim_id, reason="The model timed out"):

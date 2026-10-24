@@ -10,6 +10,7 @@ from fastapi import APIRouter, HTTPException
 from sqlalchemy import Connection, RowMapping, delete, func, insert, select, update
 
 from backend import agent_service, scoring
+from backend.auth import SignedIn
 from backend.database import (
     LABELED_SETS,
     claim_view,
@@ -347,7 +348,7 @@ def get_latest_dispatch(db: Database) -> Run | None:
 
 
 @router.post("/api/dispatches", operation_id="start_dispatch", status_code=202)
-def start_dispatch(request: StartDispatchRequest) -> Accepted:
+def start_dispatch(request: StartDispatchRequest, _: SignedIn) -> Accepted:
     """Ask the agent's service to start a dispatch with up to N claim agents at once."""
     agent_service.start_dispatch(request.agents)
     return Accepted()
@@ -375,7 +376,7 @@ def get_evaluation(run_id: str, db: Database) -> ScoredEvaluation:
 
 
 @router.post("/api/evaluations", operation_id="start_evaluation", status_code=202)
-def start_evaluation(request: StartEvaluationRequest) -> Accepted:
+def start_evaluation(request: StartEvaluationRequest, _: SignedIn) -> Accepted:
     """Ask the agent's service to start an evaluation with up to N claim agents."""
     agent_service.start_evaluation(request.evaluation_set, request.tiny, request.agents)
     return Accepted()

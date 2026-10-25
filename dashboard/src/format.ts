@@ -1,4 +1,11 @@
-import type { DecisionKind, EvaluationSet, RunStatus, Status } from "./api";
+import type {
+  DecisionKind,
+  EvaluationSet,
+  RoundStage,
+  RunStatus,
+  Status,
+  VersionVerdict,
+} from "./api";
 
 const dollars = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -42,6 +49,18 @@ export function percent(share: number): string {
   return `${String(Math.round(share * 100))}%`;
 }
 
+export const NOT_GRADED = "Not graded";
+
+// The judge's grade, from 0 for F to 3 for A.
+export function grade(score: number | null): string {
+  return score === null ? NOT_GRADED : score.toFixed(2);
+}
+
+// One of the judge's checks, a probability, as yes when it's more likely than not.
+export function check(probability: number): string {
+  return probability > 0.5 ? "Yes" : "No";
+}
+
 export function modelCost(amount: number): string {
   return modelDollars.format(amount);
 }
@@ -68,6 +87,11 @@ export function dateTime(isoTime: string): string {
 
 export function agentsAtOnce(agents: number): string {
   return `${String(agents)} claim ${agents === 1 ? "agent" : "agents"} at once`;
+}
+
+// A reason the backend gives in lower case, as a sentence on its own.
+export function sentence(text: string): string {
+  return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
 export function label(code: string): string {
@@ -97,6 +121,25 @@ export const evaluationSetLabels: Record<EvaluationSet, string> = {
 export function evaluationSetName(set: EvaluationSet, size: number): string {
   return `${evaluationSetLabels[set]}, ${String(size)} claims`;
 }
+
+export const roundStageLabels: Record<RoundStage, string> = {
+  first_evaluations: "First evaluations",
+  improving: "The improver is working",
+  waiting_for_change: "A change is waiting for approval",
+  evaluations: "Evaluations",
+  verdict: "The verdict",
+  waiting_for_recipe: "A recipe is waiting for approval",
+  finished: "Finished",
+  stopped: "Stopped",
+};
+
+export const verdictLabels: Record<VersionVerdict, string> = {
+  kept: "Kept",
+  rolled_back: "Rolled back",
+};
+
+// What a table shows for a measure there's nothing yet to work out from.
+export const NONE_YET = "–";
 
 export const decisionLabels: Record<DecisionKind, string> = {
   approve: "Approved",

@@ -1,5 +1,5 @@
-import { type ReactNode, type SyntheticEvent, useState } from "react";
-import { REQUEST_FAILED } from "../api";
+import type { ReactNode, SyntheticEvent } from "react";
+import { useAction } from "../useAction";
 
 // A form that asks the backend to do one thing, such as signing off a payout
 // or starting a dispatch, and shows the backend's reason if it refuses. The
@@ -7,37 +7,29 @@ import { REQUEST_FAILED } from "../api";
 // try again after a refusal.
 export function ActionForm({
   label,
+  className = "action-form",
   ready = true,
   action,
   children,
 }: Readonly<{
   label: string;
+  className?: string;
   ready?: boolean;
   action: () => Promise<unknown>;
-  children: ReactNode;
+  children?: ReactNode;
 }>) {
-  const [error, setError] = useState<string>();
-  const [sending, setSending] = useState(false);
+  const { run, sending, error } = useAction();
   const disabled = !ready || sending;
 
   function submit(event: SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (disabled) return;
-    setSending(true);
-    setError(undefined);
-    action()
-      .catch((reason: unknown) => {
-        setError(reason instanceof Error ? reason.message : REQUEST_FAILED);
-      })
-      .finally(() => {
-        setSending(false);
-      });
+    if (!disabled) run(action);
   }
 
   return (
-    <form className="action-form" onSubmit={submit}>
+    <form className={className} onSubmit={submit}>
       {children}
-      <button type="submit" aria-disabled={disabled}>
+      <button type="submit" className="button" aria-disabled={disabled}>
         {label}
       </button>
       {error && (

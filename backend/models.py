@@ -33,6 +33,52 @@ class RunStatus(StrEnum):
     STOPPED = "stopped"
 
 
+class LineChange(StrEnum):
+    """How a line of a text changed from one version to the next."""
+
+    ADDED = "added"
+    REMOVED = "removed"
+    UNCHANGED = "unchanged"
+
+
+class VersionVerdict(StrEnum):
+    """Whether a round kept the version of the claim agent it tried."""
+
+    KEPT = "kept"
+    ROLLED_BACK = "rolled_back"
+
+
+class RoundStage(StrEnum):
+    """Where a round of improvement has got to."""
+
+    FIRST_EVALUATIONS = "first_evaluations"
+    IMPROVING = "improving"
+    WAITING_FOR_CHANGE = "waiting_for_change"
+    EVALUATIONS = "evaluations"
+    VERDICT = "verdict"
+    WAITING_FOR_RECIPE = "waiting_for_recipe"
+    FINISHED = "finished"
+    STOPPED = "stopped"
+
+
+class ProposalKind(StrEnum):
+    CHANGE = "change"
+    RECIPE = "recipe"
+
+
+class ProposalStatus(StrEnum):
+    WAITING = "waiting"
+    APPROVED = "approved"
+    REJECTED = "rejected"
+
+
+class Review(StrEnum):
+    """A handler's decision on one of the improver's proposals."""
+
+    APPROVE = "approve"
+    REJECT = "reject"
+
+
 class EvaluationSet(StrEnum):
     """The labeled sets of claims an evaluation can work."""
 
@@ -157,6 +203,7 @@ class Handler(BaseModel):
     handler_id: str
     name: str
     role: str
+    email: str
     can_approve_over_limit: bool
 
 
@@ -166,10 +213,6 @@ class Step(BaseModel):
     kind: StepKind
     content: str
     created_at: str
-
-
-class Instructions(BaseModel):
-    claim: str
 
 
 class Section(BaseModel):
@@ -220,10 +263,6 @@ class DecisionRequest(BaseModel):
 
 class PaymentRequest(BaseModel):
     amount: float = Field(gt=0, description="The approved payout in US dollars")
-
-
-class SignOffRequest(BaseModel):
-    handler_id: str
 
 
 class Plan(BaseModel):
@@ -323,8 +362,9 @@ class StartDispatchRequest(BaseModel):
 
 
 class CreateDispatchRequest(StartDispatchRequest):
+    version: int = Field(ge=1, description="The claim agent's version")
     model: str = Field(min_length=1)
-    reasoning_effort: str = Field(min_length=1, description="Or none")
+    reasoning_effort: str = Field(min_length=1, description="Or default")
 
 
 class RunClaimsRequest(BaseModel):
@@ -356,6 +396,8 @@ class RunDetails(BaseModel):
     number: int
     kind: RunKind
     agents: int
+    version: int
+    round_id: str | None
     model: str
     reasoning_effort: str
     status: RunStatus
@@ -389,11 +431,29 @@ class Measures(BaseModel):
     model_cost_per_claim: float
     seconds_per_claim: float
     run_seconds: float | None
+    grade: float | None = Field(description="The judge's average, or none graded")
+    judge_cost: float = Field(description="In US dollars, apart from the model's")
+
+
+Letter = Literal["F", "C", "B", "A"]
+
+
+class Grade(BaseModel):
+    """The judge's grade on the agent's reason against the handler's: its score
+    from 0 for F to 3 for A, the most likely letter, and the two checks as
+    probabilities."""
+
+    score: float
+    letter: Letter
+    same_grounds: float
+    same_section: float
 
 
 class ScoredClaim(RunClaim):
     copy_of: str
     reason: str | None
+    section: str | None
+    grade: Grade | None = Field(description="None when the judge couldn't grade it")
     handler_decision: DecisionKind
     handler_payout: float
     right: bool
@@ -413,3 +473,290 @@ class ScoredEvaluation(Evaluation):
 
 class Accepted(BaseModel):
     status: Literal["accepted"] = "accepted"
+
+
+class DiffLine(BaseModel):
+    change: LineChange
+    text: str
+
+
+class Objectives(BaseModel):
+    """The floors a new version must reach on the held-out set."""
+
+    accuracy: float = Field(ge=0, le=1)
+    grade: float = Field(ge=0, le=3)
+
+
+class Limits(BaseModel):
+    """How far each measure must move to count: a difference for accuracy and the
+    grade, and a fraction of the old value for cost and time."""
+
+    accuracy: float = Field(ge=0, le=1)
+    grade: float = Field(ge=0, le=3)
+    model_cost_per_claim: float = Field(ge=0)
+    seconds_per_claim: float = Field(ge=0)
+
+
+class SettingsRequest(BaseModel):
+    payout_approval_limit: float = Field(gt=0, description="In US dollars")
+    objectives: Objectives
+    noise: Limits
+    tolerance: Limits
+    spending_limit: float = Field(gt=0, description="For each round, in US dollars")
+    agents: Agents
+
+
+class Settings(SettingsRequest):
+    changed_by: str
+    changed_at: str
+
+
+class SettingsHistory(BaseModel):
+    current: Settings
+    changes: list[Settings] = Field(description="Every version, newest first")
+
+
+class AllowedModel(BaseModel):
+    model: str
+    reasoning_efforts: list[str]
+    input_price: float = Field(description="US dollars per million input tokens")
+    output_price: float = Field(description="US dollars per million output tokens")
+
+
+class Scores(BaseModel):
+    """A version's measures, averaged over the whole-set evaluations rounds ran on
+    it on one set."""
+
+    runs: int
+    decision_accuracy: float
+    accuracy: float
+    cost_of_mistakes: float
+    straight_through: float
+    model_cost_per_claim: float
+    seconds_per_claim: float
+    grade: float | None
+
+
+class VersionScores(BaseModel):
+    evaluation: Scores | None
+    held_out: Scores | None
+
+
+class Configuration(BaseModel):
+    """A version's instructions, model and reasoning effort."""
+
+    version: int
+    instructions: str
+    model: str
+    reasoning_effort: str
+
+
+class AgentConfiguration(Configuration):
+    """What the claim agent works from: its instructions, ending with the
+    documents' contents, its model and its reasoning effort. No scores."""
+
+
+class AgentVersion(BaseModel):
+    version: int
+    instructions: str
+    model: str
+    reasoning_effort: str
+    based_on: int | None = Field(description="The version it was proposed against")
+    change: str
+    reason: str
+    proposed_by: str
+    approved_by: str
+    approved_at: str
+    round_id: str | None
+    verdict: VersionVerdict | None
+    created_at: str
+
+
+class VersionSummary(AgentVersion):
+    current: bool
+    scores: VersionScores
+
+
+class VersionDetails(VersionSummary):
+    diff: list[DiffLine] = Field(description="From the version before, if any")
+
+
+class Progress(BaseModel):
+    """How many of a stage's evaluations have started or finished."""
+
+    done: int
+    of: int
+
+
+class Round(BaseModel):
+    round_id: str
+    number: int
+    thread_id: str
+    stage: RoundStage
+    progress: Progress | None
+    recipe_version: int
+    version_before: int
+    version_tried: int | None
+    reason: str | None = Field(description="The improver's reason for its version")
+    scores_before: Scores | None
+    scores_after: Scores | None
+    verdict: VersionVerdict | None
+    why: str | None
+    started_by: str
+    started_at: str
+    stopped_by: str | None
+    finished_at: str | None
+    cost: float = Field(description="What the round has spent, in US dollars")
+    spending_limit: float
+
+
+class Proposal(BaseModel):
+    proposal_id: int
+    kind: ProposalKind
+    status: ProposalStatus
+    reason: str = Field(description="The improver's reason")
+    based_on: int = Field(description="The version or recipe it was proposed against")
+    instructions: str | None
+    model_before: str | None
+    model: str | None
+    reasoning_effort_before: str | None
+    reasoning_effort: str | None
+    recipe: str | None
+    diff: list[DiffLine]
+    decided_by: str | None
+    decided_at: str | None
+    rejection: str | None
+    created_at: str
+
+
+class RoundDetails(Round):
+    settings: Settings
+    models_allowed: list[AllowedModel]
+    first_evaluations_missing: list[EvaluationSet]
+    proposals: list[Proposal] = Field(description="Oldest first")
+
+
+class Recipe(BaseModel):
+    version: int
+    recipe: str
+    reason: str
+    proposed_by: str
+    approved_by: str
+    approved_at: str
+    round_id: str | None
+    created_at: str
+    diff: list[DiffLine] = Field(description="From the recipe before, if any")
+
+
+class ImproverInstructions(BaseModel):
+    instructions: str
+
+
+class StopRoundsRequest(BaseModel):
+    stopped_by: str = Field(
+        min_length=1, description="Why, such as a restart or an error in the improver"
+    )
+
+
+class CreateRoundRequest(BaseModel):
+    started_by: str = Field(min_length=1, description="The handler who started it")
+
+
+class ChangeProposalRequest(BaseModel):
+    instructions: str = Field(min_length=1, description="The complete instructions")
+    model: str = Field(min_length=1)
+    reasoning_effort: str = Field(min_length=1)
+    reason: str = Field(min_length=1)
+
+
+class RecipeProposalRequest(BaseModel):
+    recipe: str = Field(min_length=1, description="The complete recipe")
+    reason: str = Field(min_length=1)
+
+
+class ReviewRequest(BaseModel):
+    decision: Review
+    reason: str = Field(description="Why, which a rejection needs; or empty")
+
+    @model_validator(mode="after")
+    def check_reason(self) -> Self:
+        """A rejection carries the handler's reason back to the improver."""
+        if self.decision == Review.REJECT and not self.reason.strip():
+            raise ValueError("A rejection needs a reason")
+        return self
+
+
+class RecordReviewRequest(ReviewRequest):
+    handler: str = Field(min_length=1, description="The handler who decided")
+
+
+class FromProposalRequest(BaseModel):
+    proposal_id: int
+
+
+class RoundEvaluationRequest(BaseModel):
+    evaluation_set: EvaluationSet
+    version: int
+    model: str = Field(min_length=1)
+    reasoning_effort: str = Field(min_length=1)
+
+
+class RoundModelCallRequest(BaseModel):
+    input_tokens: int = Field(ge=0)
+    output_tokens: int = Field(ge=0)
+    cost: float = Field(ge=0, description="In US dollars, as OpenRouter reports it")
+
+
+class AgentsAnswer(BaseModel):
+    decision: DecisionKind | None
+    payout: float | None
+    reason: str | None
+    section: str | None
+
+
+class HandlersAnswer(BaseModel):
+    decision: DecisionKind
+    payout: float
+    reason: str
+    reference: str
+
+
+class ClaimBeside(BaseModel):
+    """One claim of the evaluation set, with the agent's answer beside the
+    handler's and the judge's grade, as the improver reads it."""
+
+    claim_id: str
+    summary: str
+    agent: AgentsAnswer
+    handler: HandlersAnswer
+    judge: Grade | None
+
+
+class EarlierRound(BaseModel):
+    round: int
+    recipe_version: int
+    version: int | None
+    model: str | None
+    reasoning_effort: str | None
+    reason: str | None
+    verdict: VersionVerdict | None
+    why: str | None
+    held_out_before: Scores | None
+    held_out_after: Scores | None
+
+
+class ImproverResults(BaseModel):
+    """What the improver reads: everything it needs, and from the held-out set
+    only the scores."""
+
+    current_version: Configuration
+    scores: VersionScores
+    wrong: list[ClaimBeside]
+    explained_least_well: list[ClaimBeside]
+    earlier_rounds: list[EarlierRound]
+    objectives_on_the_held_out_set: Objectives
+    noise: Limits
+    tolerance: Limits
+    rule: str
+    spending_left: float
+    models_allowed: list[AllowedModel]

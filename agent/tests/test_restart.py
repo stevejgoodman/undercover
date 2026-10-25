@@ -141,7 +141,7 @@ def test_stopped_on_the_way_into_the_pause_is_paid_after_the_sign_off(
         harness.work_claim(
             "CLM-1002", None, graph_on(stub(*decide("approve", 1350.0)), saver)
         )
-    client.post("/api/claims/CLM-1002/sign-off", json={"handler_id": "HND-01"})
+    client.post("/api/claims/CLM-1002/sign-off")
 
     report = harness.carry_on("CLM-1002", None, graph_on(stub(), saver))
     assert report == "CLM-1002  approve  $1,350.00"

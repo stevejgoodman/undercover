@@ -75,7 +75,7 @@ def test_the_wait_for_a_sign_off_isnt_counted(client, monkeypatch):
     harness.work_claim("CLM-1002", run_id, graph)
     wait = 3600
     clock.moved += wait
-    client.post("/api/claims/CLM-1002/sign-off", json={"handler_id": "HND-01"})
+    client.post("/api/claims/CLM-1002/sign-off")
     harness.carry_on("CLM-1002", None, graph)
 
     assert claim_of(client, "CLM-1002")["status"] == "decided"

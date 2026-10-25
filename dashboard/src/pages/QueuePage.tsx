@@ -2,6 +2,7 @@ import { api, statuses } from "../api";
 import { DecisionChip, StatusChip } from "../components/Chips";
 import { ClaimLink } from "../components/ClaimLink";
 import { Message } from "../components/Message";
+import { PageHeader } from "../components/PageHeader";
 import { DispatchPanel } from "../components/DispatchPanel";
 import { date, label, money, statusLabels } from "../format";
 import { REFRESH_MS, useLoad } from "../useLoad";
@@ -12,7 +13,10 @@ export function QueuePage() {
 
   return (
     <>
-      <h1>Claims queue</h1>
+      <PageHeader
+        title="Claims queue"
+        lead="Every claim waiting to be decided and where it stands. A dispatch works the waiting claims and those left in progress, with the claim agents at once you choose."
+      />
       <section className="tiles" aria-label="Claims by state">
         {statuses.map((status) => {
           const count = claims.filter((c) => c.status === status).length;

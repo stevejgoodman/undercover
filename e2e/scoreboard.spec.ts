@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./signed_in";
 import type { DecisionKind } from "../dashboard/src/api";
 import {
   createEvaluation,
@@ -54,7 +54,15 @@ test("the Scoreboard shows an evaluation played out through the API", async ({
   const evaluation = `Evaluation #${String(number)}`;
   const row = page.getByRole("row", { name: new RegExp(`^${evaluation} `) });
   await expect(row.getByText("Finished")).toBeVisible();
-  for (const shown of ["80%", "40%", "$620.00", "60%", "$0.0125", "40 s"])
+  for (const shown of [
+    "80%",
+    "40%",
+    "1.92",
+    "$620.00",
+    "60%",
+    "$0.0125",
+    "40 s",
+  ])
     await expect(row.getByText(shown, { exact: true })).toBeVisible();
   await expect(row.getByRole("cell").last()).toHaveText(/^\d+ s$/);
 
@@ -73,9 +81,18 @@ test("the Scoreboard shows an evaluation played out through the API", async ({
         .getByRole("row", { name: new RegExp(copyOf(original)) })
         .getByText("Right"),
     ).toBeVisible();
-  await expect(
-    scored.getByRole("row", { name: new RegExp(copyOf("CLM-1114")) }),
-  ).toContainText("No decision");
+  const undecided = scored.getByRole("row", {
+    name: new RegExp(copyOf("CLM-1114")),
+  });
+  await expect(undecided).toContainText("No decision");
+  await expect(undecided.getByText("F", { exact: true })).toBeVisible();
+  const graded = scored.getByRole("row", {
+    name: new RegExp(copyOf("CLM-1104")),
+  });
+  await expect(graded.getByText("A", { exact: true })).toBeVisible();
+  await expect(graded.getByText("2.40")).toBeVisible();
+  const measures = page.getByRole("region", { name: "Measures" });
+  await expect(measures.getByText("$0.0001")).toBeVisible();
 
   await scored.getByRole("link", { name: copyOf("CLM-1112") }).click();
   await expect(page).toHaveURL(`/claims/${copyOf("CLM-1112")}`);

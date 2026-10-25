@@ -1,3 +1,5 @@
+import { accessToken, signOut } from "./supabase";
+
 export const statuses = [
   "waiting",
   "in_progress",
@@ -106,6 +108,7 @@ export interface Handler {
   handler_id: string;
   name: string;
   role: string;
+  email: string;
   can_approve_over_limit: boolean;
 }
 
@@ -149,6 +152,8 @@ export interface RunDetails {
   number: number;
   kind: RunKind;
   agents: number;
+  version: number;
+  round_id: string | null;
   model: string;
   reasoning_effort: string;
   status: RunStatus;
@@ -173,12 +178,27 @@ export interface Measures {
   model_cost_per_claim: number;
   seconds_per_claim: number;
   run_seconds: number | null;
+  // The judge's average grade from 0 to 3, or null when it graded nothing.
+  grade: number | null;
+  judge_cost: number;
+}
+
+export type Letter = "F" | "C" | "B" | "A";
+
+// The judge's grade on the agent's reason, with its two checks as probabilities.
+export interface Grade {
+  score: number;
+  letter: Letter;
+  same_grounds: number;
+  same_section: number;
 }
 
 // An evaluation's copy of a claim beside the handler's decision on it.
 export interface ScoredClaim extends RunClaim {
   copy_of: string;
   reason: string | null;
+  section: string | null;
+  grade: Grade | null;
   handler_decision: DecisionKind;
   handler_payout: number;
   right: boolean;
@@ -200,11 +220,175 @@ export interface Accepted {
   status: "accepted";
 }
 
-export interface Instructions {
-  claim: string;
+export type LineChange = "added" | "removed" | "unchanged";
+
+export interface DiffLine {
+  change: LineChange;
+  text: string;
+}
+
+// A version's measures, averaged over the whole-set evaluations rounds ran on it.
+export interface Scores {
+  runs: number;
+  decision_accuracy: number;
+  accuracy: number;
+  cost_of_mistakes: number;
+  straight_through: number;
+  model_cost_per_claim: number;
+  seconds_per_claim: number;
+  grade: number | null;
+}
+
+export type VersionVerdict = "kept" | "rolled_back";
+
+export interface AgentVersion {
+  version: number;
+  instructions: string;
+  model: string;
+  reasoning_effort: string;
+  change: string;
+  reason: string;
+  proposed_by: string;
+  approved_by: string;
+  approved_at: string;
+  round_id: string | null;
+  verdict: VersionVerdict | null;
+  created_at: string;
+}
+
+export interface VersionSummary extends AgentVersion {
+  current: boolean;
+  scores: { evaluation: Scores | null; held_out: Scores | null };
+}
+
+export interface VersionDetails extends VersionSummary {
+  diff: DiffLine[];
+}
+
+export const roundStages = [
+  "first_evaluations",
+  "improving",
+  "waiting_for_change",
+  "evaluations",
+  "verdict",
+  "waiting_for_recipe",
+  "finished",
+  "stopped",
+] as const;
+export type RoundStage = (typeof roundStages)[number];
+export type ProposalKind = "change" | "recipe";
+export type ProposalStatus = "waiting" | "approved" | "rejected";
+export type Review = "approve" | "reject";
+
+export interface Progress {
+  done: number;
+  of: number;
+}
+
+export interface Round {
+  round_id: string;
+  number: number;
+  thread_id: string;
+  stage: RoundStage;
+  progress: Progress | null;
+  recipe_version: number;
+  version_before: number;
+  version_tried: number | null;
+  reason: string | null;
+  scores_before: Scores | null;
+  scores_after: Scores | null;
+  verdict: VersionVerdict | null;
+  why: string | null;
+  started_by: string;
+  started_at: string;
+  stopped_by: string | null;
+  finished_at: string | null;
+  cost: number;
+  spending_limit: number;
+}
+
+export interface Proposal {
+  proposal_id: number;
+  kind: ProposalKind;
+  status: ProposalStatus;
+  reason: string;
+  based_on: number;
+  instructions: string | null;
+  model_before: string | null;
+  model: string | null;
+  reasoning_effort_before: string | null;
+  reasoning_effort: string | null;
+  recipe: string | null;
+  diff: DiffLine[];
+  decided_by: string | null;
+  decided_at: string | null;
+  rejection: string | null;
+  created_at: string;
+}
+
+export interface RoundDetails extends Round {
+  settings: Settings;
+  models_allowed: AllowedModel[];
+  first_evaluations_missing: EvaluationSet[];
+  proposals: Proposal[];
+}
+
+export interface Recipe {
+  version: number;
+  recipe: string;
+  reason: string;
+  proposed_by: string;
+  approved_by: string;
+  approved_at: string;
+  round_id: string | null;
+  created_at: string;
+  diff: DiffLine[];
+}
+
+export interface Objectives {
+  accuracy: number;
+  grade: number;
+}
+
+// How far each measure must move to count: a difference for accuracy and the
+// grade, a fraction of the old value for cost and time.
+export interface Limits {
+  accuracy: number;
+  grade: number;
+  model_cost_per_claim: number;
+  seconds_per_claim: number;
+}
+
+export interface SettingsRequest {
+  payout_approval_limit: number;
+  objectives: Objectives;
+  noise: Limits;
+  tolerance: Limits;
+  spending_limit: number;
+  agents: number;
+}
+
+export interface Settings extends SettingsRequest {
+  changed_by: string;
+  changed_at: string;
+}
+
+export interface SettingsHistory {
+  current: Settings;
+  changes: Settings[];
+}
+
+export interface AllowedModel {
+  model: string;
+  reasoning_efforts: string[];
+  input_price: number;
+  output_price: number;
 }
 
 export const REQUEST_FAILED = "The request failed";
+const NOT_SIGNED_IN = 401;
+// A read that never answers would otherwise hold up the page's refreshes.
+const REQUEST_TIMEOUT_MS = 30_000;
 
 export class ApiError extends Error {
   constructor(
@@ -215,8 +399,18 @@ export class ApiError extends Error {
   }
 }
 
+// Sends the signed-in handler's token with every request. A refusal for want of
+// a sign-in signs the handler out, which takes them back to the sign-in page.
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(path, init);
+  const token = await accessToken();
+  const headers = new Headers(init?.headers);
+  if (token) headers.set("Authorization", `Bearer ${token}`);
+  const response = await fetch(path, {
+    ...init,
+    headers,
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+  });
+  if (response.status === NOT_SIGNED_IN) await signOut();
   if (!response.ok) {
     const body = (await response.json().catch(() => ({}))) as {
       detail?: unknown;
@@ -228,17 +422,24 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   return (await response.json()) as T;
 }
 
-function post<T>(path: string, body: object): Promise<T> {
+function send<T>(method: "POST" | "PUT", path: string, body?: object) {
   return request<T>(path, {
-    method: "POST",
+    method,
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
+    body: body && JSON.stringify(body),
   });
 }
+
+const post = <T>(path: string, body?: object) => send<T>("POST", path, body);
 
 const claimPath = (claimId: string) =>
   `/api/claims/${encodeURIComponent(claimId)}`;
 const DISPATCHES = "/api/dispatches";
+const VERSIONS = "/api/configuration/versions";
+const SETTINGS = "/api/settings";
+const ROUNDS = "/api/rounds";
+const roundPath = (roundId: string) =>
+  `${ROUNDS}/${encodeURIComponent(roundId)}`;
 const EVALUATIONS = "/api/evaluations";
 
 export const api = {
@@ -252,8 +453,29 @@ export const api = {
     request<PreviousClaim[]>(
       `/api/customers/${encodeURIComponent(customerId)}/claims`,
     ),
-  getInstructions: () => request<Instructions>("/api/instructions"),
-  listHandlers: () => request<Handler[]>("/api/handlers"),
+  listVersions: () => request<VersionSummary[]>(VERSIONS),
+  getVersion: (version: number) =>
+    request<VersionDetails>(`${VERSIONS}/${String(version)}`),
+  getSettings: () => request<SettingsHistory>(SETTINGS),
+  updateSettings: (settings: SettingsRequest) =>
+    send<Settings>("PUT", SETTINGS, settings),
+  listModels: () => request<AllowedModel[]>("/api/models"),
+  listRounds: () => request<Round[]>(ROUNDS),
+  getRound: (roundId: string) => request<RoundDetails>(roundPath(roundId)),
+  startRound: () => post<Accepted>(ROUNDS),
+  stopRound: (roundId: string) => post<Round>(`${roundPath(roundId)}/stop`),
+  decideProposal: (
+    roundId: string,
+    proposalId: number,
+    decision: Review,
+    reason: string,
+  ) =>
+    post<Accepted>(
+      `${roundPath(roundId)}/proposals/${String(proposalId)}/decision`,
+      { decision, reason },
+    ),
+  listRecipes: () => request<Recipe[]>("/api/recipes"),
+  getSignedInHandler: () => request<Handler>("/api/handlers/me"),
   getLatestDispatch: () => request<Run | null>(`${DISPATCHES}/latest`),
   startDispatch: (agents: number) => post<Accepted>(DISPATCHES, { agents }),
   listEvaluations: () => request<Evaluation[]>(EVALUATIONS),
@@ -269,6 +491,5 @@ export const api = {
       tiny,
       agents,
     }),
-  signOff: (claimId: string, handlerId: string) =>
-    post<Claim>(`${claimPath(claimId)}/sign-off`, { handler_id: handlerId }),
+  signOff: (claimId: string) => post<Claim>(`${claimPath(claimId)}/sign-off`),
 };

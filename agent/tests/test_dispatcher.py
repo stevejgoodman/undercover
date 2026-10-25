@@ -227,7 +227,7 @@ def test_a_dispatch_stopped_partway_is_finished_by_the_next(client):
         dispatch(model, saver, agents=2)
     stopped = {i: claim_of(client, i) for i in ("CLM-1001", "CLM-1003")}
     assert {c["status"] for c in stopped.values()} == {"in_progress"}
-    client.post("/api/claims/CLM-1002/sign-off", json={"handler_id": "HND-01"})
+    client.post("/api/claims/CLM-1002/sign-off")
 
     reports = dispatch(model, saver, agents=2)
     assert sorted(reports) == [
@@ -246,7 +246,7 @@ def test_a_dispatch_stopped_partway_is_finished_by_the_next(client):
 def test_a_dispatch_leaves_a_claim_being_resumed_alone(client):
     leave_waiting("CLM-1001", "CLM-1002")
     harness.work_claim("CLM-1002", None, graph_on(stub(*decide("approve", 1350.0))))
-    client.post("/api/claims/CLM-1002/sign-off", json={"handler_id": "HND-01"})
+    client.post("/api/claims/CLM-1002/sign-off")
     dispatch(swarm({"CLM-1001": decide("refer", 0)}), resuming={"CLM-1002"})
 
     assert [c["claim_id"] for c in latest_dispatch(client)["claims"]] == ["CLM-1001"]

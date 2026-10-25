@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./signed_in";
 
 test("the queue lists every claim", async ({ page }) => {
   await page.goto("/");
@@ -21,13 +21,12 @@ test("a claim opens from the queue", async ({ page }) => {
   await expect(page.getByText("POL-2001")).toBeVisible();
 });
 
-test("the header opens the instructions", async ({ page }) => {
+test("the header opens the claim agent's configuration", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("link", { name: "Instructions" }).click();
-  await expect(page).toHaveURL("/instructions");
-  const claim = page.getByRole("region", { name: "Working a claim" });
-  await expect(
-    claim.getByText(/10\. How we work out your payment/),
-  ).toBeVisible();
-  await expect(claim.getByText(/9\. Repeat claims/)).toBeVisible();
+  await page.getByRole("link", { name: "Configuration" }).click();
+  await expect(page).toHaveURL("/configuration");
+  const current = page.getByRole("region", { name: "Current version: 1" });
+  await expect(current.getByText("openai/gpt-6-luna")).toBeVisible();
+  await current.getByText("Instructions", { exact: true }).click();
+  await expect(current.getByText(/working a claim/)).toBeVisible();
 });

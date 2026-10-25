@@ -13,7 +13,16 @@ from langchain_core.outputs import ChatGeneration, ChatResult
 from langgraph.checkpoint.memory import InMemorySaver
 from pydantic import PrivateAttr
 
-from agent import harness
+from agent import api, harness
+
+
+def setup(agents=3):
+    """How the tests' runs are recorded: N claim agents of the first version, on
+    the stub model."""
+    return api.RunSetup(
+        agents=agents, version=1, model="stub", reasoning_effort="default"
+    )
+
 
 # What OpenRouter reports for each reply.
 USAGE = {"prompt_tokens": 1200, "completion_tokens": 300, "cost": 0.0042}
@@ -24,8 +33,14 @@ class StubModel(GenericFakeChatModel):
     raises a scripted error, and keeps the prompts it was sent."""
 
     prompts: list[list[BaseMessage]] = []
+    # The settings each binding of the tools was given, such as parallel_tool_calls.
+    bound: list[dict[str, Any]] = []
+    # What a run records of the model, as ChatOpenAI has them.
+    model_name: str = "stub"
+    reasoning_effort: str | None = None
 
     def bind_tools(self, tools, **kwargs):
+        self.bound.append(kwargs)
         return self
 
     def next_reply(self, messages):
@@ -106,5 +121,7 @@ def decide(decision, payout):
 
 
 def graph_on(model, saver=None):
-    """The claim graph on a stub model, saving its progress in memory."""
-    return harness.claim_graph(model, saver or InMemorySaver())
+    """The claim graph of the first version on a stub model, saving its progress in
+    memory."""
+    instructions = api.get_agent_version(1)["instructions"]
+    return harness.claim_graph(model, instructions, saver or InMemorySaver())

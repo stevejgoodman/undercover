@@ -5,10 +5,13 @@ import json
 import httpx
 import pytest
 from fastapi.testclient import TestClient
+from openrouter import OpenRouter
 
-from backend import agent_service
+from backend import agent_service, auth, judge
 from backend.database import engine, seed
 from backend.main import app
+from backend.tests.judging import StandInJudge
+from backend.tests.signing import DANA, StandInKeys, signed_in_as
 
 
 @pytest.fixture(autouse=True)
@@ -51,6 +54,35 @@ def agent_calls(agent_answers):
     return calls
 
 
+@pytest.fixture(autouse=True)
+def jev(monkeypatch):
+    """Stand in for the judge on OpenRouter, whatever the shell's MODEL_NAME."""
+    stand_in = StandInJudge()
+    http = httpx.Client(transport=httpx.MockTransport(stand_in.handle))
+    monkeypatch.setattr(judge, "jev", OpenRouter(api_key="test-key", client=http))
+    monkeypatch.delenv("MODEL_NAME", raising=False)
+    return stand_in
+
+
+@pytest.fixture(autouse=True)
+def sign_ins(monkeypatch):
+    """Check sign-ins against the tests' own key, never Supabase's."""
+    monkeypatch.setattr(auth, "keys", StandInKeys())
+
+
 @pytest.fixture
 def client():
+    """The backend, with Dana Whitfield, our senior handler, signed in."""
+    return TestClient(app, headers=signed_in_as(DANA))
+
+
+@pytest.fixture
+def client_as():
+    """The backend, with the handler with the email given signed in."""
+    return lambda email: TestClient(app, headers=signed_in_as(email))
+
+
+@pytest.fixture
+def anonymous():
+    """The backend, with nobody signed in."""
     return TestClient(app)

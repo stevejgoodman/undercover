@@ -39,6 +39,8 @@ const running: Run = {
   number: 4,
   kind: "dispatch",
   agents: 3,
+  version: 1,
+  round_id: null,
   model: "openai/gpt-6-luna",
   reasoning_effort: "low",
   evaluation_set: null,

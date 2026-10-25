@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./signed_in";
 import { started } from "./api";
 
 // Starting runs on the dashboard reaches the stand-in for the agent's service,

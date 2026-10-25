@@ -8,7 +8,7 @@
 - TypeScript: ESLint, Prettier, tsc, and vitest with 80% coverage
 - Playwright end-to-end tests
 
-The checks need no network and never read `.env`: the tests use SQLite, a stub model, and stand-ins for Langfuse and the agent's service. Tables and connections on Supabase can be checked through the Supabase MCP server, which is read-only.
+The checks need no network and never read `.env`: the tests use SQLite, a stub model, signed-in handlers with a key of the tests' own, and stand-ins for Langfuse, the agent's service, Supabase Auth and the judge. Tables and connections on Supabase can be checked through the Supabase MCP server, which is read-only.
 
 The pre-commit hook runs the format, lint, type and unit test checks on every commit.
 
@@ -44,7 +44,8 @@ The checks show that the code works, but not that it is fit to merge. Every code
 ## Rules
 
 - Add tests with each change. Tests never call a model; use a stub model.
-- Before a live dispatch with the real model, reseed once with `npm run seed`. Evaluations work their own copies and need no reseed. Keep to the runs the plan asks for.
+- Before a live dispatch or round with the real model, reseed once with `npm run seed`. Evaluations work their own copies and need no reseed. Keep to the runs the plan asks for.
+- Browser checks sign in as a handler with `HANDLER_PASSWORD` from `.env`.
 - Outside a plan, commit each change once you have checked and reviewed it.
 - Run `npm run check` before you hand work over.
 - Never use `git commit --no-verify`.

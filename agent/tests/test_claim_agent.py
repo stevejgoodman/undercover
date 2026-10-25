@@ -8,6 +8,7 @@ from langgraph.checkpoint.memory import InMemorySaver
 from sqlalchemy import update
 
 from agent import api, harness
+from agent.client import Refused
 from agent.tests.records import claim_of, steps_of
 from agent.tests.stubs import StubModel, call, decide, graph_on, record, stub
 from backend.database import engine, settings
@@ -74,12 +75,15 @@ def test_approves_and_the_graph_pays_within_the_limit(client, caplog):
     assert {s["thread_id"] for s in steps} == {claim["thread_id"]}
 
 
-def test_uses_the_claim_instructions_from_the_backend(client):
+def test_uses_the_versions_instructions_from_the_backend(client):
     model = stub(*decide("refer", 0))
     work("CLM-1003", model)
     system, first = model.prompts[0]
     assert isinstance(system, SystemMessage)
-    assert system.content == client.get("/api/instructions").json()["claim"]
+    agent = client.get("/api/configuration/versions/1/agent").json()
+    assert system.content == agent["instructions"]
+    assert system.text.startswith("# UnderCover Agent: working a claim")
+    assert "## Contents of the claims manual" in system.text
     assert first.content == "Claim CLM-1003"
 
 
@@ -159,6 +163,13 @@ def test_reading_a_section_is_recorded(client):
     assert steps[5] == ("tool_call", 'search_documents(query="wild animal")')
     assert steps[6][1].startswith('search_documents: [{"document": "claims_manual"')
     assert [s for s in steps if s[0] == "reading"] == [steps[2]]
+
+
+def test_a_tool_call_is_recorded_as_a_handler_reads_it(client):
+    model = stub(call("search_documents", query="§3 – café"), *decide("refer", 0))
+    work("CLM-1004", model)
+    steps = [(s["kind"], s["content"]) for s in steps_of(client, "CLM-1004")]
+    assert steps[0] == ("tool_call", 'search_documents(query="§3 – café")')
 
 
 def test_a_section_with_bad_arguments_goes_back_to_the_model(client):
@@ -308,7 +319,7 @@ def test_a_failure_after_the_decision_keeps_it(client, monkeypatch, caplog):
 def test_a_claim_that_isnt_waiting_is_not_started(client):
     work("CLM-1003", stub(*decide("refer", 0)))
     before = steps_of(client, "CLM-1003")
-    with pytest.raises(api.Refused, match="^409: Claim CLM-1003 is not waiting$"):
+    with pytest.raises(Refused, match="^409: Claim CLM-1003 is not waiting$"):
         work("CLM-1003", stub())
     assert steps_of(client, "CLM-1003") == before
     assert claim_of(client, "CLM-1003")["attempts"] == 1

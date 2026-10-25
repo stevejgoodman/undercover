@@ -10,6 +10,7 @@ from backend.tests.claim_requests import (
     sign_off,
     start,
 )
+from backend.tests.rounds_played import TINY_HELD_OUT
 from backend.tests.run_requests import (
     create_dispatch,
     create_evaluation,
@@ -18,8 +19,6 @@ from backend.tests.run_requests import (
     queue,
     record_claims,
 )
-
-TINY_HELD_OUT = ["CLM-1114", "CLM-1106", "CLM-1112", "CLM-1104", "CLM-1110"]
 
 
 def test_an_evaluation_works_copies_of_its_claims(client):
@@ -99,7 +98,7 @@ def test_a_copy_cant_be_signed_off(client, agent_calls):
     held = client.get("/api/claims/CLM-1112-E1").json()
     assert held["status"] == "waiting_for_sign_off"
 
-    response = sign_off(client, "CLM-1112-E1", "HND-01")
+    response = sign_off(client, "CLM-1112-E1")
     assert response.status_code == 409
     assert response.json()["detail"] == (
         "Claim CLM-1112-E1 is a copy in an evaluation and can't be signed off"
@@ -127,6 +126,8 @@ def test_an_evaluation_not_yet_worked_counts_every_copy_as_a_referral(client):
         "model_cost_per_claim": 0.0,
         "seconds_per_claim": 0.0,
         "run_seconds": None,
+        "grade": None,
+        "judge_cost": 0.0,
     }
     assert "claims" not in listed
 

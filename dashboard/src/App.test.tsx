@@ -5,12 +5,17 @@ import {
   claim,
   history,
   policy,
+  dana,
   renderAt,
+  sent,
   stubApi,
   summary,
 } from "./testing";
 
+const SIGNED_IN_PATH = "/api/handlers/me";
+
 afterEach(() => {
+  vi.useRealTimers();
   cleanup();
   vi.unstubAllGlobals();
 });
@@ -99,7 +104,7 @@ it("says when a claim doesn't exist, and stops asking for it", async () => {
   renderAt("/claims/CLM-9999");
   expect(await screen.findByText("Claim not found")).toBeDefined();
   await vi.advanceTimersByTimeAsync(5000);
-  expect(fetchMock).toHaveBeenCalledTimes(1);
+  expect(sent(fetchMock, "GET /api/claims/CLM-9999")).toHaveLength(1);
   vi.useRealTimers();
 });
 
@@ -109,25 +114,26 @@ it("shows other errors loading a claim", async () => {
   expect((await screen.findByRole("alert")).textContent).toBe("Server error");
 });
 
-it("shows the claim agent's instructions read only", async () => {
-  stubApi({
-    "GET /api/instructions": {
-      claim: "# Working a claim\n\n## Contents of the claims manual",
-    },
-  });
-  renderAt("/instructions");
-  const claim = await screen.findByRole("region", { name: "Working a claim" });
-  expect(await within(claim).findByText(/# Working a claim/)).toBeDefined();
-  expect(screen.getAllByRole("region")).toHaveLength(1);
-  expect(
-    within(claim).getByText(/## Contents of the claims manual/),
-  ).toBeDefined();
-  expect(screen.queryByRole("textbox")).toBeNull();
-  expect(screen.queryByRole("button")).toBeNull();
-});
-
-it("says when a page doesn't exist", () => {
+it("says when a page doesn't exist", async () => {
   stubApi({});
   renderAt("/nowhere");
-  expect(screen.getByText("Page not found")).toBeDefined();
+  expect(await screen.findByText("Page not found")).toBeDefined();
+});
+
+it("waits for a slow read before refreshing again", async () => {
+  vi.useFakeTimers({ shouldAdvanceTime: true });
+  const slow = new Promise<Response>(() => undefined);
+  const fetchMock = vi.fn((path: string) => {
+    if (path === "/api/claims") return slow;
+    const body = path === SIGNED_IN_PATH ? dana : null;
+    return Promise.resolve(Response.json(body));
+  });
+  vi.stubGlobal("fetch", fetchMock);
+  renderAt("/");
+  await screen.findByText("Dana Whitfield");
+  await vi.advanceTimersByTimeAsync(7000);
+  const claims = fetchMock.mock.calls.filter(
+    ([path]) => path === "/api/claims",
+  );
+  expect(claims).toHaveLength(1);
 });

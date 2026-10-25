@@ -2,7 +2,10 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router";
 import { App } from "./App";
+import { applyAppearance, storedAppearance } from "./appearance";
 import "./styles.css";
+
+applyAppearance(storedAppearance());
 
 const root = document.getElementById("root");
 if (!root) throw new Error("index.html has no #root element");

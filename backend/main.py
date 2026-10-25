@@ -3,34 +3,46 @@
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from datetime import UTC, datetime, timedelta
-from pathlib import Path
 from typing import Annotated
 
 from fastapi import BackgroundTasks, FastAPI, HTTPException, Query
 from sqlalchemy import Connection, RowMapping, insert, select, update
 
-from backend import agent_service
+from backend import (
+    agent_service,
+    configuration,
+    platform_settings,
+    rounds,
+    runs,
+)
+from backend.auth import CANT_SIGN_OFF, SignedIn
 from backend.database import (
     claim_view,
     claims,
     customers,
     decisions,
     engine,
-    handlers,
     is_seeded,
     model_calls,
     now,
     payments,
+    plans,
     policies,
     seed,
-    settings,
     stamp,
     steps,
     work_times,
 )
 from backend.dependencies import Database
-from backend.documents import contents, search, sections, titles
-from backend.lookups import CLAIM_NOT_FOUND, run_row
+from backend.documents import search, sections, titles
+from backend.lookups import (
+    CLAIM_NOT_FOUND,
+    SPENT,
+    current_settings,
+    round_left,
+    round_row,
+    run_row,
+)
 from backend.models import (
     Claim,
     ClaimSummary,
@@ -39,7 +51,6 @@ from backend.models import (
     DocumentName,
     FailureRequest,
     Handler,
-    Instructions,
     ModelCall,
     ModelCallRequest,
     PaymentRequest,
@@ -48,9 +59,9 @@ from backend.models import (
     Plans,
     Policy,
     PreviousClaim,
+    RunStatus,
     Section,
     SectionMatch,
-    SignOffRequest,
     StartRequest,
     Status,
     Step,
@@ -59,10 +70,8 @@ from backend.models import (
     WorkTimeRequest,
 )
 from backend.payout import needs_sign_off, work_out_payout
-from backend.runs import router
-from backend.views import to_claim, to_summary
+from backend.views import dollars, to_claim, to_summary
 
-INSTRUCTIONS = Path(__file__).parent / "instructions"
 ATTEMPTS = 2
 
 
@@ -75,22 +84,21 @@ async def lifespan(_: FastAPI) -> AsyncIterator[None]:
 
 
 app = FastAPI(title="UnderCover", lifespan=lifespan)
-app.include_router(router)
-
-
-def dollars(amount: float) -> str:
-    """Format an amount like $1,250.00."""
-    return f"${amount:,.2f}"
+app.include_router(runs.router)
+app.include_router(configuration.router)
+app.include_router(platform_settings.router)
+app.include_router(rounds.router)
 
 
 def approval_limit(db: Connection) -> float:
-    """Return the largest payout that can be paid without a handler's sign-off."""
-    return db.execute(select(settings.c.payout_approval_limit)).scalar_one()
+    """Return the largest payout that can be paid without a handler's sign-off, as
+    the settings stand now."""
+    return current_settings(db).payout_approval_limit
 
 
-def plans(db: Connection) -> Plans:
+def plans_of(db: Connection) -> Plans:
     """Return the plans and add-ons, and the benefits the deductible applies to."""
-    return Plans(**db.execute(select(settings.c.plans)).scalar_one())
+    return Plans(**db.execute(select(plans.c.plans)).scalar_one())
 
 
 def find_claim(db: Connection, claim_id: str) -> RowMapping:
@@ -130,6 +138,18 @@ def check_run(db: Connection, run_id: str | None) -> None:
     """Check that the run named, if any, exists, or raise a 404."""
     if run_id is not None:
         run_row(db, run_id)
+
+
+def check_evaluation_goes_on(db: Connection, run_id: str) -> None:
+    """Refuse to start a copy in an evaluation that has stopped, or in a round that
+    has spent its limit."""
+    run = run_row(db, run_id)
+    if run["status"] != RunStatus.RUNNING:
+        raise HTTPException(409, f"Evaluation #{run['number']} isn't running")
+    if run["round_id"] is not None:
+        row = round_row(db, run["round_id"])
+        if round_left(db, row) <= 0:
+            raise HTTPException(409, SPENT.format(number=row["number"]))
 
 
 def add_step(
@@ -186,13 +206,6 @@ def get_claim_history(customer_id: str, db: Database) -> list[PreviousClaim]:
     return [PreviousClaim(**claim) for claim in record["previous_claims"]]
 
 
-@app.get("/api/instructions", operation_id="get_instructions")
-def get_instructions(db: Database) -> Instructions:
-    """Get the claim agent's instructions, ending with the documents' contents."""
-    claim = (INSTRUCTIONS / "claim.md").read_text(encoding="utf-8")
-    return Instructions(claim=f"{claim}\n{contents(db)}")
-
-
 @app.get("/api/documents/search", operation_id="search_documents")
 def search_documents(
     query: Annotated[str, Query(min_length=1)], db: Database
@@ -211,18 +224,20 @@ def read_section(document: DocumentName, number: int, db: Database) -> Section:
     raise HTTPException(404, f"Section {number} of the {title} not found")
 
 
-@app.get("/api/handlers", operation_id="list_handlers")
-def list_handlers(db: Database) -> list[Handler]:
-    """List the claims handlers."""
-    rows = db.execute(select(handlers).order_by(handlers.c.handler_id)).mappings()
-    return [Handler(**row) for row in rows]
+@app.get("/api/handlers/me", operation_id="get_signed_in_handler")
+def get_signed_in_handler(handler: SignedIn) -> Handler:
+    """Get the handler signed in, and whether they can sign off over the limit."""
+    return handler
 
 
 @app.post("/api/claims/{claim_id}/start", operation_id="start_claim")
 def start_claim(claim_id: str, request: StartRequest, db: Database) -> Claim:
     """Start work on a waiting claim, which moves it to in progress."""
-    if find_claim(db, claim_id)["status"] != Status.WAITING:
+    claim = find_claim(db, claim_id)
+    if claim["status"] != Status.WAITING:
         raise HTTPException(409, f"Claim {claim_id} is not waiting")
+    if claim["evaluation_id"] is not None:
+        check_evaluation_goes_on(db, claim["evaluation_id"])
     db.execute(
         update(claims)
         .where(claims.c.claim_id == claim_id)
@@ -322,7 +337,7 @@ def record_decision(claim_id: str, request: DecisionRequest, db: Database) -> Cl
 def calculate_payout(claim_id: str, request: PayoutRequest, db: Database) -> Payout:
     """Work out an approval's payout with UnderCover's payout rules; records nothing."""
     policy = find_policy(db, to_claim(find_claim(db, claim_id)).policy_id)
-    return work_out_payout(policy, plans(db), request, approval_limit(db))
+    return work_out_payout(policy, plans_of(db), request, approval_limit(db))
 
 
 @app.post("/api/claims/{claim_id}/payment", operation_id="pay_claim")
@@ -356,9 +371,9 @@ def pay_claim(claim_id: str, request: PaymentRequest, db: Database) -> Claim:
 
 @app.post("/api/claims/{claim_id}/sign-off", operation_id="sign_off_claim")
 def sign_off_claim(
-    claim_id: str, request: SignOffRequest, db: Database, background: BackgroundTasks
+    claim_id: str, handler: SignedIn, db: Database, background: BackgroundTasks
 ) -> Claim:
-    """Sign off a held payout as a handler, so the agent picks the claim up and pays."""
+    """Sign off a held payout as the handler signed in, so the agent pays it."""
     claim = find_claim(db, claim_id)
     if claim["evaluation_id"] is not None:
         raise HTTPException(
@@ -366,16 +381,9 @@ def sign_off_claim(
         )
     if claim["status"] != Status.WAITING_FOR_SIGN_OFF:
         raise HTTPException(409, f"Claim {claim_id} is not waiting for sign-off")
-    query = select(handlers).where(handlers.c.handler_id == request.handler_id)
-    row = db.execute(query).mappings().first()
-    if row is None:
-        raise HTTPException(404, f"Handler {request.handler_id} not found")
-    handler = Handler(**row)
     if not handler.can_approve_over_limit:
-        raise HTTPException(
-            403,
-            f"{handler.name} can't sign off payouts over {dollars(approval_limit(db))}",
-        )
+        limit = dollars(approval_limit(db))
+        raise HTTPException(403, CANT_SIGN_OFF.format(name=handler.name, limit=limit))
     db.execute(
         update(decisions)
         .where(decisions.c.claim_id == claim_id)

@@ -62,10 +62,16 @@ The claims pilot in `docs/PLAN.md`, the harness in `docs/PLAN_HARNESS.md` and du
 - GPT-6 Luna sometimes ends its turn with a message instead of recording a decision: 4 times in the live runs below. The harness fails that attempt and the dispatch works the claim once more. A claim this happens to twice is left for a handler, as CLM-1017-E3 was.
 - Langfuse loses the traces of claims stopped by `kill -9` before the service's client sent them.
 - Stopping `npm run dev` with SIGTERM twice left a uvicorn reloader holding its port with no worker; `kill -9` on it cleared the port.
+- In the live run, version 1's two held-out runs differed by more than the noise on accuracy and the grade, so a version can be kept or rolled back on luck. The noise is a setting a senior handler can raise.
+- A model call of the improver's in flight when its round is stopped isn't recorded with the round, since the backend refuses anything a stopped round records; OpenRouter's credit limit still covers it.
+- Only one round is open at a time by the backend's check and the service's lock, not a database constraint.
+- On Supabase, the Scoreboard's list of evaluations and the Configuration page's versions take about two seconds to read, since each evaluation is scored with queries of its own; a page's refresh waits for the read before it.
+- The Python tests take about two minutes, mostly the improver's rounds working 75 or more claims each through the claim graph.
+- A handler's Supabase sign-in lasts as Supabase's session does; the dashboard signs them out when the backend refuses the token.
 
 ## Supabase
 
-The backend's tables and the checkpointer's are in the `undercover` schema. Row Level Security is off on them, and Supabase's table listing warns about that, but the schema isn't exposed through Supabase's Data API: the `anon`, `authenticated` and `service_role` roles have no access to it, and Supabase's security advisor reports nothing. The backend and the agent connect as `postgres`, the tables' owner.
+The backend's tables and the checkpointer's are in the `undercover` schema. Row Level Security is off on them, and Supabase's table listing warns about that, but the schema isn't exposed through Supabase's Data API: the `anon`, `authenticated` and `service_role` roles have no access to it, and Supabase's security advisor reports nothing. Handlers sign in through Supabase Auth, where sign-ups are off. The backend and the agent connect as `postgres`, the tables' owner.
 
 ## Review of the harness
 
@@ -81,7 +87,19 @@ These problems passed every check. Each phase was built, checked against its cri
 
 ## Last live run
 
-On October 3, 2026, after one `npm run seed`, with `npm run dev` running and `openai/gpt-6-luna` at low reasoning effort:
+On October 24, 2026, after one `npm run seed`, with `npm run dev` running and the default models, driven from the dashboard signed in as Dana Whitfield with Playwright scripts (the Playwright MCP server wasn't connected in this session):
+
+- **Round 1**, started on the Improvement page, ran version 1's first evaluations (about 100 seconds each at 25 claim agents at once), then the improver proposed a change of five rules. It was rejected with the reason "Some rules restate single claims, such as the rebooking fee and the meal periods. State each rule as the claims manual would, so it holds for any claim, and keep the additions short." The improver's next proposal was shorter and general, and was approved. Version 2's held-out accuracy fell from 82% to 46% and its grade from 1.36 to 0.47, so it was rolled back: "it missed the objectives on accuracy and grade". The improver's new recipe, approved, makes smaller, document-grounded changes. The round cost $0.157 of its $0.50.
+- **Round 2** followed recipe 2 and needed no first evaluations. Its change, approved, raised held-out accuracy from 82% to 90% and the grade from 1.36 to 1.42, and cut time per claim from 77 to 67 seconds, but none by more than its noise (10 points, 0.15 and 15%), so version 3 was rolled back: "no measure improved by more than the noise". Its recipe was approved, and the round cost $0.079. Version 1 is still current.
+- **Version 1's two held-out runs** differed by 12 points of accuracy (76% and 88%, against a noise and tolerance of 10), 0.26 of grade (1.23 and 1.49, against 0.15), 7% of model cost per claim ($0.0010 and $0.0011, against 15% and 100%) and 2% of time per claim (77.8 and 76.2 seconds, against 15% and 25%). Accuracy and the grade move by more than their noise with no change at all, so the rule's noise on those two is on the low side for 25 claims.
+- **Time per claim** was about 77 seconds in rounds at 25 claim agents at once, against 21 seconds in the swarm's live run: each claim also waits for the database connections the others hold.
+- **Langfuse**: through the v2 observations API (this organization has no legacy traces API, and Langfuse says that endpoint goes on November 16, 2026), round 1's session `Round 1:<id>` held its four "Improver round 1" traces, one for each stretch, and round 2's its three.
+- **A dispatch at N=25** on version 1 finished in 92 seconds for $0.025: 18 approved, 5 declined and 2 referred, with CLM-1003, CLM-1008 and CLM-1011 waiting for sign-off. Signed in as Marcus Oyelaran, CLM-1008's page said "Marcus Oyelaran can't sign off payouts over $1,000.00. A senior handler can." with no button, and the Settings page showed the settings as text with no fields. Signed in as Dana Whitfield, CLM-1008 was signed off and paid $2,240.00.
+- **Spend**: the live checks used $0.25 of the OpenRouter key's credit.
+
+## Earlier live runs
+
+The swarm's live run, on October 3, 2026, after one `npm run seed`, with `npm run dev` running and `openai/gpt-6-luna` at low reasoning effort:
 - **A dispatch at N=3**, started on the queue page, settled six claims in under 30 seconds: CLM-1001 was approved and paid $420.00, CLM-1008 ($2,240.00) and CLM-1011 ($1,150.00) were approved and held for sign-off, CLM-1010 and CLM-1015 were declined and CLM-1018 referred. Each took 11 to 14 seconds. Then `kill -9` on every process on port 8002 stopped the service, and `npm run dev` stopped the others, with CLM-1003, CLM-1004 and CLM-1012 partway through as attempt 1. After `npm run dev` started again, the dispatch showed Stopped.
 - **A dispatch at N=25** worked the 19 claims left: the three in progress and 16 waiting. All 19 started in the same second, and the dispatch finished in 30 seconds, against 402.8 seconds of claim work added up, at a model cost of $0.0204. Its summary: 15 approved, with CLM-1003 ($3,750.00) waiting for sign-off, 3 declined and 1 referred, none left for a handler or the next dispatch.
   - CLM-1003 and CLM-1012 carried on as attempt 1 on their threads, each with one decision.
@@ -100,8 +118,6 @@ On October 3, 2026, after one `npm run seed`, with `npm run dev` running and `op
   | The held-out set's five tiny claims at N=5 | 19 s | 100% | 80% | $630.00 | 80% | $0.0010 | 14 s |
 
 - **Langfuse**: `trace.list(tags=[run_id])` for the N=25 dispatch returned 20 traces, one for each of its 19 claims and one for CLM-1004's second attempt.
-
-## Earlier live runs
 
 On October 2, 2026, after `npm run seed` and with `npm run dev` running, `uv run -m agent --cap 5` with `deepseek/deepseek-v4.1-flash` worked the five longest-waiting claims in 2 minutes 42 seconds, with the same decisions as on September 30:
 - CLM-1001 was approved and paid $420.00, the payout `calculate_payout` worked out.

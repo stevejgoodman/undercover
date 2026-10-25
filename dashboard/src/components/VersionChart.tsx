@@ -8,7 +8,8 @@ interface Point {
 }
 
 // Each version the rounds measured on the held-out set, oldest first: the one a
-// round started from, and the one it tried, with its verdict.
+// round started from, and the one it tried, with its verdict. Each tried version
+// was tried from the one before it was kept, so the points aren't joined.
 function versionsTried(rounds: Round[]): Point[] {
   const points = new Map<number, Point>();
   for (const round of [...rounds].reverse()) {
@@ -38,7 +39,7 @@ const WIDTH = 520;
 const HEIGHT = 170;
 const LEFT = 44;
 const RIGHT = 16;
-const TOP = 14;
+const TOP = 28;
 const BOTTOM = 30;
 
 function Panel({
@@ -67,9 +68,6 @@ function Panel({
     const value = read(point.scores);
     return value === null ? [] : [{ point, index, value }];
   });
-  const line = shown.map(
-    ({ index, value }) => `${String(x(index))},${String(y(value))}`,
-  );
   const summary = shown
     .map(
       ({ point, value }) => `version ${String(point.version)} ${show(value)}`,
@@ -105,7 +103,6 @@ function Panel({
           y1={y(floor)}
           y2={y(floor)}
         />
-        <polyline className="chart-line" points={line.join(" ")} />
         {shown.map(({ point, index, value }) => (
           <g key={point.version}>
             <circle
@@ -114,6 +111,9 @@ function Panel({
               cy={y(value)}
               r={6}
             />
+            <text className="chart-value" x={x(index)} y={y(value) - 11}>
+              {show(value)}
+            </text>
             <text className="chart-label" x={x(index)} y={HEIGHT - BOTTOM + 18}>
               v{point.version}
             </text>
@@ -153,7 +153,7 @@ export function VersionChart({
           read={(scores) => scores.grade}
           top={3}
           floor={floors.grade}
-          show={(value) => value.toFixed(1)}
+          show={(value) => value.toFixed(2)}
         />
       </div>
       <p className="chart-key small muted">

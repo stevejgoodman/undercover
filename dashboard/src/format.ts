@@ -89,6 +89,11 @@ export function agentsAtOnce(agents: number): string {
   return `${String(agents)} claim ${agents === 1 ? "agent" : "agents"} at once`;
 }
 
+// A reason the backend gives in lower case, as a sentence on its own.
+export function sentence(text: string): string {
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
 export function label(code: string): string {
   const words = code.replaceAll("_", " ");
   return words.charAt(0).toUpperCase() + words.slice(1);

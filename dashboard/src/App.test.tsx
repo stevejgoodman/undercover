@@ -5,13 +5,17 @@ import {
   claim,
   history,
   policy,
+  dana,
   renderAt,
   sent,
   stubApi,
   summary,
 } from "./testing";
 
+const SIGNED_IN_PATH = "/api/handlers/me";
+
 afterEach(() => {
+  vi.useRealTimers();
   cleanup();
   vi.unstubAllGlobals();
 });
@@ -114,4 +118,22 @@ it("says when a page doesn't exist", async () => {
   stubApi({});
   renderAt("/nowhere");
   expect(await screen.findByText("Page not found")).toBeDefined();
+});
+
+it("waits for a slow read before refreshing again", async () => {
+  vi.useFakeTimers({ shouldAdvanceTime: true });
+  const slow = new Promise<Response>(() => undefined);
+  const fetchMock = vi.fn((path: string) => {
+    if (path === "/api/claims") return slow;
+    const body = path === SIGNED_IN_PATH ? dana : null;
+    return Promise.resolve(Response.json(body));
+  });
+  vi.stubGlobal("fetch", fetchMock);
+  renderAt("/");
+  await screen.findByText("Dana Whitfield");
+  await vi.advanceTimersByTimeAsync(7000);
+  const claims = fetchMock.mock.calls.filter(
+    ([path]) => path === "/api/claims",
+  );
+  expect(claims).toHaveLength(1);
 });

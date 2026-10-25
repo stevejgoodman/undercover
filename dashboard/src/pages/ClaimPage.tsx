@@ -3,11 +3,13 @@ import { Link, useParams } from "react-router";
 import { api, type Claim } from "../api";
 import { StatusChip } from "../components/Chips";
 import { DecisionPanel } from "../components/DecisionPanel";
+import { Breadcrumb } from "../components/Breadcrumb";
 import { Message } from "../components/Message";
+import { PageHeader } from "../components/PageHeader";
 import { HistoryPanel, PolicyPanel } from "../components/PolicyPanels";
 import { StepList } from "../components/StepList";
 import { date, label, money } from "../format";
-import { evaluationPage } from "../paths";
+import { QUEUE, SCOREBOARD, evaluationPage } from "../paths";
 import { REFRESH_MS, useLoad } from "../useLoad";
 
 export function ClaimPage() {
@@ -20,15 +22,37 @@ export function ClaimPage() {
   return (
     <>
       <div className="claim-heading">
-        <p className="mono muted">{claim.claim_id}</p>
-        {claim.evaluation_id && (
-          <p className="copy-note">
-            A copy of <span className="mono">{claim.copy_of}</span> in an{" "}
-            <Link to={evaluationPage(claim.evaluation_id)}>evaluation</Link>
-          </p>
-        )}
-        <h1>{claim.summary}</h1>
-        <StatusChip status={claim.status} />
+        <Breadcrumb
+          crumbs={
+            claim.evaluation_id
+              ? [
+                  { label: "Scoreboard", to: SCOREBOARD },
+                  {
+                    label: "Evaluation",
+                    to: evaluationPage(claim.evaluation_id),
+                  },
+                  { label: claim.claim_id },
+                ]
+              : [{ label: "Queue", to: QUEUE }, { label: claim.claim_id }]
+          }
+        />
+        <PageHeader
+          title={claim.summary}
+          lead={
+            <>
+              <StatusChip status={claim.status} />
+              {claim.evaluation_id && " "}
+              {claim.evaluation_id && (
+                <span className="copy-note">
+                  A copy of <span className="mono">{claim.copy_of}</span> in an{" "}
+                  <Link to={evaluationPage(claim.evaluation_id)}>
+                    evaluation
+                  </Link>
+                </span>
+              )}
+            </>
+          }
+        />
       </div>
       <div className="claim-layout">
         <div className="column">

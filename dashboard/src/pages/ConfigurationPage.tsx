@@ -19,7 +19,12 @@ export function ConfigurationPage() {
         lead="The claim agent's instructions, model and reasoning effort, kept in versions. Every dispatch uses the current version. A new version comes only from a round of improvement that a senior handler approved."
       />
       <div className="column">
-        {!versions && <Message error={error} />}
+        {!versions && (
+          <section className="panel" aria-labelledby="loading-title">
+            <h2 id="loading-title">Current version</h2>
+            <Message error={error} />
+          </section>
+        )}
         {current && <CurrentVersion version={current} />}
         {versions && (
           <Versions versions={versions} shown={shown} onShow={setShown} />

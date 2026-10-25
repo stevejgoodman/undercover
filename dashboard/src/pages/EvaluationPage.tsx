@@ -7,9 +7,11 @@ import {
   api,
 } from "../api";
 import { DecisionPayout, RightChip, RunChip } from "../components/Chips";
+import { Breadcrumb } from "../components/Breadcrumb";
 import { ClaimLink } from "../components/ClaimLink";
 import { Message } from "../components/Message";
 import { ModelName } from "../components/ModelName";
+import { PageHeader } from "../components/PageHeader";
 import {
   NOT_GRADED,
   agentsAtOnce,
@@ -22,6 +24,7 @@ import {
   money,
 } from "../format";
 import { MEASURES } from "../measures";
+import { SCOREBOARD } from "../paths";
 import { REFRESH_MS, useLoad } from "../useLoad";
 
 export function EvaluationPage() {
@@ -34,10 +37,22 @@ export function EvaluationPage() {
 
   return (
     <>
-      <div className="title-row">
-        <h1>Evaluation #{evaluation.number}</h1>
-        <RunChip status={evaluation.status} />
-      </div>
+      <Breadcrumb
+        crumbs={[
+          { label: "Scoreboard", to: SCOREBOARD },
+          { label: `Evaluation #${String(evaluation.number)}` },
+        ]}
+      />
+      <PageHeader
+        title={`Evaluation #${String(evaluation.number)}`}
+        lead={
+          <>
+            <RunChip status={evaluation.status} /> Each copy beside the
+            handler's decision on its original, with the judge's grade of the
+            agent's reason.
+          </>
+        }
+      />
       <div className="column">
         <MeasuresPanel evaluation={evaluation} />
         <ScoredClaims claims={evaluation.claims} />
@@ -78,6 +93,11 @@ function MeasuresPanel({
   );
 }
 
+function CheckChip({ probability }: Readonly<{ probability: number }>) {
+  const answer = check(probability);
+  return <span className={`chip check-${answer.toLowerCase()}`}>{answer}</span>;
+}
+
 // A claim's grade, its letter and score, and the two checks, or not graded.
 function GradeCells({ grade }: Readonly<{ grade: Grade | null }>) {
   if (!grade)
@@ -94,11 +114,18 @@ function GradeCells({ grade }: Readonly<{ grade: Grade | null }>) {
         </span>{" "}
         <span className="mono small">{gradeScore(grade.score)}</span>
       </td>
-      <td>{check(grade.same_grounds)}</td>
-      <td>{check(grade.same_section)}</td>
+      <td>
+        <CheckChip probability={grade.same_grounds} />
+      </td>
+      <td>
+        <CheckChip probability={grade.same_section} />
+      </td>
     </>
   );
 }
+
+// The claims table's columns, which each claim's reason spans beneath it.
+const COLUMNS = 11;
 
 function ScoredClaims({ claims }: Readonly<{ claims: ScoredClaim[] }>) {
   return (
@@ -108,7 +135,7 @@ function ScoredClaims({ claims }: Readonly<{ claims: ScoredClaim[] }>) {
         A claim the agent didn't decide counts as a referral.
       </p>
       <div className="table-scroll">
-        <table className="table">
+        <table className="table scored">
           <thead>
             <tr>
               <th>Copy</th>
@@ -122,12 +149,11 @@ function ScoredClaims({ claims }: Readonly<{ claims: ScoredClaim[] }>) {
               <th className="num">Mistake cost</th>
               <th className="num">Model cost</th>
               <th className="num">Time</th>
-              <th>The agent's reason</th>
             </tr>
           </thead>
-          <tbody>
-            {claims.map((claim) => (
-              <tr key={claim.claim_id}>
+          {claims.map((claim) => (
+            <tbody key={claim.claim_id}>
+              <tr>
                 <td className="nowrap">
                   <ClaimLink claimId={claim.claim_id} />
                 </td>
@@ -155,10 +181,17 @@ function ScoredClaims({ claims }: Readonly<{ claims: ScoredClaim[] }>) {
                 <td className="num mono">{money(claim.mistake_cost)}</td>
                 <td className="num mono">{modelCost(claim.model_cost)}</td>
                 <td className="num mono">{duration(claim.seconds)}</td>
-                <td className="small">{claim.reason}</td>
               </tr>
-            ))}
-          </tbody>
+              {claim.reason && (
+                <tr className="reason-row">
+                  <td colSpan={COLUMNS} className="small">
+                    <span className="muted">The agent's reason: </span>
+                    {claim.reason}
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          ))}
         </table>
       </div>
     </section>

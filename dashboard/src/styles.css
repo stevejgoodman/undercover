@@ -252,7 +252,8 @@ p {
 }
 
 .facts.measures {
-  margin: 12px 0 0;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  margin: 12px 0 16px;
 }
 
 .facts.measures dd {
@@ -307,20 +308,20 @@ p {
   white-space: nowrap;
 }
 
-.table tbody tr:nth-child(odd) td {
+.table tbody tr:nth-child(odd) > * {
   background: var(--inset);
 }
 
 /* Covers the hairline Chrome leaves between shaded cells at fractional widths */
-.table tbody tr:nth-child(odd) td + td {
+.table tbody tr:nth-child(odd) > * + * {
   box-shadow: -1px 0 0 var(--inset);
 }
 
-.table tbody tr:nth-child(odd) td:first-child {
+.table tbody tr:nth-child(odd) > :first-child {
   border-radius: 8px 0 0 8px;
 }
 
-.table tbody tr:nth-child(odd) td:last-child {
+.table tbody tr:nth-child(odd) > :last-child {
   border-radius: 0 8px 8px 0;
 }
 
@@ -351,6 +352,7 @@ p {
 
 .column {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 20px;
 }
 
@@ -489,6 +491,8 @@ p {
 }
 
 .steps {
+  max-height: 70vh;
+  overflow: auto;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -498,7 +502,7 @@ p {
 
 .step {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-columns: 6.5rem minmax(0, 1fr);
   gap: 12px;
   align-items: baseline;
   background: var(--inset);
@@ -507,6 +511,7 @@ p {
 }
 
 .step-time {
+  font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
 
@@ -564,7 +569,8 @@ p {
 }
 
 .button[aria-disabled="true"] {
-  opacity: 0.5;
+  background: var(--inset);
+  color: var(--muted);
   cursor: default;
 }
 
@@ -579,7 +585,7 @@ p {
 }
 
 .notice {
-  background: var(--inset);
+  background: color-mix(in srgb, var(--cerulean) 14%, var(--panel));
   border-radius: 12px;
   padding: 10px 14px;
   margin: 12px 0;
@@ -654,6 +660,8 @@ p {
 
 .page-action {
   display: flex;
+  min-width: 140px;
+  justify-content: flex-end;
   gap: 10px;
   align-items: center;
 }
@@ -785,14 +793,15 @@ p {
   font: inherit;
   font-family: var(--mono);
   color: var(--ink);
-  background: var(--inset);
+  background: var(--panel);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 22%, transparent);
   border: none;
   border-radius: 8px;
   padding: 5px 8px;
 }
 
-.number-input[readonly] {
-  background: transparent;
+.number-input:invalid {
+  box-shadow: inset 0 0 0 2px var(--raspberry);
 }
 
 .settings-table th[scope="row"] {
@@ -971,12 +980,13 @@ p {
 }
 
 .chart-grid {
-  stroke: var(--inset);
+  stroke: color-mix(in srgb, var(--ink) 12%, transparent);
   stroke-width: 1;
 }
 
 .chart-axis,
-.chart-label {
+.chart-label,
+.chart-value {
   fill: var(--muted);
   font-family: var(--mono);
   font-size: 11px;
@@ -986,19 +996,18 @@ p {
   text-anchor: end;
 }
 
-.chart-label {
+.chart-label,
+.chart-value {
   text-anchor: middle;
+}
+
+.chart-value {
+  fill: var(--ink);
 }
 
 .chart-floor {
   stroke: var(--raspberry);
   stroke-dasharray: 4 4;
-  stroke-width: 1.5;
-}
-
-.chart-line {
-  fill: none;
-  stroke: var(--muted);
   stroke-width: 1.5;
 }
 
@@ -1053,4 +1062,103 @@ p {
   gap: 12px;
   justify-content: space-between;
   align-items: center;
+}
+
+.sign-off .notice {
+  background: var(--panel);
+}
+
+.breadcrumb {
+  font-size: 0.87rem;
+  margin-bottom: 6px;
+  color: var(--muted);
+}
+
+.breadcrumb ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.breadcrumb li + li::before {
+  content: "/";
+  margin: 0 6px;
+}
+
+/* Each claim is a body of its own, its reason beneath it, striped together. */
+.table.scored tbody tr > * {
+  background: none;
+  box-shadow: none;
+}
+
+.table.scored tbody:nth-of-type(odd) tr > * {
+  background: var(--inset);
+}
+
+.table.scored tbody:nth-of-type(odd) tr > * + * {
+  box-shadow: -1px 0 0 var(--inset);
+}
+
+.table.scored tbody tr > * {
+  border-radius: 0;
+}
+
+.table.scored tbody tr:first-child > :first-child {
+  border-top-left-radius: 8px;
+}
+
+.table.scored tbody tr:first-child > :last-child {
+  border-top-right-radius: 8px;
+}
+
+.table.scored tbody tr:last-child > :first-child {
+  border-bottom-left-radius: 8px;
+}
+
+.table.scored tbody tr:last-child > :last-child {
+  border-bottom-right-radius: 8px;
+}
+
+.table.scored .reason-row td {
+  padding-top: 0;
+  white-space: normal;
+}
+
+.skeleton {
+  display: grid;
+  gap: 10px;
+  min-height: 96px;
+  padding: 8px 0;
+}
+
+.skeleton span {
+  display: block;
+  height: 14px;
+  border-radius: 7px;
+  background: var(--inset);
+}
+
+.skeleton span:nth-child(2) {
+  width: 80%;
+}
+
+.skeleton span:nth-child(3) {
+  width: 60%;
+}
+
+.check-yes {
+  background: var(--sea-green);
+}
+
+.check-no {
+  background: var(--coral);
+}
+
+.value-cell {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+  justify-content: flex-end;
 }

@@ -1,5 +1,8 @@
 import { ApiError } from "../api";
 
+export const TRY_AGAIN =
+  "Try reloading the page. If this goes on, ask the platform team to check the backend is running.";
+
 // What a page shows until its data arrives: that it's loading, that it wasn't
 // found, when that's given, or why it failed.
 export function Message({
@@ -12,9 +15,19 @@ export function Message({
         {notFound}
       </p>
     );
+  if (!error)
+    return (
+      <div className="skeleton" role="status">
+        <span className="visually-hidden">Loading…</span>
+        <span />
+        <span />
+        <span />
+      </div>
+    );
   return (
-    <p className="message" role={error ? "alert" : "status"}>
-      {error ? error.message : "Loading..."}
-    </p>
+    <div className="message">
+      <p role="alert">{error.message}</p>
+      <p className="small">{TRY_AGAIN}</p>
+    </div>
   );
 }

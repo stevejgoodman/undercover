@@ -144,7 +144,7 @@ it("says how to start when there are no rounds", async () => {
   const fetchMock = showRounds([]);
   renderAt("/improvement");
   const rounds = await panel("Rounds");
-  expect(rounds.getByText(/No rounds yet/)).toBeDefined();
+  expect(await rounds.findByText(/No rounds yet/)).toBeDefined();
   fireEvent.click(await screen.findByRole("button", { name: "Start a round" }));
   const dialog = screen.getByRole("dialog", { name: "Start a round?" });
   expect(sent(fetchMock, "POST /api/rounds")).toEqual([]);
@@ -255,11 +255,11 @@ it("lists the rounds with their scores before and after, verdict and cost", asyn
   showRounds([open, finished], details(open));
   renderAt("/improvement");
   const rounds = await panel("Rounds");
-  const first = rounds.getByRole("row", { name: /Round 1/ });
+  const first = await rounds.findByRole("row", { name: /Round 1/ });
   expect(within(first).getByText("72% → 84%")).toBeDefined();
   expect(within(first).getByText("1.80 → 1.85")).toBeDefined();
   expect(within(first).getByText("Kept")).toBeDefined();
-  expect(within(first).getByText("accuracy improved")).toBeDefined();
+  expect(within(first).getByText("Accuracy improved")).toBeDefined();
   expect(within(first).getByText("$0.2731")).toBeDefined();
   const second = rounds.getByRole("row", { name: /Round 2/ });
   expect(within(second).getByText("Open")).toBeDefined();
@@ -277,7 +277,7 @@ it("charts each version measured on the held-out set", async () => {
   ).toBeDefined();
   expect(
     chart.getByRole("img", {
-      name: /^Held-out grade: version 1 1.8, version 2 1.9$/,
+      name: /^Held-out grade: version 1 1.80, version 2 1.85$/,
     }),
   ).toBeDefined();
 });
@@ -336,7 +336,7 @@ it("lists the rounds newest first, as the backend gives them", async () => {
   const third = { ...finished, round_id: "round-3", number: 3 };
   showRounds([third, finished]);
   renderAt("/improvement");
-  const rows = (await panel("Rounds")).getAllByRole("row").slice(1);
+  const rows = (await (await panel("Rounds")).findAllByRole("row")).slice(1);
   expect(rows.map((row) => row.textContent.slice(0, 7))).toEqual([
     "Round 3",
     "Round 1",

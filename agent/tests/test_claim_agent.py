@@ -165,6 +165,13 @@ def test_reading_a_section_is_recorded(client):
     assert [s for s in steps if s[0] == "reading"] == [steps[2]]
 
 
+def test_a_tool_call_is_recorded_as_a_handler_reads_it(client):
+    model = stub(call("search_documents", query="§3 – café"), *decide("refer", 0))
+    work("CLM-1004", model)
+    steps = [(s["kind"], s["content"]) for s in steps_of(client, "CLM-1004")]
+    assert steps[0] == ("tool_call", 'search_documents(query="§3 – café")')
+
+
 def test_a_section_with_bad_arguments_goes_back_to_the_model(client):
     model = stub(
         call("read_section", document="handbook", number=1), *decide("refer", 0)

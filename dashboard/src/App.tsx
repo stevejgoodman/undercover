@@ -1,4 +1,4 @@
-import { Link, NavLink, Route, Routes } from "react-router";
+import { Link, NavLink, Route, Routes, useMatch } from "react-router";
 import { ClaimPage } from "./pages/ClaimPage";
 import { EvaluationPage } from "./pages/EvaluationPage";
 import { ImprovementPage } from "./pages/ImprovementPage";
@@ -41,14 +41,20 @@ function SignedIn() {
 }
 
 export function App() {
+  // A claim's page sits under the queue, as an evaluation's copy's does too.
+  const onAClaim = useMatch(CLAIM_PAGE) !== null;
   return (
     <SessionGate>
       <header className="header">
         <Link to={QUEUE} className="brand">
-          UnderCover <span className="tagline">claims pilot</span>
+          UnderCover <span className="tagline">claims platform</span>
         </Link>
         <nav className="nav" aria-label="Main">
-          <NavLink to={QUEUE} end>
+          <NavLink
+            to={QUEUE}
+            className={({ isActive }) => (isActive || onAClaim ? "active" : "")}
+            end
+          >
             Queue
           </NavLink>
           <NavLink to={SCOREBOARD}>Scoreboard</NavLink>

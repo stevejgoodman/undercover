@@ -208,8 +208,14 @@ it("shows an evaluation's claims beside the handlers' decisions", async () => {
   expect(shown("Run time")).toBe("2 min 41 s");
   expect(shown("Grade")).toBe("1.86");
   expect(shown("Judge's cost")).toBe("$0.0005");
-  const rows = (await panel("Claims")).getAllByRole("row").slice(1);
+  const rows = (await panel("Claims"))
+    .getAllByRole("row")
+    .filter((row) => row.textContent.startsWith("CLM-"));
   const [right, held, undecided] = rows.map((row) => within(row));
+  const reason = screen.getAllByText("The delay was covered.")[0];
+  expect(reason.closest("td")?.textContent).toBe(
+    "The agent's reason: The delay was covered.",
+  );
   expect(right.getByText("Right").className).toBe("chip score-right");
   expect(right.getAllByText("$250.00")).toHaveLength(2);
   expect(held.getByText("Miss").className).toBe("chip score-miss");
@@ -221,8 +227,8 @@ it("shows an evaluation's claims beside the handlers' decisions", async () => {
   expect(undecided.getByText("Miss")).toBeDefined();
   expect(right.getByText("B").className).toBe("chip letter letter-B");
   expect(right.getByText("2.40")).toBeDefined();
-  expect(right.getByText("Yes")).toBeDefined();
-  expect(right.getByText("No")).toBeDefined();
+  expect(right.getByText("Yes").className).toBe("chip check-yes");
+  expect(right.getByText("No").className).toBe("chip check-no");
   expect(undecided.getByText("Not graded")).toBeDefined();
   const link = right.getByRole("link", { name: "CLM-1104-E9" });
   expect(link.getAttribute("href")).toBe("/claims/CLM-1104-E9");

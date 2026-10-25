@@ -383,17 +383,17 @@ The rounds, proposals, recipes, spending and the rule, with the service's operat
 
 ## Phase 6: The look of the whole dashboard, the documents and the live runs
 
-- [ ] Every page uses `PageHeader`, the same spacing and the same buttons; the navigation marks the current page; tables right-align numbers with their units; statuses are badges with a color and a word; nothing on the existing pages changes how it works, and the existing vitest and e2e tests pass unchanged in what they check
-- [ ] vitest: each page's loading, empty and error states say what to do next, and a refresh keeps the data on screen with no change of layout
-- [ ] `docs/SPEC.md` (the approval limit as a setting, the sign-in, the improver, what the improver reads of the handlers' decisions, and what the team needs to see), `docs/TECH_STACK.md`, `docs/PROCESS.md`, `docs/CODE_STANDARDS.md` (rules 7 and 13), `docs/STATUS.md` and `data/README.md` describe the product as it now is
-- [ ] After one `npm run seed`, with `npm run dev` running and the default model, checked through the Playwright MCP server, signed in as Dana Whitfield:
-  - [ ] Two rounds from the Improvement page: reject the first proposal with a reason, then approve the next one, and approve the rest. Each round shows on the page as it happens, and afterwards the rounds show the scores before and after, the verdict and the cost
-  - [ ] The Configuration page shows the versions and their diffs
-  - [ ] Through Langfuse's API, each round's improver traces are found in one session
-  - [ ] Report how far version 1's two held-out runs differed on each measure, beside the noise and tolerance
-  - [ ] A dispatch at N=25 on the current version, which the run records
-  - [ ] Signed in as Marcus Oyelaran, a payout waiting for sign-off can't be signed off and the settings can't be changed, and each page says why. Signed in as Dana Whitfield, the same payout is signed off and paid
-  - [ ] Screenshots of every page in light and dark mode. A fresh subagent reviews them once, as a senior product designer would, against `docs/BRAND.md` and point 8 of the brief, and what it finds is fixed
-  - [ ] Report what the live checks spent; on GPT-6 Luna they should come to under $1
+- [x] Every page uses `PageHeader`, the same spacing and the same buttons; the navigation marks the current page; tables right-align numbers with their units; statuses are badges with a color and a word; nothing on the existing pages changes how it works, and the existing vitest and e2e tests pass unchanged in what they check
+- [x] vitest: each page's loading, empty and error states say what to do next, and a refresh keeps the data on screen with no change of layout
+- [x] `docs/SPEC.md` (the approval limit as a setting, the sign-in, the improver, what the improver reads of the handlers' decisions, and what the team needs to see), `docs/TECH_STACK.md`, `docs/PROCESS.md`, `docs/CODE_STANDARDS.md` (rules 7 and 13), `docs/STATUS.md` and `data/README.md` describe the product as it now is
+- [x] After one `npm run seed`, with `npm run dev` running and the default model, checked in the browser with Playwright scripts (the Playwright MCP server wasn't connected), signed in as Dana Whitfield:
+  - [x] Two rounds from the Improvement page: reject the first proposal with a reason, then approve the next one, and approve the rest. Each round shows on the page as it happens, and afterwards the rounds show the scores before and after, the verdict and the cost
+  - [x] The Configuration page shows the versions and their diffs
+  - [x] Through Langfuse's API, each round's improver traces are found in one session
+  - [x] Report how far version 1's two held-out runs differed on each measure, beside the noise and tolerance
+  - [x] A dispatch at N=25 on the current version, which the run records
+  - [x] Signed in as Marcus Oyelaran, a payout waiting for sign-off can't be signed off and the settings can't be changed, and each page says why. Signed in as Dana Whitfield, the same payout is signed off and paid
+  - [x] Screenshots of every page in light and dark mode. A fresh subagent reviews them once, as a senior product designer would, against `docs/BRAND.md` and point 8 of the brief, and what it finds is fixed
+  - [x] Report what the live checks spent; on GPT-6 Luna they should come to under $1
 - [ ] Review of the whole branch against `main` by a fresh subagent, and its findings fixed
 - [ ] `npm run check` passes with `.env` moved out of the way

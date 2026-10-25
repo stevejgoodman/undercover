@@ -387,6 +387,8 @@ export interface AllowedModel {
 
 export const REQUEST_FAILED = "The request failed";
 const NOT_SIGNED_IN = 401;
+// A read that never answers would otherwise hold up the page's refreshes.
+const REQUEST_TIMEOUT_MS = 30_000;
 
 export class ApiError extends Error {
   constructor(
@@ -403,7 +405,11 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const token = await accessToken();
   const headers = new Headers(init?.headers);
   if (token) headers.set("Authorization", `Bearer ${token}`);
-  const response = await fetch(path, { ...init, headers });
+  const response = await fetch(path, {
+    ...init,
+    headers,
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+  });
   if (response.status === NOT_SIGNED_IN) await signOut();
   if (!response.ok) {
     const body = (await response.json().catch(() => ({}))) as {

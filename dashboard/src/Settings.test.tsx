@@ -133,7 +133,7 @@ it("says why a handler who can't sign off over the limit can't change them", asy
   expect(settings.queryByRole("button")).toBeNull();
   expect(settings.queryByRole("spinbutton")).toBeNull();
   const limit = settings.getByRole("row", { name: /Approval limit/ });
-  expect(within(limit).getByText("1000")).toBeDefined();
+  expect(within(limit).getByText("$1,000.00")).toBeDefined();
 });
 
 it.each([

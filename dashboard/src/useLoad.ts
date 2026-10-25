@@ -9,7 +9,8 @@ export interface Loaded<T> {
   reload: () => void;
 }
 
-// Loads data once, or again every refreshMs milliseconds when that's given,
+// Loads data once, or again every refreshMs milliseconds when that's given and
+// the last load has come back,
 // stopping if the data isn't found, and again whenever reload is called.
 // `load` must keep the same identity between renders, as with useCallback.
 export function useLoad<T>(
@@ -21,21 +22,30 @@ export function useLoad<T>(
 
   useEffect(() => {
     let active = true;
+    // A refresh waits for the one before, so slow reads never pile up.
+    let fetching = false;
     const fetchNow = () => {
-      load().then(
-        (data) => {
-          if (active) setLoaded({ data });
-        },
-        (error: unknown) => {
-          if (error instanceof ApiError && error.status === 404)
-            clearInterval(timer);
-          if (active)
-            setLoaded((previous) => ({
-              data: previous.data,
-              error: error instanceof Error ? error : new Error(REQUEST_FAILED),
-            }));
-        },
-      );
+      if (fetching) return;
+      fetching = true;
+      load()
+        .finally(() => {
+          fetching = false;
+        })
+        .then(
+          (data) => {
+            if (active) setLoaded({ data });
+          },
+          (error: unknown) => {
+            if (error instanceof ApiError && error.status === 404)
+              clearInterval(timer);
+            if (active)
+              setLoaded((previous) => ({
+                data: previous.data,
+                error:
+                  error instanceof Error ? error : new Error(REQUEST_FAILED),
+              }));
+          },
+        );
     };
     fetchNow();
     const timer =

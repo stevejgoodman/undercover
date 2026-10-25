@@ -12,6 +12,9 @@ type Measure = keyof Limits;
 // How a number is shown and the range it may take, as the backend checks it.
 // Percentages and points are shown times 100.
 interface Range {
+  // Dollar amounts show as money when they can't be changed.
+  dollars?: boolean;
+  suffix?: string;
   scale?: number;
   min: number;
   max?: number;
@@ -31,14 +34,16 @@ const CENTS = 0.01;
 const SETTINGS: Setting[] = [
   {
     label: "Approval limit",
-    unit: "US dollars: a payout over it needs a handler's sign-off",
+    unit: "a payout over it needs a handler's sign-off",
+    dollars: true,
     min: CENTS,
     read: (s) => s.payout_approval_limit,
     write: (s, value) => ({ ...s, payout_approval_limit: value }),
   },
   {
     label: "Held-out accuracy floor",
-    unit: "%",
+    unit: "a new version must reach it on the held-out set",
+    suffix: "%",
     scale: 100,
     min: 0,
     max: 100,
@@ -61,7 +66,8 @@ const SETTINGS: Setting[] = [
   },
   {
     label: "Spending limit for each round",
-    unit: "US dollars",
+    unit: "the improver, its evaluations and the judge together",
+    dollars: true,
     min: CENTS,
     read: (s) => s.spending_limit,
     write: (s, value) => ({ ...s, spending_limit: value }),
@@ -93,14 +99,16 @@ const MEASURES: (Range & { key: Measure; label: string; unit: string })[] = [
   {
     key: "model_cost_per_claim",
     label: "Model cost per claim",
-    unit: "% of the old",
+    unit: "of the old value",
+    suffix: "%",
     scale: 100,
     min: 0,
   },
   {
     key: "seconds_per_claim",
     label: "Time per claim",
-    unit: "% of the old",
+    unit: "of the old value",
+    suffix: "%",
     scale: 100,
     min: 0,
   },
@@ -166,23 +174,33 @@ function NumberField({
   const scale = range.scale ?? 1;
   const [text, setText] = useState(String(shown(value, scale)));
 
-  if (!editing) return <span className="mono">{shown(value, scale)}</span>;
+  const unit = range.suffix ?? "";
+  if (!editing)
+    return (
+      <span className="mono">
+        {range.dollars ? money(value) : `${String(shown(value, scale))}${unit}`}
+      </span>
+    );
   return (
-    <input
-      type="number"
-      className="number-input mono"
-      aria-label={label}
-      min={range.min}
-      max={range.max}
-      step={range.whole ? 1 : "any"}
-      value={text}
-      onChange={(event) => {
-        setText(event.target.value);
-        const number = event.target.valueAsNumber;
-        const valid = event.target.checkValidity() && !Number.isNaN(number);
-        onChange(valid ? number / scale : null);
-      }}
-    />
+    <span className="value-cell mono">
+      {range.dollars && "$"}
+      <input
+        type="number"
+        className="number-input mono"
+        aria-label={label}
+        min={range.min}
+        max={range.max}
+        step={range.whole ? 1 : "any"}
+        value={text}
+        onChange={(event) => {
+          setText(event.target.value);
+          const number = event.target.valueAsNumber;
+          const valid = event.target.checkValidity() && !Number.isNaN(number);
+          onChange(valid ? number / scale : null);
+        }}
+      />
+      {unit}
+    </span>
   );
 }
 

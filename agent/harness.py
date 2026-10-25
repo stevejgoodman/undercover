@@ -121,7 +121,10 @@ def record_reply(claim_id: str, reply: BaseMessage) -> None:
         api.record_step(claim_id, "message", reply.text)
     if isinstance(reply, AIMessage):
         for call in reply.tool_calls:
-            args = ", ".join(f"{k}={json.dumps(v)}" for k, v in call["args"].items())
+            args = ", ".join(
+                f"{k}={json.dumps(v, ensure_ascii=False)}"
+                for k, v in call["args"].items()
+            )
             api.record_step(claim_id, "tool_call", f"{call['name']}({args})")
 
 

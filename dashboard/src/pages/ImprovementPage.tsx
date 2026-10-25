@@ -15,6 +15,7 @@ import {
   modelCost,
   money,
   percent,
+  sentence,
 } from "../format";
 import { seniorOnly } from "../permissions";
 import { useHandler } from "../session";
@@ -32,6 +33,7 @@ export function ImprovementPage() {
   const { data: settings } = useLoad(api.getSettings);
   const open = rounds?.find(isOpen);
   const limit = settings?.current.payout_approval_limit;
+  const handler = useHandler();
 
   return (
     <>
@@ -39,20 +41,18 @@ export function ImprovementPage() {
         title="Improvement"
         lead="The improver reads how the claim agent is doing, proposes a better version for a senior handler to approve, and the rule keeps it or rolls it back on the held-out set. Each round ends by improving the improver's own recipe."
         action={
-          rounds &&
-          limit !== undefined && (
+          rounds && (
             // A new round remounts it, so it's ready again once that ends.
-            <StartRound
-              key={rounds.length}
-              open={open}
-              limit={limit}
-              onStarted={reload}
-            />
+            <StartRound key={rounds.length} open={open} onStarted={reload} />
           )
         }
       />
+      {!handler.can_approve_over_limit && limit !== undefined && (
+        <p className="notice" role="note">
+          {seniorOnly(handler.name, limit, "start or stop a round")}
+        </p>
+      )}
       <div className="column">
-        {!rounds && <Message error={error} />}
         {open && (
           <OpenRound
             key={open.round_id}
@@ -60,7 +60,7 @@ export function ImprovementPage() {
             onChanged={reload}
           />
         )}
-        {rounds && <Rounds rounds={rounds} />}
+        <Rounds rounds={rounds} error={error} />
         {rounds && settings && (
           <section className="panel" aria-labelledby="chart-title">
             <h2 id="chart-title">Versions on the held-out set</h2>
@@ -78,21 +78,15 @@ export function ImprovementPage() {
 
 function StartRound({
   open,
-  limit,
   onStarted,
-}: Readonly<{ open?: Round; limit: number; onStarted: () => void }>) {
+}: Readonly<{ open?: Round; onStarted: () => void }>) {
   const handler = useHandler();
   const [confirming, setConfirming] = useState(false);
   // A round is made in the background, so the button waits for it to appear.
   const [starting, setStarting] = useState(false);
   const { run, sending, error } = useAction();
 
-  if (!handler.can_approve_over_limit)
-    return (
-      <p className="notice small" role="note">
-        {seniorOnly(handler.name, limit, "start or stop a round")}
-      </p>
-    );
+  if (!handler.can_approve_over_limit) return null;
   const ready = !open && !sending && !starting;
   return (
     <div className="start-round">
@@ -237,15 +231,25 @@ function BeforeAfter({
   );
 }
 
-function Rounds({ rounds }: Readonly<{ rounds: Round[] }>) {
+function noVerdictNote(round: Round): string {
+  if (round.why) return sentence(round.why);
+  return isOpen(round) ? "To come" : "No version tried";
+}
+
+function Rounds({
+  rounds,
+  error,
+}: Readonly<{ rounds?: Round[]; error?: Error }>) {
   return (
     <section className="panel" aria-labelledby="rounds-title">
       <h2 id="rounds-title">Rounds</h2>
-      {rounds.length === 0 ? (
+      {!rounds && <Message error={error} />}
+      {rounds?.length === 0 && (
         <p className="muted">
           No rounds yet. A senior handler starts one with Start a round.
         </p>
-      ) : (
+      )}
+      {rounds && rounds.length > 0 && (
         <div className="table-scroll">
           <table className="table rounds">
             <thead>
@@ -294,13 +298,12 @@ function Rounds({ rounds }: Readonly<{ rounds: Round[] }>) {
                     {round.verdict ? (
                       <>
                         <RoundVerdictChip verdict={round.verdict} />
-                        <p className="muted small">{round.why}</p>
+                        {round.why && (
+                          <p className="muted small">{sentence(round.why)}</p>
+                        )}
                       </>
                     ) : (
-                      <span className="muted">
-                        {round.why ??
-                          (isOpen(round) ? "To come" : "No version tried")}
-                      </span>
+                      <span className="muted">{noVerdictNote(round)}</span>
                     )}
                   </td>
                   <td className="num mono">{modelCost(round.cost)}</td>

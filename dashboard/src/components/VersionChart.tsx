@@ -1,5 +1,5 @@
 import type { Round, Scores } from "../api";
-import { percent } from "../format";
+import { percent, verdictLabels } from "../format";
 
 interface Point {
   version: number;
@@ -158,8 +158,8 @@ export function VersionChart({
       </div>
       <p className="chart-key small muted">
         <span className="key key-start" /> The version a round started from{" "}
-        <span className="key key-kept" /> Kept{" "}
-        <span className="key key-rolled_back" /> Rolled back{" "}
+        <span className="key key-kept" /> {verdictLabels.kept}{" "}
+        <span className="key key-rolled_back" /> {verdictLabels.rolled_back}{" "}
         <span className="key key-floor" /> The business's floor
       </p>
     </>

@@ -25,11 +25,7 @@ from backend.tests.settings_requests import FIRST
 APPROVE = {"decision": "approve", "reason": ""}
 
 
-@pytest.fixture(autouse=True)
-def plenty_to_spend(client):
-    """The stub model charges $0.0042 a call, so a round's three evaluations need
-    more than the lab's $0.50."""
-    client.put("/api/settings", json=FIRST | {"spending_limit": 10.0})
+pytestmark = pytest.mark.usefixtures("plenty_to_spend")
 
 
 def waiting(round_id):

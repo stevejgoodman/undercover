@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { type Proposal, type Review, api } from "../api";
-import { dateTime } from "../format";
+import { dateTime, roundStageLabels } from "../format";
 import { seniorOnly } from "../permissions";
 import { useHandler } from "../session";
 import { useAction } from "../useAction";
@@ -79,9 +79,7 @@ export function ProposalReview({
   return (
     <section className="panel" aria-labelledby="proposal-title">
       <h2 id="proposal-title">
-        {change
-          ? "A change is waiting for approval"
-          : "A recipe is waiting for approval"}
+        {roundStageLabels[change ? "waiting_for_change" : "waiting_for_recipe"]}
       </h2>
       <p className="muted small">
         Proposed {dateTime(proposal.created_at)}, against{" "}

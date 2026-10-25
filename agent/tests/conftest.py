@@ -10,6 +10,7 @@ from langgraph.checkpoint.memory import InMemorySaver
 from agent import client, dispatcher, harness, improver, service
 from agent.tests.stubs import graph_on
 from backend.main import app
+from backend.tests.settings_requests import FIRST
 
 
 @pytest.fixture(autouse=True)
@@ -91,3 +92,10 @@ def held_run(monkeypatch):
 
     monkeypatch.setattr(service, "work_run", hold)
     return held
+
+
+@pytest.fixture
+def plenty_to_spend(client):
+    """The stub model charges $0.0042 a call, so a round's three evaluations need
+    more than the lab's $0.50."""
+    client.put("/api/settings", json=FIRST | {"spending_limit": 10.0})

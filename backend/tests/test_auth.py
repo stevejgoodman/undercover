@@ -11,6 +11,7 @@ from cryptography.hazmat.primitives import serialization
 from backend import auth
 from backend.auth import AUDIENCE, ISSUER
 from backend.tests.claim_requests import decide, sign_off, start
+from backend.tests.settings_requests import FIRST
 from backend.tests.signing import DANA, KEY, MARCUS, OTHER_KEY, bearer, token_for
 
 ACTIONS = [
@@ -21,6 +22,14 @@ ACTIONS = [
         {"evaluation_set": "held_out", "tiny": True, "agents": 5},
     ),
     ("POST", "/api/claims/CLM-1002/sign-off", None),
+    ("POST", "/api/rounds", None),
+    ("POST", "/api/rounds/round-1/stop", None),
+    (
+        "POST",
+        "/api/rounds/round-1/proposals/1/decision",
+        {"decision": "approve", "reason": ""},
+    ),
+    ("PUT", "/api/settings", FIRST | {"agents": 3}),
 ]
 CLAIMS = {"email": DANA, "aud": AUDIENCE, "iss": ISSUER}
 
@@ -59,7 +68,7 @@ def without(claim):
     return jwt.encode(claims, KEY, algorithm="ES256")
 
 
-@pytest.mark.parametrize("action", ACTIONS)
+@pytest.mark.parametrize("action", ACTIONS[:3])
 def test_a_signed_in_handler_can_act(client, agent_calls, action):
     method, path, body = action
     held_payout(client)
@@ -108,6 +117,7 @@ def test_every_action_needs_a_valid_sign_in(
     assert agent_calls == []
     decision = client.get("/api/claims/CLM-1002").json()["decision"]
     assert decision["signed_off_by"] is None
+    assert len(client.get("/api/settings").json()["changes"]) == 1
 
 
 def test_a_sign_in_for_someone_who_isnt_a_handler(anonymous):

@@ -11,15 +11,15 @@ from langgraph.checkpoint.memory import InMemorySaver
 
 from agent import improver, improver_api, service
 from agent.tests.dispatching import new_dispatch
-from agent.tests.improving import improvement, reads_and_proposes, script
+from agent.tests.improving import (
+    improvement,
+    reads_and_proposes,
+    script,
+)
 from agent.tests.queue_setup import leave_waiting
 from agent.tests.stubs import call, stub
-from backend.tests.settings_requests import FIRST
 
-
-@pytest.fixture(autouse=True)
-def plenty_to_spend(client):
-    client.put("/api/settings", json=FIRST | {"spending_limit": 10.0})
+pytestmark = pytest.mark.usefixtures("plenty_to_spend")
 
 
 @pytest.fixture

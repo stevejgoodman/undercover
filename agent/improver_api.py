@@ -5,9 +5,11 @@ no way to the scores or the handlers' decisions."""
 
 from typing import Any, Literal
 
+from agent.api import EvaluationSet
 from agent.client import call
 
-EvaluationSet = Literal["evaluation", "held_out"]
+__all__ = ["EvaluationSet"]
+
 Review = Literal["approve", "reject"]
 
 

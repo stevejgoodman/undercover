@@ -35,7 +35,7 @@ The agent works the queue in dispatches, with many claims at once:
 ## Improving the agent
 
 - An improver, an AI agent of its own, works in rounds that a senior handler starts and can stop, one round open at a time. It follows a recipe: it reads how the current version is doing, proposes a new version with its reason, and after a handler approves it, has the new version evaluated once on the evaluation set and twice on the held-out set. Our rule then keeps it or rolls it back: a version is kept when it meets our objectives on the held-out set, at least one measure improves by more than its noise, and none gets worse by more than its tolerance. The round ends with the improver proposing a better recipe.
-- Nothing the improver proposes takes effect until a handler approves it, and a rejection's reason goes back to the improver. It can't change the objectives, the noise and tolerance, the spending limit, the models allowed, the approval limit, the labeled sets or the judge.
+- Nothing the improver proposes takes effect until a handler approves it on the dashboard, and a rejection's reason goes back to the improver. It can't change the objectives, the noise and tolerance, the spending limit, the models allowed, the approval limit, the labeled sets or the judge.
 - Each round has a spending limit that covers the improver's own model calls, its evaluations and the judge.
 
 ## Handlers sign in

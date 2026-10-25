@@ -395,5 +395,5 @@ The rounds, proposals, recipes, spending and the rule, with the service's operat
   - [x] Signed in as Marcus Oyelaran, a payout waiting for sign-off can't be signed off and the settings can't be changed, and each page says why. Signed in as Dana Whitfield, the same payout is signed off and paid
   - [x] Screenshots of every page in light and dark mode. A fresh subagent reviews them once, as a senior product designer would, against `docs/BRAND.md` and point 8 of the brief, and what it finds is fixed
   - [x] Report what the live checks spent; on GPT-6 Luna they should come to under $1
-- [ ] Review of the whole branch against `main` by a fresh subagent, and its findings fixed
-- [ ] `npm run check` passes with `.env` moved out of the way
+- [x] Review of the whole branch by a fresh subagent, and its findings fixed. It was reviewed against `week2day4-end`, where this build started, since `main` is several builds behind
+- [x] `npm run check` passes with `.env` moved out of the way

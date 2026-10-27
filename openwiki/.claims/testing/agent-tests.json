@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:f23cdf9bed780e15413e703e33fb7c1151a9f955cf0b2ba07395f2a9a2f9b696",
+  "claims": [
+    {
+      "id": "claim_80529e557ae141d7bc5ab00ed4f2d656",
+      "statement": "`test_command_line.py` verifies checkpoint-pool setup, version-specific claim-agent wiring, CLI argument validation, refusal propagation, and version-sensitive model selection at the CLI/harness boundary.",
+      "evidence": [
+        {
+          "resource": "repo://agent/tests/test_command_line.py#L101-L147",
+          "version": "repo-lines-v1:sha256:bf411a56ecb7a7aaffc97835a3bbbeb892f069ab04008966b5cbaab65799a88c:eyJzZWxlY3RlZExpbmVDb3VudCI6NDcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBkNDBkZDZiY2FlOTUzZTg0MDhkZTNhNjc3MjA3ODNkN2YyYzBmNjY0OGNlZjI3ZDJlM2Y0NWEyZDFmMDQ1OGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdmNjQ4ZTEzNDQ3NjRjMTU5MDg1ZDlkZTVkNWY3ZjdhNjc0ZTc2N2FlMmY1N2JjYTkyNjM2NmJmMzZlNDAxM2MiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAzMGUwMzZlYjBhMzBkNDc0NmUyMjQxMzU4YjQ0MjgxZGRmOWYwNmZmMWYzNjk5OWQ2YzEwMGEwOGQ4YzMyOWUifQ"
+        },
+        {
+          "resource": "repo://agent/tests/test_command_line.py#L149-L161",
+          "version": "repo-lines-v1:sha256:3fd8cfbf0b021637b96a3c164f1d91ecc3d6f12fcf8d22f8ce29f2fb616a471b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE3NjUyYzczOGIyMjdkZTUwOTNjYmY3YmVlMTk0ODQ3MzgxOTI1MDNjNWZjYzQ5ZjBmODIzY2M1YjdmM2YwNWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdkMGQ1OTAzZDhiNDc3YTQ3MjViNDhiMjg0ZWYzMTQ4MTc1NDIxNDliM2YxMTJjZTYzZmQ1ZGQ3YTk2MGM4NDciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdiMzJlZjMyYjExZTcyZDRhMzFhNGFmYzdjZDBhNjEyYzQ1Njk0YWZiNDkwZDg4NWU1ZTQ4MDk3Njg4ODY2NzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://agent/tests/test_command_line.py#L56-L78",
+          "version": "repo-lines-v1:sha256:904c8d7b748d487b2b0a2dfa8d8471916b11975448ede0020c69f2dabec5f1f1:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIzZjM2NmI5YmQ5YThkMGYzNDBhMmJjMGJlMWUyMmVlYTIwNTY4ZGQ3OGE0NTI4MWI3MjFiMzBmMjJkMDg3ZjAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUxNGM1OWE0Y2IzMjllYmEyMzFmNWY4MzVjNDdhNjI0ZTg5OGY3NTVkMzkyOTU0Zjc1NDlkMTlmODhhMTllYjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk2NGZjM2Q0ZDAwODMyYWZiZTIzOWIyMjAxNmM1N2NlZmQxNTAyOGJiOWNkMDFjNWRiMTcxMDM0OTlmMDA3MGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA1Y2ZkMmQ3ZjYwMDgzN2QwOWUxOGMxZjM5MzYzNzk2ZDNmYmMwMGM2ZmM5ZmY0MDkzMzE5YjIxYTRkZGE0NGUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f411dde8f15d4f45ad2b7e07596716e7",
+      "statement": "`test_dispatcher.py` locks in the dispatcher graph shape, three-attempt retry policy for transient failures, the configured concurrency limit, claim ordering rules, and the behavior for interrupted, already-started, and non-transient claim failures.",
+      "evidence": [
+        {
+          "resource": "repo://agent/tests/test_dispatcher.py#L28-L49",
+          "version": "repo-lines-v1:sha256:d3f7281f06abf1f9e57528d328bfb391e447ddb5fe5b712ad2a8ba728078a0de:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQzZjQ5NjdhOTc1NTFjZjU2Y2MyMTEzNDU4ODVkNDM1YTg5ZDBkZjMwYzQzM2I4OThiYWNlODRmMGQyNzQ2MTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY1OTdiMWYwYzFlNDk5MWNiYTJkMjg4MTEyYTljYjU3ZWZlMWY1OWI5MDJlNWY2MmFjNmUzZWVkOWQ1OTJhZjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIxMWJlMTI2ZDJiMDZhZDBmYWI4YzkzOWQ2ODBkODMxNTcxMmNjMmIzMzM1NTYzMjIwNTEwZmVkZGNmNmE4MGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVjMDYyZTZjYjRiNDZjOGZiZDAzYWYxNjQ2NmJjNTFhZDBmY2MyY2M4ZDVlZWU4OWIxZWUxNGM3MDE0MTMxMjcifQ"
+        },
+        {
+          "resource": "repo://agent/tests/test_dispatcher.py#L58-L89",
+          "version": "repo-lines-v1:sha256:feae5cd01a0537bc396426ba736dae40b504f4ed57a1c430008bbaac85afd317:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYwMjk4ZWEzYjI3Y2M1NDU1YjFiNmUyMGE5M2Y1ZWJjMTNmNTUyZGI3ZDhiZWU3NWQ2YzQyZTc2MDE5MzNhMTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMyNjI0NjJkM2M3Mzg1NzViYTA3N2NhYjQwMDAzMjcwNWI2MTlkNTg1NWIxNTgzY2ZjOWRjNjU0ZDQzNmRhNGMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIxZjJlZjkzZDZmMjBiMTFhY2U3ZWU4ODY3ZDQ1OWVmM2M4ZTU1MTM4YzhkMDM5NzI3YjhmYTYxNDBhODIwODUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk5MTUyNDEyOTg1Y2IwMjM3MWU3MDhiNTIxNDI5YmZlMDZlMGJkYmEzZGJiM2EwNTdlYjhlZTcwZjFiNDdiMmEifQ"
+        },
+        {
+          "resource": "repo://agent/tests/test_dispatcher.py#L92-L169",
+          "version": "repo-lines-v1:sha256:25ee5d71bd8ec514145e1184f7089b0b8146abca981952b3bacddbb85d356206:eyJzZWxlY3RlZExpbmVDb3VudCI6NzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE1MWZjODViNDdhMDYyYzBiM2Q5N2UxMWFlMjYyYzEzZTE1M2EzNmUyNWRiNDhiY2Y0ODY2ZjM0NjQ3MzVkODQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFkMjdmYmNlOTAxNzkxZjQ4NDk5OWNlYTJlM2ZlN2NlZTIxNzk0MTgyYjBlMTYwM2Y4ZWZlNzUzYTIyZmNlMzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZjNzFkY2UwM2VjOTY5ODU2NGU0ZWQwYmY5M2MzZWQ4ZTA4MzllODMxZjNhMzZmOTlmOWZmMmNkNmQ0YzFiNDQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJjNzk4NTYyM2ZkMmY3ZjM4ZDg5MTE5NjdlOGEwYjVhMWZkODI3ZTNiZTQ1ZmRhOGRjY2Y3NzY3M2E1ZmExN2UifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_db6c5578766940a7ae1e939a89445937",
+      "statement": "`test_dispatcher.py` also captures the LangGraph limitation that a node error handler cannot safely absorb an error when the node runs alongside another worker, so the dispatcher avoids relying on that pattern.",
+      "evidence": [
+        {
+          "resource": "repo://agent/tests/test_dispatcher.py#L181-L210",
+          "version": "repo-lines-v1:sha256:96ac60949464222ce617566dda3056608781781ab86e5d2921a8b7b558816eb5:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA3NWEzODA0MTA0YjIwYzEwYmY1Y2UwOWNkZWMyYjNlMTdiMTcxYjM3YTc2NjgyZjM4YzdkYTAwODM0ZDAxNmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5NmE4ZTM5MjhjNDI1ZmFjNjYyMzU5NzkxZGZiYTRkZWRmNGQxMDNmZDdlYWYxNDA4YzFhZDAwNTY5ZGI1YzMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEyOTQ0OWMxNDVjYjY5NTVkZWRmNThhMmVhMjkxYzExOTk1ODM1NWYwZTQ2YTJhZjk1ZjhmNWY0ZjE2ZjVmMzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEyNWRhOTUwYWI0MzBiMDMxMzQ3MjE4NzdjZTM0MWJjNTAwNGU4Yjc0ZTQ1MjdkMDk5NzFkYTBlZWViOWFmMWIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_664d3a5665ea45c0a95acfab1beffa84",
+      "statement": "`test_improver.py` verifies the improver graph configuration, serial tool use, proposal pause-and-resume flow, evaluation discipline, and the rule that proposals do not take effect until a handler approves them.",
+      "evidence": [
+        {
+          "resource": "repo://agent/tests/test_improver.py#L60-L85",
+          "version": "repo-lines-v1:sha256:2a5282b4d71d100bd5387537e207d2d667ec4b7d41020e669b1a5e4436cd0e53:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY4NzM3N2U5ZDE4NDQxMDQ3ZmFiYTFiY2Y3YWY4ZWZlMmE4YjBlYmRkYzNiMmMxZWEzMWI2NWIwZWI2Nzg0NzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE5NGQ2OTJiYTg4ODFiNGYyNDFlNzdlYTRiYmVmZmEzNmJkMDFmY2I5NWJlOWI2YTAzMDNmN2NiOGFlYTgxMjAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlhODJlYmU5ZWQ0MDdjM2E2YmE0YjAwMzQyOTJiYWE1MmMxMWNlNWFlMjg2MTA3NDAyZGU0NzkyZWVlY2FjZmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI4ZjEzMzM2MjNmMzIzNjVkZWJjNTU3OGQ0YTBkZjAzNDZlOGU4ZjE1OTQ4MTIxOGUyZDRmNjhlODA1MWIzZWIifQ"
+        },
+        {
+          "resource": "repo://agent/tests/test_improver.py#L88-L165",
+          "version": "repo-lines-v1:sha256:687b864149f14943e865914871f4e11018dec79883383575ba8572ac53d56f99:eyJzZWxlY3RlZExpbmVDb3VudCI6NzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkzZWU2MDM3ZDUxNWY0OTJjZDFkYWZhZjlmZWEzZjFjYWFkYzgxNTYzOTJhN2JiMjhhYWMwOWJhM2EyMTFhN2UiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBiNDY2NTUxNDVjNGE3YjBiODc3MTIxZWI1OGU0NmQwZWRmMjFhNDEzOTIxZmEwZWRkZGU1M2QwNjQzZGM3MjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEyYzM4MjY2NzFhNzMzNTZlYWZhZGE0ZDhjMDFhZDA1ZWNlNGExMjJiMjY1ZGYxNDM5ZjNkMDQ5OTUwODE1YzkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f2bdca4259b94e12b5acc9740313b8b7",
+      "statement": "`test_improver.py` covers rejection feedback, invalid-model refusal, evaluation-budget refusal, mid-evaluation stop handling, repeated version or change rejection, and the case where a round finishes without producing a proposal.",
+      "evidence": [
+        {
+          "resource": "repo://agent/tests/test_improver.py#L167-L347",
+          "version": "repo-lines-v1:sha256:e268f62e13c3f61b957e93d7947cdc32a83ead935b4858eb72132acd3aaa89cf:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgxLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI5OTg1ZWEwMmQzZjQ5NDYzNTI5MWExZDRhNzljMTQ4Mjg4MWQzNDc4MTMyNGY1MDEyMDIyNjFhYWIxZTBjMWMwIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIwMWJhNDcxOWM4MGI2ZmU5MTFiMDkxYTdjMDUxMjRiNjRlZWVjZTk2NGUwOWMwNThlZjhmOTgwNWRhY2E1NDZiIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJiY2ViNzI2NTY1NWI4ZjFkODVkZjQ3NzlmODEzNWE3NWQ3ZWQ5YmY0MGNkNzVhMjUxM2Y3YzcwMDcxZjllNGY5IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIxYzRhOTU2ZjUxMjgxM2U4NjRmOTA2ZGI4NTY2MDNiYmU2NGFmYzVmNjVjOGU2OWU4YzQyNTFmZDRmNjNiNzViIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_d5309ad384594756a420285aeef1bb14",
+      "statement": "`test_service_rounds.py` defines the service-level HTTP boundary for rounds, including start, decision, refusal, one-at-a-time gating, failure stopping, and restart cleanup of leftover rounds.",
+      "evidence": [
+        {
+          "resource": "repo://agent/tests/test_service_rounds.py#L46-L183",
+          "version": "repo-lines-v1:sha256:a1a4197a041515c4c34839975b394d7e70e88073f250db32cf458db5ae89aecb:eyJzZWxlY3RlZExpbmVDb3VudCI6MTM4LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJjNTRiNmQ1ZTExODYyNTBjMWE3ZWI4NGYxYmRlMWM5ZTA0ZTFlODZjYmY5YWJiMjQ1ZGI1MGIzNjc1NzAyNTg2IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0NjA2MzI4ZGI2OTAyMmEwYmM2MTdlZjViYzVhMzJmNGJlYjc0YTY3NjdlMDU2NmNlM2YzZGVhZjE5OGFjNWM3IiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI4Y2M0YTdkMWNjNzk2YWJhM2U0NjcyMzMyN2Y1MTdlOWY4MTE5ODJkMjUwZjA3MDI5ODZlNGI1NzY0YWQ5NTg5IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MCwiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1In0"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-10-25T14:37:18.902Z"
+  }
+}

@@ -1,0 +1,170 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:e53ffa01f3ee4200cbcfc7fdd54ecae873ea08e9fe5ef5fc67377d05aec41bce",
+  "claims": [
+    {
+      "id": "claim_43bd08c8f29a477ba7b957dc2814e1a3",
+      "statement": "The backend test suite is organized by behavior, and it locks in the API surface, claim workflow transitions, run lifecycle, evaluation isolation, and configuration history rather than implementation details.",
+      "evidence": [
+        {
+          "resource": "repo://backend/tests/test_claims.py",
+          "version": "repo-file-v1:sha256:51a05b0593ce3963b47a959d02bc98515b7bc33aa2dbd2c807dced5ff13d1ef6"
+        },
+        {
+          "resource": "repo://backend/tests/test_configuration.py",
+          "version": "repo-file-v1:sha256:dddaddb896e2068d528dfc7248462d292fa8bd041e77fb931203a767a9fb3685"
+        },
+        {
+          "resource": "repo://backend/tests/test_evaluations.py",
+          "version": "repo-file-v1:sha256:69ce903a87c9ee1f971909e0b042a45fa516d3d0696f71dd0f263ad228c102bc"
+        },
+        {
+          "resource": "repo://backend/tests/test_openapi.py",
+          "version": "repo-file-v1:sha256:215ef7b78ce5beb9dc97b0f677514e874ace4df44e897898c7e8aeea88f88dd8"
+        },
+        {
+          "resource": "repo://backend/tests/test_runs.py",
+          "version": "repo-file-v1:sha256:600398bf2833c6705b1b36c45f7f39b62b030b293ec5a4794ffa094ef19d5a70"
+        }
+      ]
+    },
+    {
+      "id": "claim_64f23ee32a524532848320e3e77b83a8",
+      "statement": "The OpenAPI tests require the generated document to satisfy the repository API rules, and they document that at least one nested optional body field shape is rejected as a rule break.",
+      "evidence": [
+        {
+          "resource": "repo://backend/tests/test_openapi.py#L7-L27",
+          "version": "repo-lines-v1:sha256:5567c7b644ad9b4ec29ac415ba806dad351a638a758b9ddacde7541d53819e7b:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNkNjM3YjExZDlkNzU1NTljODg4ZDdiMjY2MGYyYmJjNTIyYjVkZGZkODQyNDhlMmYxMmZlOTBlNTFjN2FhZTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ1NjVkNmIzMWM1MzM0ODEyN2Q1YzUyYmRkMTAxM2VjOTk4ZjNlODc2ZjIwYjczZWFmNDM4YjBiZmU2MWFlNTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNjYjZiMzlkNzg5OTUxZWM2N2FhOGQwZThlYTU5NzhkOTc2OThjNzU1NGY5ZWUyN2VlOTA5Y2Y4NjhlZWI5ZGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b058e745c85a4c86ad24da83044e6cab",
+      "statement": "Claim tests pin down the public claim lifecycle: the queue starts with 25 waiting claims ordered by claim_id, unknown claim or policy identifiers return 404, starting a claim moves it to in_progress with a thread id and increments attempts, step writes preserve order and timestamps, and repeated identical decisions or payments are idempotent while conflicting repeats are rejected.",
+      "evidence": [
+        {
+          "resource": "repo://backend/tests/test_claims.py#L4-L20",
+          "version": "repo-lines-v1:sha256:397e48751cb0acd9692013d7ccbca13f79d4ed347e280d95a76c46bb4529f6d7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMyZDczOGQ3NzAxM2I3ZTRjMTZhZGQ0NjM2ZTMwOTkyNmQxMGNlMWY4ODdhOWJjZmU2NjM5MTc5N2I3YWQxMmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgxMGM5ZjhlNDQzM2I3NmYyNTQ4YTYyYTJlMjZlMTg0NjcxMDNlMzkwZDU5ZWExYTlmZjQxZTZlZTAwNDViY2MiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY3N2RhNzI1ZDZhOWE4ZjQ2Nzg2MzY1ODQzZjhlN2UzZTY1NWU5ZDAwMjE5MzIzNzE4OTc4MWQwMThkZWIzMTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRmYmQwMDkzMTRiYzI3MDg0MTY3MzRhMDJhZTVmZjM5YTFlNDhhMDUwYmU5MWY0M2IyZmFhOTIwMDJjNjJiZmMifQ"
+        },
+        {
+          "resource": "repo://backend/tests/test_workflow.py#L10-L56",
+          "version": "repo-lines-v1:sha256:fa0c662f472ce240cbd16d30e4f15ab800e0ad5642d170fdd9d62897629315d2:eyJzZWxlY3RlZExpbmVDb3VudCI6NDcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU0NzM1NDk0NzY5MjE1MjU0MjM4OGZmOWU2NzQ5YWRmNmQ0OTdiMGI4OGMyZTc2NTUyNDgwNDA1ZjhiNTVjNjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlYTA1NjA2ODQxMTQ0MjRmZmZjZjZhYzQ5M2EyMDE0NGE2MjAzYjM3YTI5NmU2N2ZjNjcwOGUyMTcxZWMyODMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIxZjkzZDFjMDc2ZmYwN2RkMmE1ZTVkNWQ2MzFjM2E3ZjM0YWNhNTk1ZTNiYTZmZDQ5MTM3ZmEzMzBjNTNmZWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcyMWMyNTczNDcxYWJkZDYxYmJmZGIxZTcxYWExNDkwNTg4Yzk4MjI1NWIxMTViZjE4Nzk0ZjhkYWJiYTY1NzIifQ"
+        },
+        {
+          "resource": "repo://backend/tests/test_workflow.py#L100-L146",
+          "version": "repo-lines-v1:sha256:56eaf76036be94efc77ca903ddd4051177657e95c685ebf56111e34a37014456:eyJzZWxlY3RlZExpbmVDb3VudCI6NDcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU0OThiZjgyNGJhNzEwOGIxOWIwZTY5NzY0MGUyM2IwZWRjMWRmNDNmNDhkYzcwZjU1YjRhMzRmNjQ5ZTNlNmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxZDRlYWM2NjU3MDA3YjNlZjk5ODAyNGY0NDI2YjNmYTFhYzQ1N2Y5NmQ2YjcwZDRjNDA2MGFlYmMwZThjMDAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg1YjQ4YjU2MmNhYTNjNzcxMTY2NjI5ZGMyY2EwMTQ3ZDk2YTcyMmE0NDFkZmMxOTNjYjU0NWJmYWU5ZTI2OGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZiOTQyODBiZGUwNDdjYzkxYTFmMWEyMWVmNDlkNjgzMjE2YmE5OWI1NWZjYmIxZDIxZGQ3NDk2MTAxOWE5ODAifQ"
+        },
+        {
+          "resource": "repo://backend/tests/test_workflow.py#L149-L187",
+          "version": "repo-lines-v1:sha256:c6f0f456828ddfa737e58d71b24025925d3edcc1edf922a25205675ad68f9e75:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwZWRkMjVkMmU3MTA5NGVhZGI0MWYxZjQzYThhNGQ3ODIyMzlhYTFjNzM4YWM5ZWUyNjJmNjQwY2RkYzQxOGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNmNzVkMGM4MTM3YjM2NTJlYzE4YTk3OTVjYzg5MWZlZGZlZGM5NzNmNGYwMGZjZmRjMmVmOTgzYmFmMWRhOTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ5OGYwMmYxZTIwY2Y0MmYwNzhkYTFhYTgwOTNhZmJkMTAyYTdhYWRhZDkwZTNkYjlhZWZmYzM0MTA1ZDU1MWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFmNWU5YzRkZWNhZTBiN2IxNzQ0NDI2YWU4MTBmNzNhYWY0ZmYzNjQ4MzBiZTIyMjE4Y2U1NWI2NjgzNDQwZGYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1a96cbaee70f4b22934598f85b952cad",
+      "statement": "Workflow tests define sign-off and payment boundaries: payouts over $1,000 require handler sign-off, the sign-off is persisted before the backend tries to resume the agent, unauthorized handlers are refused, and copied claims inside evaluations cannot be signed off.",
+      "evidence": [
+        {
+          "resource": "repo://backend/tests/test_evaluations.py#L110-L116",
+          "version": "repo-lines-v1:sha256:3c61a020143d314411eb62e40c239f0ab323f453e9d642df43a3a18bc6df5bae:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTQ5YjkyM2JlOGRhNzM3YWYzNzZmMmI1ZTk0OGZmNzkwOTc4YTI0ZWZjYjAyM2EzNTFmNWYwMGUyYzQ3YWFmOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTIyOTJiMzlmNmE4ZjQzNzFkZTAwZjgzMzJkOTYwMzM2ZTI2N2U4NWJjNmRjNmY2YmU3YmU3NDA5MWRiZjIwNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGVlNzk2MWY4YzQ4Y2U0YmI3ZDRiOWE1NWEwNzkxZjkyMDgxYTExODkxZmYyODU1OWVkOGY3ZTBiNjRhNWQ5NiJ9"
+        },
+        {
+          "resource": "repo://backend/tests/test_evaluations.py#L94-L107",
+          "version": "repo-lines-v1:sha256:cce2a1506cedecd0d3ba1631c5b3338a53f761ca86e0bf1c7fd5d5dcdee0265d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUyZWU0OTI2MTQxMWY1YzYzOTkzMWQwNTdiYjNjYzExMjkxNTkyNzY3YTYzNmU3NWNjMTYxNDgxOGYzNDlmMzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUzYTg5YTQ4MTEzOGFiNjEwYmJkODUwM2U2ODE4NjM3NzRkODkxYmEyY2NhYzU2NzU3NzZlMmVkZjRlMDE2MmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY3OWU3MWIyNjQ0NWI1YWU0MzRlOTI4OTRkZTk0MmJjZTZmYWM2M2IxZmRjYWFmNzQ5MzkzZGZmMzllN2I5ZjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFjMmVlMmM5ZjMyNDkwMDY2YmYyYjMyYTViZDdiYmViMTFkNzg3ODlmMjgxNzY2OThiOGQ5MWYyODg1OGMyY2QifQ"
+        },
+        {
+          "resource": "repo://backend/tests/test_workflow.py#L156-L187",
+          "version": "repo-lines-v1:sha256:2745bb088c533ceaccc82f787c262d9332eeb4915c84f9b8a6eda179d741ad26:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYWM5NWExYzg0NTc1YzMxYTAxNmRlY2ZhMzk5ZWMyNjM4YjE2YTAxMzMxY2IxNzBmMjRjMTc3ODkxOTBiZDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNmNzVkMGM4MTM3YjM2NTJlYzE4YTk3OTVjYzg5MWZlZGZlZGM5NzNmNGYwMGZjZmRjMmVmOTgzYmFmMWRhOTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNiYjU0N2JhNDBkYTRmYjBkN2NkYWEzMmI4ZDRmYjAxODUyOTc4M2M2YzU4NmE5OGZlNGIwYjdhMzBhNTdmOWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFmNWU5YzRkZWNhZTBiN2IxNzQ0NDI2YWU4MTBmNzNhYWY0ZmYzNjQ4MzBiZTIyMjE4Y2U1NWI2NjgzNDQwZGYifQ"
+        },
+        {
+          "resource": "repo://backend/tests/test_workflow.py#L190-L246",
+          "version": "repo-lines-v1:sha256:57dd6256292cfc681f2f4021697288ebbbcbc9ff10c4b648e298b533c83a7b49:eyJzZWxlY3RlZExpbmVDb3VudCI6NTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEzZGYxMGI0YzA1NTMyMTZhOWE3YWVhYzViMDUxNWEzYzdiN2QyOWZhMTk1NTM4MTIzOGU4ZTIyZGNiOTExMTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFmYmM0NzQ4Nzk2OWZiNzkzNDJmZDQzNTZmZWMzMTQ5MWY0YmU4ZDZkMzBiNDVjMTA5MTRkZDYzNmI1ZTExMTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI0ZmIxNTk0ZTFlZDE2N2E0MTk5NWQ3NzFlZTJhZTQzYWFhNzQ5ZTU4YzViOTIwYjdkZjA4YjBmZmE1M2YzNjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhmODk5M2MzNTFkY2YxMjdmOGRmYjBkNGZiYjM1MDY0OWU5MDc4OGVjMTlkMWFkNGJjYzRiMTAyYTAzNDc5MmIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d6bd3915280743b8926ba71c1d993668",
+      "statement": "Failure tests require a claim to be in progress before a failure can be recorded, return the first failure to the queue, leave a second failure for a handler, preserve the error history on the claim steps, and reject empty failure reasons.",
+      "evidence": [
+        {
+          "resource": "repo://backend/tests/test_failures.py#L18-L34",
+          "version": "repo-lines-v1:sha256:09611040d346a8cab4a0ba74129eb73d26ae3a9da407d0f78da88a0b355c2291:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk1MmI3N2I4MDI1ZjEwNzkxMjBiNzNmYWYzNWI0ODJmMGY2MzYzNjY0MmU4OTFlMTA5MTMxN2UxNzkyMmZhNjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFmY2E4NThjMzgxNjZiZjQ1NDk5NDgwYjA0NzgxYmU1NzVhN2EzMjMzYWZkZWI2OTFjNWY4NGVhZDA4OTA4YjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk1MjVhMWRhZGU3NDdmMDlkMDgyNGE3ODAxYmY1ZGIxMWYyNmU4ODdlOTgzZTVhNTNhNDg1YjQ4ZTQyODk0ZjAifQ"
+        },
+        {
+          "resource": "repo://backend/tests/test_failures.py#L36-L61",
+          "version": "repo-lines-v1:sha256:efb72a7d9770493945193a6e773c3771262ad7b9a3dfca3b1da8a80a150c8e02:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZmNjY0YjViZGMxOGNiMWI4MzFlNzEyNzgxNGU2NDZiYWJiOGFlZDM4NmMxZjExZDQ1ODc5ODNkNThjOTQ0MTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRiYTczYzc0ZTE4MTFjMDliN2MxNWE3ODYyNWY1MGRlYWJkMDhiMDY1ZTlhYmM5YjM2YTc5YzdjMjIwZGUwYmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc0MmI4OGRiMGNhM2UyZjA4MzFkNjZmNWY2ZDFiNTE2ZjRmY2I2ZTFkNTViZWJhY2RjZTk0NjYxZDMwYTFkNjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://backend/tests/test_failures.py#L4-L17",
+          "version": "repo-lines-v1:sha256:9950d3193cd775c2c9004691d90b6f3dc99344f1bb02f063e24d131044f33d9a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNjODQ1NTU0MjYxZDc1Mjc0ZDM5OWE0YjM4NmM3OGVjM2MyOGJhNDYzZjNjMmUwN2UwOWYzYmE0ZGJmNGE4ZWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUyOTdlMjBiNjY5YTA0NGFiNmZhZjc1ODc3ODJhMTUzYmQ1NWU3YjEzYzU4NTc2MTdkM2M5OWJiOGQyZTNhMTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc0ZWQ3MTJiZDYyMTE5NmE1NWFjYWQwYmIyYjJkYjRiYzNmN2E3YmZlOTYyNmRiYTBmYzk2MTJkNjJkNzJkZGIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_36a043a4ce4b4e9288916f65f6354559",
+      "statement": "Run tests enforce that a dispatch starts in running state, accepts only 1 to 25 agents, preserves claim order, rejects recording claims for unknown or finished runs, computes finish summaries, and keeps latest-run selection deterministic when runs share the same timestamp.",
+      "evidence": [
+        {
+          "resource": "repo://backend/tests/test_runs.py#L154-L177",
+          "version": "repo-lines-v1:sha256:45b1026213cf9e5d92945491fe93d5e58dbbaf274385e54ea5da157e9d9a3f72:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdiYzk0NTA4Zjg0ZDIwOGVmY2FiMzJkOTY2YTY5ZGYwNzI1ZDllNTZiOTU3YzQ5MGE5Yzg0MGRjZTE3NDlkMDEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBjZDI4ZmFmZWY1MDY2ODVkMDRmY2Q1MGM4NGMyZjA1ZmY1ZjIxYWU2ZDMzMjE5MzRjYjEyN2JkMTBmNzMxNjciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYxYWFiMTBmYTZlMWY4NDdjMWIzMGU5MWJjZmUwODcwOWMyZDhjYzI3MzQyOWI4ZWJiNzU1NjIyN2Y4ZGIwNjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://backend/tests/test_runs.py#L22-L55",
+          "version": "repo-lines-v1:sha256:3d7c472c548e80e75a00bbfb967246f581aa311307be28fcf2304e58e77bdd38:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjZTYzYTJmYjVhZDQ5YWEzYWZkZWE4NTE4NmMxNzI1ZmExZTM3ODdmY2JhMzBhNmQ4MjVjNmE0NTdlZjJlZWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE5OGIwNjNkOWI0N2U2NTM3OTYyNTU3MmNjZTE5NzY2OWQ1NzY3ZTEyYzE4YmUwNzU2NTJiOGNkOTgxY2U4ZDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNiMTBjM2ZhNGNjZDQwZmI5NWEwOGJkZmQyNTIyNmMyNjEzYWU3MmQ1ZGM2ODgzMGVlNTUzZDY1YmJhMjA1ZTgifQ"
+        },
+        {
+          "resource": "repo://backend/tests/test_runs.py#L57-L80",
+          "version": "repo-lines-v1:sha256:44aec7da25638b25837eab575836f3a387889c34ef9a284e6de3ef69bb7ea71b:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIyMDNlZWU5NTNmM2Y5ODAwOGQzOTBlMDYyMTAzOGMyMWQ3MTViNjkyM2YxMTA3ZmM4ODIwOWZiYWQzZTNkNWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgyOTlmNjAwOGNlNGJjNmQ4Yzk3NTlmNTg5ZjdmZWIzYzhjMzQ0YjUwMmU0Y2MxOTUwYzYyNzdhZjlmNjlhMGYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRlNjg4MzgxMDlmMDViOTM2MzI4ZTk5NWNhZjZhNjYzYTgyZjU1MzRhMWM1OTBlNDYwM2UyMGRmNjg5NzJkYjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY2YWVmZjEwNmRjMWY1ZjdjMzU1NDRhYjY1OTcxYWRkNTY4YTNjNjdmNTFiNWExNDRkNmQ1OTc2Mjc5ODUxZTAifQ"
+        },
+        {
+          "resource": "repo://backend/tests/test_runs.py#L83-L145",
+          "version": "repo-lines-v1:sha256:19529fcf616e89da6ae8aed5f3d11e9374d2883a2f9bac9f7ea2917d8e7067d6:eyJzZWxlY3RlZExpbmVDb3VudCI6NjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxNmY5NGY3ZDAyZGRkNGE5ZWZhNTljYWExZTUxZTNhNDcyOTMxMGEzNWU1Y2Q1OWJlZThhZTlkNGUwODdiMmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMzMjVjNjU4MGE2YjA0ZjAwYTg2NjMxMThkYjQwYjEyMWVmZjM5N2Q3OGIyMTZlYzFmMzQyZTI2YzI4ODZlMGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM0MTM2ODBmMmVmM2U0OGFlOWFhNTUzYTgzMjAyNzQ5YTdlZTVmM2VjNWQ5ZDFkMmMyZDlmYjI1NjYwZWJkYTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ5NThmZThmM2Q2Y2RmNjU0MzcyMGRmZjU2MjNiNWU3YjYzYTk3YjU4MGU1NjMwYjMzNGM2NmE4NjhlZWY5NDQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d93affc338d847e4bd62ae60cfaf57d0",
+      "statement": "Evaluation tests require copied claims with evaluation-specific ids, keep the original queue unchanged, forbid signing off evaluation copies, and separate evaluation runs from dispatch recording and reporting.",
+      "evidence": [
+        {
+          "resource": "repo://backend/tests/test_evaluations.py#L117-L197",
+          "version": "repo-lines-v1:sha256:77010a4f4e05b5652fd05bfc6e2df6e196e9344e7e36d01b2e31a3b6ab67491e:eyJzZWxlY3RlZExpbmVDb3VudCI6ODEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIxYTdjOTBlNDA4MjI3Y2I5NDM5ODcwOWY4ZTE5MjNhZjRjOTMwNDI2MmJlNDllNDk2ZmU5ZDBkYzZkMThjZjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZkMjkxYTgxYjFkMjZhMGQ2NzlmZmVjYTMwZTkzOWVkNDhlNDRkYzNkOGUwZjc0Y2NhMmYyNTBhNjM1NTE4Y2EiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFjN2RiOWNiNWNmNDE2ODEyNWY0NmMyNjBmN2VhYWZmYzM2NTRkNDU0YTMyMGNjNTQ4MTRhMTJkNTRjYWQ2YTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://backend/tests/test_evaluations.py#L24-L40",
+          "version": "repo-lines-v1:sha256:43e57c4268bae2f390676196a0c449a0d0c93ca39fbbdbad8e43d8353510bbb8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEzMzFkNjExZjFlYWIxMjhiODY2ZmYxODc0ODJkMDJmMTE5MWYxNzU3MDJiZmU0OTZlYTY5MjRmYTlmMmJhODIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJiOWNmZWNlMWRlOTcyYWY5YzYwMTM1NmI3ZjMwOGE1ODczOTE0MDEzMzgyNTA1YWFjY2EzYzI2NDA3YzI3YTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE5OGIwNjNkOWI0N2U2NTM3OTYyNTU3MmNjZTE5NzY2OWQ1NzY3ZTEyYzE4YmUwNzU2NTJiOGNkOTgxY2U4ZDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM5NjNhMTJjNGU4NGZhYTI4Y2Q5ODJiYzY4YTU3NjY4MmNmNWNiODYxYmRkZTk5MDA0MTM4MTk5MmFlNzcyYmEifQ"
+        },
+        {
+          "resource": "repo://backend/tests/test_evaluations.py#L43-L72",
+          "version": "repo-lines-v1:sha256:87ef82e1a820b6f4de139d43b54ef8c9ada3f37cd0a7a3aa06aa941083960144:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc1ODI4MzhhM2E2NTUyNzRkODAxYmE3ZmJhOGI4YzY4NjAyYzQ1MjgwZjQzNDUxODg0MGZhMDQyMjc4MmQ4MDEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFjYWYxZDE0OWE4NjJmM2YzOWMwOTQxOGQ0OTMyNDc5OTlkMmE3MzhkNWFlYzQxN2Y2MTliN2IzZmYwODIwY2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU0ZDI2YmJhN2JlNmZkNTg3N2ZlYjU0YmJiNGZlMzE0NTk3Y2U3ODc3NmE3NGIzNmQyNWRmYzZiYmRmYTBmNmUifQ"
+        },
+        {
+          "resource": "repo://backend/tests/test_evaluations.py#L94-L115",
+          "version": "repo-lines-v1:sha256:05970341a3ccf64da226a5eff6d8ef5a4e9cbf0d4566ce48d49076a17b139a85:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUyZWU0OTI2MTQxMWY1YzYzOTkzMWQwNTdiYjNjYzExMjkxNTkyNzY3YTYzNmU3NWNjMTYxNDgxOGYzNDlmMzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY3OWU3MWIyNjQ0NWI1YWU0MzRlOTI4OTRkZTk0MmJjZTZmYWM2M2IxZmRjYWFmNzQ5MzkzZGZmMzllN2I5ZjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI4YmMxZTA0ZDVmMTE1NzViNGUzNmQxYmUxYmJjMzVjMzBhM2I3YzAxMTIyNWU5Y2Q1NTNjMDBkODZkNWUyNTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_59f92fb0f40641fead58f8c8530c919d",
+      "statement": "Configuration tests define version history semantics: version 1 is the baseline current configuration, the current version is the newest kept version, version views expose diffs and scores, historical versions can be rolled back without becoming current, and the deprecated instructions endpoint returns 404.",
+      "evidence": [
+        {
+          "resource": "repo://backend/tests/test_configuration.py#L30-L45",
+          "version": "repo-lines-v1:sha256:c1e1399792dfebe39ae120855da1f605c859e920a13769a5e6e16c875bce33bf:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAyNmZlM2U0NWQ5N2E0ZGE0ZDM1ZjQ1MjA0NmEzMTllZjc1NDIyYjg5NmI2YTIyMDgxNGJhYWI2MTFmZDc4Y2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM0ZGM4YWQyMzAyNjZkZTk3YmIwNGUxZWUxZTg3OTM5MDczYTIwNTc2ZTJiMjRmZjc4NWUzMTMzYzZiZTIwZDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRmNmE5NTNhYjIyNjM4MjI3ODc1MzA4YzgxMTMxNGIxODczMTQ3MzcwNDgwNjg0MjliNTA2MmMxZTQ2Nzk5NWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY5MTU1OTc3Yjk2MzM5OTQ0NjBmMDRjOTM1ODdlZTc4ZDk5YmM0NDY0Y2RjZmJmMDAxYjUwNzA3Y2RlZjgwNzkifQ"
+        },
+        {
+          "resource": "repo://backend/tests/test_configuration.py#L48-L80",
+          "version": "repo-lines-v1:sha256:8f33cdbe4d569eff544461db719b5038bfa92da4119471c20fa09d24f0ff4765:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM3MjJmYjk0NjlkN2QyZTRkMWYyMzNiZmFlOWM3MTkzMjNhYzk3ODBlM2JmZjNjZmNhZmJkMTMxOTY2M2NjNTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFkZGY4ZmE0N2VmMzY5MGJkYTVmZGJkMDQ2ZWRiZTNlOTAxN2Q5NGY4NDBhNjA5ZGQwMTU1NjA4OTc0YzM2MWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI3YWMzOGQ1ODBjZDA4NjRkYTJlMDE3YWZjNzdlNWU2ZTFjNTlmNjhiOTlkMWRjMTg0M2RmNTAyYTU3MDM5N2MifQ"
+        },
+        {
+          "resource": "repo://backend/tests/test_configuration.py#L82-L141",
+          "version": "repo-lines-v1:sha256:c109bf1cec6ed02f0e8b22e501cc2f7668447662ab7ba936a2c4cf8dc9f8ce76:eyJzZWxlY3RlZExpbmVDb3VudCI6NjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQwMmViMmQzM2QzM2Y4NWZlMWYyOTI3NDM5Njc1ZTY5MGEzM2E1OWJiMzc2YTI2NWMzZTAzMzhkMzdiMmViZGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJiYmE2NGMyZDZhMDk1ZjhhOTA4YjUzNjY5Y2IzZmVjY2Y5NjM2MDYzYTAxYzkyOTJiZjM2MWU4MzdkZDcyMmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlhODJlYmU5ZWQ0MDdjM2E2YmE0YjAwMzQyOTJiYWE1MmMxMWNlNWFlMjg2MTA3NDAyZGU0NzkyZWVlY2FjZmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRmZTk2ODI4MThjNGU2N2JhZmMzMWI5YWVlY2NlZWVjNjBhNDQyNTMyNmZiNWI0OGNmM2Q0ZDc2YjJkMGU3MDIifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-10-25T14:37:18.902Z"
+  }
+}

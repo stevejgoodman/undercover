@@ -1,0 +1,150 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:45e2293073083250802066226058bbb23e25b21debd402396293f550f49b6a62",
+  "claims": [
+    {
+      "id": "claim_e7c5db0c932c4337bb64df4296def978",
+      "statement": "The dashboard test suite uses Vitest, React Testing Library, and a fetch stub in `dashboard/src/testing.tsx` to exercise the app against a simulated backend and browser session, so tests can assert exact routes, headers, and JSON payloads.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/testing.tsx#L107-L115",
+          "version": "repo-lines-v1:sha256:2522924de335ffe11ddb4479f8da6dfce60b1e69240547491fdb175cea774558:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWZkMWRkNjM2YjJkZWFjYjhkZGRiZjQ1ZmRhNDJhMTliYmRmNGJlYjJjNGE5MjA5MTYxYmIxM2FjZDdmZTNhMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDk0ZmMwYzE3M2QxZWMzZmM1MDFkN2RmYTkyODU1MDFjNTI3Y2ZiNDcxMjU4M2RhM2NjMzYxODA1NjZiNGJlMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDE3ODIxNGMyYzMwM2Y4ZmY1OGI2ODUzZTkxYThlYThhYTY5YzBjM2QyMzIwNTc1MGY4MmNjMmZiZmNkY2ZlNiJ9"
+        },
+        {
+          "resource": "repo://dashboard/src/testing.tsx#L47-L64",
+          "version": "repo-lines-v1:sha256:f670a48fd05d404f114e40e0ebb6a01c9b367fa56504d16962b9a1658ce6d6d7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZjZTEwYzMwODkzZWVlODEyYmE3NjRlOGYyYWM2M2NkOTgwOWQ2ZmY2YzQ2MTMxMmVlODY1OTY0N2Y2ZmQ4MDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ4MDE1YjM2YjY0MTA0NmRhM2MzZjE0M2Y3MDRmZmMyZjkzZWI4NTllOTI2ZWEzYjk2NzdjNjEyZWRkNTEyNTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU1ZWFjYTE1NGU1MGYyNGM4MTEyODMzNmI1ODhmMzdjYjZjNTI0YzZmYTdlMTVjYWRhZGUxOTNhOTJkOTc1MmIifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/testing.tsx#L66-L82",
+          "version": "repo-lines-v1:sha256:e552e69fde44752e3c5805f2b3a3f2c41fcf521007fe75285afc3fe9b1d27eb6:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJjMWZiMDQwNzNkNjUwYmJjZTNjMzdkM2Q0MzhhZjk4NzA3MGM4NDMzYzUwNTU2ZWJhYzQ5ODY1NzUzNjhiOWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg3OTc0MjFiYmUwMTRhNGMyZGJmMzUwNWRmNjZiMDFlNmYyNTA2MDM2NWYzZGY5NzhkYmExNmE4NDFhOWIxNjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI0NTI1NDY2YjdiNzRjZGVjNzhjYzA4ODk2ZGQ5MmJiMTQzNDAwNTFmODkxMGVmZGFiMTY5ZTQ3NGVkMGIxYjkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c14fdb4057604ad2b8c448e46b0e0330",
+      "statement": "`stubApi` models backend calls as literal `METHOD /path` routes, defaults `GET /api/handlers/me` to Dana Whitfield, and returns a 404 JSON response with `detail: \"Not found\"` for unhandled routes.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/testing.tsx#L37-L64",
+          "version": "repo-lines-v1:sha256:a2cfe64f7b5ea7b5c5eff159b1a74f4c08486f63400523d848cd2ba3fa0d610f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQzNDg4YTg2OGQ5ZTJlM2M2YzM3YmE0NTk0ZmFiN2M0MDc0ZDQ4ODEzMGFiNDBmMGQ5NDJkNWVkOTU5MTM4YWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZhYzE5MzUwNjNmMDc2OGJmYjM5NGFhNDZlZTI2NzRkMjNlY2M3ZDY0NTlmMWYzNWNhOTcxYTI0MDUxOTQwNTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU1ZWFjYTE1NGU1MGYyNGM4MTEyODMzNmI1ODhmMzdjYjZjNTI0YzZmYTdlMTVjYWRhZGUxOTNhOTJkOTc1MmIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a956c7a913f940e0a3069d6159d45cff",
+      "statement": "`renderAt` mounts `App` under `MemoryRouter` and seeds or clears `SESSION_KEY` in `localStorage`, so route tests can switch between signed-in and signed-out states without browser setup.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/testing.tsx#L84-L115",
+          "version": "repo-lines-v1:sha256:6ff7d4ae5cfb8397b8357bbe34525ac19448b266696b52762a5aa2703ef6b5e1:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRkNzljYzE0YmIyNTIxZTBhYTg1ZDkxMmYyMGFhNzA1MzgwZjY2MjQ1MGRlZjgzNDBjMDNhZTg3ODE2NDU3NzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE1OTM3Njc5MWU2OTQ3NmY3YTA3MTg5NmRjMjViOTEzN2VmODQyM2UzZTk2MzQwY2NmYWMzMzIzZDQyY2E1MWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAxNzgyMTRjMmMzMDNmOGZmNThiNjg1M2U5MWE4ZWE4YWE2OWMwYzNkMjMyMDU3NTBmODJjYzJmYmZjZGNmZTYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0e8299e8790f4f9c92b7ec257dadc258",
+      "statement": "The shared harness encodes an authentication contract: successful sign-in stores a Supabase session with `ACCESS_TOKEN`, and backend requests are expected to carry `Authorization: Bearer <token>` headers.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/Session.test.tsx#L103-L113",
+          "version": "repo-lines-v1:sha256:003cc9cfb5d239a44aeb9e7ab37613ec590f037796fbe6c1d5403b9e26dd166d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0MjkwNjM2NjYwYTQ0NjNlMGFmYmZmNDEzMzlmOTkxMzBkOWM3Njg3N2U4NjA1YWVlMjBhZmQxOGQ5Y2VhMmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2ZjViNDBiMTU4NDU3ZDE3ODY0ZjIxNzkwNzg2ZGQ1YTJlY2RiNjRiNjZhNjUxZjc4OGQ0ZTI1Y2QzMzAzZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVmOGNjMzYwM2RhZTc2MzhkYjE2OTQyMzhhMmZkNTlkNTI0OTJlMWQwNjI3YzlmMmUzOWNlNGM1NTc5N2U0MDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRhYjA4M2M1NjAwNDU4MGMxMDhkNDllOGZiZjZkNWI2YWEyYzBjMTIyZTk5YzZhZTNiMmQ4MDYzNzVmZDY2YWEifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/testing.tsx#L66-L71",
+          "version": "repo-lines-v1:sha256:ff49072aad8265710ed4e0eb56f625cd95bac73a7114fed440e48db41f26f0cc:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmMxZmIwNDA3M2Q2NTBiYmNlM2MzN2QzZDQzOGFmOTg3MDcwYzg0MzNjNTA1NTZlYmFjNDk4NjU3NTM2OGI5YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODc5NzQyMWJiZTAxNGE0YzJkYmYzNTA1ZGY2NmIwMWU2ZjI1MDYwMzY1ZjNkZjk3OGRiYTE2YTg0MWE5YjE2NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTdkNGYxMzMyOTY4NzQzMWU0NTIyMTI1MTI1MzUxNjI5OWYyNjViMGU4NzZkZjU3YmE3Y2JmMTgwMzc1Y2MzOCJ9"
+        },
+        {
+          "resource": "repo://dashboard/src/testing.tsx#L84-L105",
+          "version": "repo-lines-v1:sha256:3f79d3070f0c620ae3edc287e86e29613f7cddae35686e4b3c5990ade399b40d:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRkNzljYzE0YmIyNTIxZTBhYTg1ZDkxMmYyMGFhNzA1MzgwZjY2MjQ1MGRlZjgzNDBjMDNhZTg3ODE2NDU3NzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE1OTM3Njc5MWU2OTQ3NmY3YTA3MTg5NmRjMjViOTEzN2VmODQyM2UzZTk2MzQwY2NmYWMzMzIzZDQyY2E1MWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjljZDk2NmJhYzdhYThjMzhhOGVlOGYyM2Q3YWZhNmE1ZTkxYTc0OTBjNWRkNzllZDVhOWE1ZmRiYTdlNDE1ZjMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_927e285eb2124a4abc689c782d114846",
+      "statement": "Route tests in `App.test.tsx` verify the root queue view, claim detail pages, and fallback pages, including queue counts, status chips, amounts, policy/history composition, missing-claim handling, and `Page not found` rendering.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/App.test.tsx#L101-L121",
+          "version": "repo-lines-v1:sha256:5d2b0bd2baa871cc290a00a2e2693c6338db5bd4fc9281d6b2b05a2eec3de26f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyMTlkYTBiMWNkNDM5YWRmN2QwZmViZmY5NzkzYWVlNzFkYWNlZjU1NWIxOGEyZGM5Y2FkMWU1YmNjOWMyMGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2ZjViNDBiMTU4NDU3ZDE3ODY0ZjIxNzkwNzg2ZGQ1YTJlY2RiNjRiNjZhNjUxZjc4OGQ0ZTI1Y2QzMzAzZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgzZDU0MTU5OWJjOTk0MGYzZmY5OGIxNjk1ZDNhZTM1MzAyYzgwYmYxMDgyNWNhOTRmNjVjMDZkMDRlYmRmNWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA1ZjExY2M2ZTk0YzY1Y2FjZDAyNzFjMmEwMTQxZjY2YTY5NDFmNjRkOWRiNjQzNmQyNTk1YjA3Mzk3NmFiZGYifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/App.test.tsx#L23-L53",
+          "version": "repo-lines-v1:sha256:978a0b3dd9c22fe0ed27bffd2627c15e881fd83f4a57084cb05310649daa286a:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZiZWY1NGMzZjE5M2Q4MzVmZTQzYTdlMGVmYTQ2MDdmNzhjYTFiMDJiZGM1ZWZmOWM3NGU2OThhNmY5MzU5Y2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2ZjViNDBiMTU4NDU3ZDE3ODY0ZjIxNzkwNzg2ZGQ1YTJlY2RiNjRiNjZhNjUxZjc4OGQ0ZTI1Y2QzMzAzZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZkMGNjNDAyNWEwNzAyMGI2YmU0MDhhOTZmYzVhOWZiNGE3MTViYWY0MmNkODA1NTgwMWEyMzgyOTY5MGQzZDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI4ZmE0ZTk0ZTg0MDZhNGFhM2U0M2I1MTJmYWIzZjFlOGZjNWExYTFmNjEyZjM0MDk4YzNjMzJjNDQ0NjgyMzYifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/App.test.tsx#L63-L99",
+          "version": "repo-lines-v1:sha256:d2a229c5be0cb6014a87e778a1a1bc25a8e57fefcba0d472d00eec9c7a95547e:eyJzZWxlY3RlZExpbmVDb3VudCI6MzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdjNTc0YjI2NzIxODk0NTAyN2FkNDJmMDc5M2Y3OTVlNWViN2M1YzIzYTQyZDM4NjQwZDI1NjA0NzA3M2E4N2UiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2ZjViNDBiMTU4NDU3ZDE3ODY0ZjIxNzkwNzg2ZGQ1YTJlY2RiNjRiNjZhNjUxZjc4OGQ0ZTI1Y2QzMzAzZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY4MGQyZGQ0ZjI4OWQyNmRjNzU3YzJiNjVhMDZjMzkyMjdhNjcxN2M0YjQ4YjVhMzk3OTJjOWYxMWU0MWFlYTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAxZjlkZmE4N2NhNTM0MzNjZmNiZGE1YjY4YjI3NWMzZmE2YzBlNmQxNjA3ZjZkYmJjNDY0NGQ2ODBmMGU1OGYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0bfc040fada9447e8447ae56d04305f4",
+      "statement": "The dashboard tests protect polling behavior by checking that a slow `/api/claims` read does not trigger overlapping refresh requests and that a missing claim is only requested once before the not-found state is shown.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/App.test.tsx#L101-L109",
+          "version": "repo-lines-v1:sha256:4d381d0492be3f0d5aed0b0a854eb08be72c26e3a8744db44756893dd6bd7683:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDIxOWRhMGIxY2Q0MzlhZGY3ZDBmZWJmZjk3OTNhZWU3MWRhY2VmNTU1YjE4YTJkYzljYWQxZTViY2M5YzIwZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjZmNWI0MGIxNTg0NTdkMTc4NjRmMjE3OTA3ODZkZDVhMmVjZGI2NGI2NmE2NTFmNzg4ZDRlMjVjZDMzMDNkMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODNkNTQxNTk5YmM5OTQwZjNmZjk4YjE2OTVkM2FlMzUzMDJjODBiZjEwODI1Y2E5NGY2NWMwNmQwNGViZGY1ZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTg2MjA1OGNiNTRiNmIwYWZjNzdjMzQ4MzQ2Zjk0ZDRmYTNiYjQ2YjMyZDg0NDNjMzIyYzkwMDZmNTI2NzkwNSJ9"
+        },
+        {
+          "resource": "repo://dashboard/src/App.test.tsx#L123-L139",
+          "version": "repo-lines-v1:sha256:6b258d76724faf712008a59be22911c716f00793716ce012da76362a10671652:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBkZGE1NzkxMmU3YThiNmRhMDg3MDhhODM4MzNlYmFlYWRlNzBkY2M4YzE3ZjIzZjhmNzg1OTA2MjQ5ZWQyOGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2ZjViNDBiMTU4NDU3ZDE3ODY0ZjIxNzkwNzg2ZGQ1YTJlY2RiNjRiNjZhNjUxZjc4OGQ0ZTI1Y2QzMzAzZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI1OTYyNmQ4OGMyZWMwNDlkNGNiMzBkYzMzZjAwNjViMjNhMjI4YTExZTRlMDAxNWUzZGJkYzllY2Y1OGU5YTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_21df435d2e0e44b380b4969b0551cc5e",
+      "statement": "`Session.test.tsx` confirms that `/`, `/scoreboard`, `/claims/CLM-1002`, and `/nowhere` require sign-in when no session is present, so route protection is enforced consistently beyond the main dashboard.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/Session.test.tsx#L34-L44",
+          "version": "repo-lines-v1:sha256:de3c60a472ffbc00b2f4487c6c134a2912ae650d6ed9861fb1409c696a496bb3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJhZDk3NmI0NTMwNWQzNGE5MTRjZWFmNzQ4YWRjOTg3YmM3YWIyMzBjNjlkMzJkZGE3OTFjNDg3NDk3NzlhYzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5OTY3ZWMxZWQzODM2ZjhlYjE3YWZmMTcyYjViZmVmN2RlNjA0ODVhNDM5YzZjYTExYzU5MWUxNzU1NzM5YWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNiYTQyYzM5NjYyOWUwN2ZkNDZkNzNlZjM4ZTQyZmQwMzkxZjhlOWI5NWJhYTMyNDczNThjM2IwMGVkYjE1ZGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzNzNkNGM5NzU3ZmY2ZjQxY2YwNDM5OWU4MWNkZDZkZGRiOTQ5MDM0NjY2ZTA0MjA3N2E4MDE3NDA2ZTY5NjAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_86dd7d8965ea45bf9cdc97116451ec41",
+      "statement": "The sign-in flow posts to `POST ${import.meta.env.VITE_SUPABASE_URL}/auth/v1/token?grant_type=password`, stores the returned session in `localStorage`, and renders the signed-in handler identity and role after success.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/Session.test.tsx#L22-L32",
+          "version": "repo-lines-v1:sha256:2b67f576a405580719383a7cf09cccf12f816e030212f3749c4239bbd0be02e8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJhZWQzMWQ0M2RjOWNhM2I1MjBiYTcyMTU3NTJkMzdjNTA3NjNkYjM1MzBhNDU3MTFhOGFiZjhhMjhhODQ4ODgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgyZjZkMDNmMWQ0ZDRjM2JiMmViYmYzZTU2NDBlZDk5NzQ0NzE3YWYzMjE4MjllMGVkZTg4NWVhZjM4NjIwZWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE3ZDg5NzczZjM0MTc5YzUyMWM2MTk5ZmViYjY5ZjM3ZjNjYmIxNTllNWQxYzQyZjk0N2VmYzQ3NTBiZGRkYjQifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/Session.test.tsx#L46-L69",
+          "version": "repo-lines-v1:sha256:edd51cf651f16d2908155fcb641c896c76aed6258fef9cf415ca705e6211da72:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRjYmVkMmI5NjBmZTQyNGMzNjAzMWMyOGUzZDg5OWMyZDI0ZDE1OWZjYjY1ZmYzNjQzOGM1NWNhOWVjMTU1MmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2ZjViNDBiMTU4NDU3ZDE3ODY0ZjIxNzkwNzg2ZGQ1YTJlY2RiNjRiNjZhNjUxZjc4OGQ0ZTI1Y2QzMzAzZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMwYWE2MTVkMDkwNGZlOTQ2NTlkNjk1MTMzNWY3MTFkNTBlODQ1MmNiMDRlOGExZjI5ZDZiYWQ4MWY1ZTllZGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY5YTk0ZTJhOTdlZWE4ODllMjFjYWMzMjc4N2VhNjk3NjNkNzk4MDg5MTRjNGJhNGQ1NmRhMTc1YmE1OGJhNmMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d912d272fec74862a2590790b9803869",
+      "statement": "`Session.test.tsx` distinguishes invalid credentials from backend or auth-service failures, preserves backend-provided 403 reasons from `GET /api/handlers/me`, and verifies that sign-out clears `SESSION_KEY` and returns the user to the sign-in screen.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/Session.test.tsx#L71-L93",
+          "version": "repo-lines-v1:sha256:77713bd266bc9457993d66dbecc634f58b124310da38447369a7e0050f006f30:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUwYTdjZDFkYjZjNzA2MWZhOGQ1NWI1Mjg0MTgxMzgzOWI3ODJhYWE1YTY0NDJjN2IyNTU3MzJmZWVkMTQ3OTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2ZjViNDBiMTU4NDU3ZDE3ODY0ZjIxNzkwNzg2ZGQ1YTJlY2RiNjRiNjZhNjUxZjc4OGQ0ZTI1Y2QzMzAzZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFjNWE0MmFiNWRlNDEzZTdhYTIyY2MyYTYwYmExZjNhNDhlNmYzZmVjMDU5NGRmNTIyM2MwZDRkNzVmM2M1ZDQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMwMGM3NDQxZmI4OTQyMWFjZmVlN2YwNzAxMjcxN2RjZDE3Yzk2YzBhNzBhZmYxZTE3YzNiMDFiYzk3MmFmY2UifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/Session.test.tsx#L95-L137",
+          "version": "repo-lines-v1:sha256:0dc0748c9edc0bc4cce2af6712c26e79f2c0e3dd5a9eb5bb4cfa4ff50614168b:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc5ODYzYWFmZGMyMTNiMWVmMjk4ZDM3MzQ1YTE2MGVmMTBhYjdmMGIxNjgwNWEwOWMzY2I5NjhiYjkxMDNiYzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2ZjViNDBiMTU4NDU3ZDE3ODY0ZjIxNzkwNzg2ZGQ1YTJlY2RiNjRiNjZhNjUxZjc4OGQ0ZTI1Y2QzMzAzZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQzZTI3Yzc3NTVjNDk2NjkyMGRhY2RhYWZiYzlhODYyNTdkMTU1YmMxM2E2OGVlMmYyNGQ5NjYyN2YyMDZlOWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9c2f562ac3cb458590ca7d0ed1f4bf12",
+      "statement": "`api.test.ts` documents that the API client reads backend JSON directly, propagates structured refusal reasons as `ApiError`, and falls back to `The request failed` when the body or detail is unusable.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/api.test.ts#L21-L35",
+          "version": "repo-lines-v1:sha256:e8e7365291009028a2e3467366f8d5ff6195b918a5c1dfb730d444b51ff1b0a3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmOTA2ODM0YzEwMmRhZDAwMzI4YThlNDcwM2M5YjdjOGM2M2ViYjlkN2Q1YWFmYjc1MTdkZDBjYzY0ZjQ2OTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk1ZWYwMWJjMDhkYmMzYjYzZTRlNzVlYTNkMjZhNWI5NDE4OTE4NzdlMjdhZDg5MTMyOWM4NDExZDdkOGRjNGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY4MGQyZGQ0ZjI4OWQyNmRjNzU3YzJiNjVhMDZjMzkyMjdhNjcxN2M0YjQ4YjVhMzk3OTJjOWYxMWU0MWFlYTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY2ZjViNDBiMTU4NDU3ZDE3ODY0ZjIxNzkwNzg2ZGQ1YTJlY2RiNjRiNjZhNjUxZjc4OGQ0ZTI1Y2QzMzAzZDIifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/api.test.ts#L9-L18",
+          "version": "repo-lines-v1:sha256:36eef82eba02abc72dbcaa0679bf7769e16f0defcd8f7a498f4b36fdf9a946d4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk1YTcyZmU0YTZjZGQ4ZjZhMGUzYmYzNmRjYWJhMWM4NDQ3NGI1ZGRlYzBiNzZhNTE2OWYwZTkxYjE0YTc3NjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk1ZWYwMWJjMDhkYmMzYjYzZTRlNzVlYTNkMjZhNWI5NDE4OTE4NzdlMjdhZDg5MTMyOWM4NDExZDdkOGRjNGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZkMGNjNDAyNWEwNzAyMGI2YmU0MDhhOTZmYzVhOWZiNGE3MTViYWY0MmNkODA1NTgwMWEyMzgyOTY5MGQzZDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk5ZTMyYTkxNjczOWY2MmIyOGYyNDlmMzAyMzA1MDUwZmU2NTQxZDU5Y2U1NTQzY2FhNTIwN2YzYmI1YTY5MTUifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-10-25T14:37:18.902Z"
+  }
+}

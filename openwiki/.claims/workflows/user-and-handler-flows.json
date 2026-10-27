@@ -1,0 +1,212 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:fd9bfc7a2ed063f57c11d81a67e1540b3b90cc7e6970c3c51d0b92f801b04c2d",
+  "claims": [
+    {
+      "id": "claim_1e32a47e7bdd49debb952f25de69b8d0",
+      "statement": "The dashboard is wrapped in SessionGate, which waits for the Supabase session, shows SignInPage when there is no session, and otherwise resolves the signed-in handler with api.getSignedInHandler before rendering protected routes.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/components/SessionGate.tsx#L10-L45",
+          "version": "repo-lines-v1:sha256:ce10674320a0ae871e2d9882686933740821a22ebc8b81c5b1c793844d2ad3fa:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3NWI4NTIwZjdkYzYwMjNhNmJlZjM1YmYwYjRkMWE4YTg2ZWU1NzRiNjdmNzE4MTU2YjFhMWY4NDFkZWI0YzciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRiOGQ3Y2Y5NDAxMDkyZDM2ZjFiZDdmOWM5MzEwOTBjNGRkMWNmMzM5OWM2YjRkMDQ3ODQ5NmY0NDE1ZDYwMDIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/session.ts#L4-L10",
+          "version": "repo-lines-v1:sha256:fceccdfd8caab8f809461df914fe1af4323093707a66fe53c49c16baaa529701:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiY2NjODA0OWJjM2Q0ODZmNWJkZjUwNDcwMzVmZDhmZjI0Njg5NWNiM2E5OGJiZGYzNzAyMTg4NzRmNTU3NTM2ZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTUyYjlkNTkzZTRhNGEzYzJlNTdmMDMxNGU3YzYzOTMyN2MzZGYwNWVlODMwMDJjYTc5MDlmODAyNWI4NDZmZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTJiZjQzNWZmNjM5OWIzOTZiODg3YWE1YTA1MzQ0Y2U2ZWM0ZTFhMWViZjZkZmVkZjcxYjJiZWRkMzIyMzgzYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_61b924550d6f4564b7dd73b6624512e5",
+      "statement": "App.tsx maps the main dashboard routes to QueuePage, ClaimPage, ScoreboardPage, EvaluationPage, ConfigurationPage, ImprovementPage, and SettingsPage, and treats claim detail pages as part of the Queue navigation state.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/App.tsx#L43-L80",
+          "version": "repo-lines-v1:sha256:5b829c39a5fe6ad1123c48de2ff0c41d992908935bea1d9091a27cebe9fedee7:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg1YzEzMGZhZTU5YjA5MDUzM2JjOTMzYjkzYTU5ZTIxZTAyMzVjNzIxNjFhNTI0YjIyYWRlMWNlNGEwYjEwZmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk1ZWYwMWJjMDhkYmMzYjYzZTRlNzVlYTNkMjZhNWI5NDE4OTE4NzdlMjdhZDg5MTMyOWM4NDExZDdkOGRjNGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA5NGZjMGMxNzNkMWVjM2ZjNTAxZDdkZmE5Mjg1NTAxYzUyN2NmYjQ3MTI1ODNkYTNjYzM2MTgwNTY2YjRiZTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_342b0eaebab14b10a17517e4586b2b84",
+      "statement": "SignInPage collects email and password and submits them through signIn(email, password) only when both fields are non-empty.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/pages/SignInPage.tsx#L5-L48",
+          "version": "repo-lines-v1:sha256:85bb47ed044a61490bd35620b6900fb5e3184c5f7307eb59847b8c33d1c49115:eyJzZWxlY3RlZExpbmVDb3VudCI6NDQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc4ZTZmZWY3MWQ4MTFlYjJjODYzMTkxNmEwMDc2M2EwOGVkMDAyMDI2YjM2Mjk2NmE3NGJjOTVkNGRhMzI4YTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxODFlN2I4MmY1ZjFjOWU0ZWUzNGYwMWVkZjlkYWQ3OTc4Mjg3NWU3NTRhNjQxNGU5MmNmNTI1ZjAwZDQyZjgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhlMjcxMDgyYWUwN2I1M2QxOWFjODYxN2Q2ZDRkNDBlMDdhYjE5NGQwMjNmMzFkZmI4YjdmZGIyNjVhNWYzOTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg4YWE4M2QyZDgwZTY4OGIzNzExOTRkMmUxNGJiYjE0NWZhMDNmYWRkYjVjNTM5MGQ4OWYxOWQ3NTM4YWEzMTYifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/supabase.ts#L21-L22",
+          "version": "repo-lines-v1:sha256:cf90f9ab7b9f3809f22b5c3e11c9dee76a5ded25d53441b7fb2920bda3fda879:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTFkOGYxYWU5M2IzNjY5ODViYmMyNTAzNWFhZjQxODg3OWViMzMyYzkzMDQ4YTlhMzIxZDE0MjYwYWQ1YjNkOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMWU1MGE2MDJmMGYxZmVmNzlmODYxNmUxZDI2YzlhZGE2YmM1YTdmMDkyNWNmOThiNTc4NmE0YmY4NTdmMmI4NCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGY0ODU4NWY1ZTIyZTY5ODlkMjcxNzY0NGZjYWU5NzI4ZGM4ZmNkOWQ3YzM5MTdjOTk0YmM5MmMzM2VlM2Q3OSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWVjZDcxMDgxZWQ5NGIzM2MyMjFmMjliNWJjYmJiMmU3M2NmMjJiNTZlZmFmODViN2Q2YTVjODRkZWQzMjk3MCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_4c1c39e456de4d609d00c159019a4038",
+      "statement": "QueuePage loads claims with api.listClaims, shows per-status counts, embeds DispatchPanel for starting dispatches, and lists each claim with state, decision, and payout.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/api.ts#L3-L25",
+          "version": "repo-lines-v1:sha256:bbecf7bb536ce3517c0e15fb625889453dc34c2e3041363f4d70196545030759:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVlOTJmZjhkZmY3NjQ1ZmZmZGMxNGYwZmNkMWYzNDcxNTY1MmJiYTlhMjdmYjZkMGE3Y2QyMDRhMDE1YjM1MTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAwN2MxMmQ0MDY5YzY1Y2YxMzg2YWVlYjNjMTAyOWE4Zjk1OGU1MjgzYjU3OTA0ZDZkNGVjNDQwMWM2NDhiYWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMwZDA1ZjljMzQ2MTliNTIzYWIwMDgxY2QwMjIzMGEyOTI0ZmFiZGIxOThhZGYwNDM3YWM2NmI2ZmRlMzRlNmQifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/pages/QueuePage.tsx#L10-L77",
+          "version": "repo-lines-v1:sha256:4da998cb634906cf94ef0288768081a9cfaa6c455af601c13d6327f79827474c:eyJzZWxlY3RlZExpbmVDb3VudCI6NjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRjMmRlOTY5NGYzZDFkNzc2NzBkY2I5MjBiMWRkNjMxMjMwZDE4MzMyZDAxMTgxYjkzZmEwZjk2OWVlMDQ0MjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk1ZWYwMWJjMDhkYmMzYjYzZTRlNzVlYTNkMjZhNWI5NDE4OTE4NzdlMjdhZDg5MTMyOWM4NDExZDdkOGRjNGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM2MWRhYjVlMzgyMzE0ZjljZjcyNGMxYzYwYTU1YjFjMmRlZTI1Y2RkYWNkMjIyNDJkMGYxMTU0NGIyYzIzODEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_01341a1afe4b4ee8845336d6b12dc9e0",
+      "statement": "DispatchPanel starts dispatches with api.startDispatch(agents), shows the latest dispatch from api.getLatestDispatch, and summarizes approved, declined, referred, waiting-for-sign-off, left-for-handler, and unfinished claims.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/api.ts#L133-L171",
+          "version": "repo-lines-v1:sha256:d3b39cd413e853c72391c3e6702dc2cc38e9ad85d4b98f52d74fba0cdf32a274:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU1YTU4N2UzMzg0NzBhMmM1NTQ3MWM3NjlkNzc3OGQ1OTVmNzlkNTQ2ZTUyNzEyYzU1ZmQ2NTVmZTJkZjUxNmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgzMzAzYmE3NTMyNDc2MGM5OGMxMjVlMzI0MTY5MGFhYWVhZjQ0OGNhZmU1ZjAzOTU2YjNjODg5Yzk0ZWRiMzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjllZDRhMWY4YzEwNGFjM2FhOTI4NDM0NTcwNzIxYjQ4ZTRmZjExOTA1NzdlYTRiMzA2NTBmY2I1OWI2ZTQwOGQifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/components/DispatchPanel.tsx#L18-L162",
+          "version": "repo-lines-v1:sha256:a62c37993768513faa68373ea095fc77b2a13c401125be244d7ba834cc56425d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQ1LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIwM2QzNmZkYmZjNzQ5ODRkMGRiNjFkN2Q0YzllYzE4NTQ1NTFlMmE1OTI4ZDNhY2E3YjM0NDY3OGZlOTk2ZGU4IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI0MjY3MGE1NjE5ZGQyYTkzNGQ4OTg4NmNjYTQwY2NmNGEwMzZmZWQzYmFhYTViYzI0ZjFlZDI2NTJmNTg0OTQzIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MCwiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_8e98831c525f48d98e4dd31cf707b390",
+      "statement": "ClaimPage loads a single claim with api.getClaim(claimId), switches its breadcrumb path based on whether the claim is an evaluation copy, and reloads after sign-off through the DecisionPanel callback.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/api.ts#L56-L78",
+          "version": "repo-lines-v1:sha256:4822f696b719144e5dd4c82c7d07122a3a95e45d2740f7ecf740ada436b7099b:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc3ZGFjMDdkMTZhZDc0OGMwMDBkZDMwOTQ5OTdkNDQ5N2ZhMjJlMTIwNjhkYjg4ZjFhMGQ5MTMxNDAwYzYxMjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZmNTk4ZTk4ZTQ2MmEzMDgwMmIxY2IwMTk2OWM5Yzk5NGIxNTViZDYxMjZkYTgwMDg5YTYyNzYwZjQ4ZTQwMDMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZiYjk0Y2U4MzM5ZDQyYTJkYTZiOTk1Yzk3NjQ0N2Y5ZGU5NjQ1ZmI0MmI5ODNjNDcwOWM1MDUzZTgxODVlZjUifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/pages/ClaimPage.tsx#L15-L70",
+          "version": "repo-lines-v1:sha256:04dae926bbd0627fcf0e14f021050ee1dff4c70a96d81c03845b2664bee31e2f:eyJzZWxlY3RlZExpbmVDb3VudCI6NTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRjMjVkOWJhZDk0Y2E0ODlhYzMxYmRmZDIyODhjZjIzZDYxODBmZmJiN2NhZGM0N2NjNDU3YjBhOTcxZTE2NTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ3MzY5NTY4MzljNjM1YmFkNzRmZTM3NmY5ODhmM2Y1ZWNiOTAyMmRmZmY3MzUyZTg4MzZkMTA3N2Q1MmUyN2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM2N2JjMGEwMWVkYTBkM2MyYjJhMWEwZjM5NjRiODdlODdjMjIzMDJmMWYyZmIxNjQzNDllYjQyNTY5NDdjYjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA5NGZjMGMxNzNkMWVjM2ZjNTAxZDdkZmE5Mjg1NTAxYzUyN2NmYjQ3MTI1ODNkYTNjYzM2MTgwNTY2YjRiZTMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5550809184a842818e9fbc3612674060",
+      "statement": "DecisionPanel uses claim status, decision, payment, attempts, and evaluation_id to distinguish in-progress claims, held-for-sign-off claims, and evaluation copies that cannot be signed off.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/api.ts#L56-L78",
+          "version": "repo-lines-v1:sha256:4822f696b719144e5dd4c82c7d07122a3a95e45d2740f7ecf740ada436b7099b:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc3ZGFjMDdkMTZhZDc0OGMwMDBkZDMwOTQ5OTdkNDQ5N2ZhMjJlMTIwNjhkYjg4ZjFhMGQ5MTMxNDAwYzYxMjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZmNTk4ZTk4ZTQ2MmEzMDgwMmIxY2IwMTk2OWM5Yzk5NGIxNTViZDYxMjZkYTgwMDg5YTYyNzYwZjQ4ZTQwMDMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZiYjk0Y2U4MzM5ZDQyYTJkYTZiOTk1Yzk3NjQ0N2Y5ZGU5NjQ1ZmI0MmI5ODNjNDcwOWM1MDUzZTgxODVlZjUifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/components/DecisionPanel.tsx#L14-L96",
+          "version": "repo-lines-v1:sha256:e6901d9b486e80355ded688d12df102fc152286df6b4654c83f805e36743891a:eyJzZWxlY3RlZExpbmVDb3VudCI6ODMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkyNjYxZTVhZmE0NmU2YzVmMzJiYmJlZjAyY2VmYjUyNzQ5MmQ0N2IzMTcwOTUyNTBiMjZmYWZjNGIwMzA5ZTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjllOTVjMjIyN2JkYTYyZjE1YTA4M2NlOTRlYzBhZjNhMjY0YjljYzdhNTUxMzRkNDQxZmNjNmNlZGJmMTM1OTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_296c5ee40aaa4ad7895764d607730f2a",
+      "statement": "EvaluationPage loads a scored run with api.getEvaluation(runId) and renders both evaluation measures and per-claim comparison rows, including handler decision, agent decision, grade, mistake cost, and model cost.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/api.ts#L196-L217",
+          "version": "repo-lines-v1:sha256:ea5447a24f0a69de8022ab0aa5e4129c3eaeb821364d32aac5ec53150305631a:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ1Y2QyYjg0OTJjMDZlNmYyM2ZmNTFmZTQ0MzViNjg4MDZmOTMzZjFjY2M1NTRlMThhMmI3YzY4MTJlYTFiNzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJlNDg3ZDUyMmRjM2QzYzhjNmE1NWU4M2Q4Y2RiZDFiNWUxYjg0NWNkYTA0NDY4MDA5ODg2YTI4YWFmY2U1ZDEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMyYWM4MTFjYmJlNmJkZWIwYjRkYTMzNzkzNDU0NmYxMmI3NjJkNmMzODMwMjY5NGQzMTVkZDJiMzkwYzQxOTcifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/pages/EvaluationPage.tsx#L30-L199",
+          "version": "repo-lines-v1:sha256:dd19285df89784490735a0cf8ddeeb95fa4dae4b800a8e535bfb16f9971a4c76:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcwLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIxMmM5ZGJlNDFlZTIyNTVjOGY5MTg2MWU0ZjU5ZTE5NGZmYWI5NjIxNWRjOWY3MTJlNmMxNTUwYTExOGEzOWM5IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI5YjA0MzRkZWIxNjQyMjEwN2YzZmVlN2E3NWU3ODM4MWY3ZTAyZDc1MTRiZjgzMzUyNDM0NDUyYTU0ZGY5OWNkIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MCwiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_16b483e684e144e1a0ff0952c8a13407",
+      "statement": "ImprovementPage loads rounds and settings, uses the handler's can_approve_over_limit flag to gate round management actions, and shows the current open round plus version history and held-out charts when available.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/pages/ImprovementPage.tsx#L31-L76",
+          "version": "repo-lines-v1:sha256:2a632e61156ff9aaa6a27ccd47eed725f318f1408d778d985e1abea5a0fe4649:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUxMWU2MjE1MTZkMTJkZmU4ODgxY2FmYmZlN2I5NjllNmM3NDY1MTgyMmE5NjEyNDFiZWUzOGVkODRiYWMyZWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk1ZWYwMWJjMDhkYmMzYjYzZTRlNzVlYTNkMjZhNWI5NDE4OTE4NzdlMjdhZDg5MTMyOWM4NDExZDdkOGRjNGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkwZWE2MDc5OGQzNzRhZTBjY2JmOTZiYzc0NTczYzQ2MTA2N2I0ZTcxMGU1ZDRlODVjOTQwN2MwYTczYmQ1OTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImViMTI4NzNhMzVjODA3ZDVlMThiZjQ0YzlhYmY1OGExYTAxOWE0YjU0MDgzMmFlZDA2OGFmYjBhNDUyODJiMDIifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/pages/ImprovementPage.tsx#L79-L216",
+          "version": "repo-lines-v1:sha256:2ae16ed35c10ffaa3d02ac7c49553e62ba97a3d25fd7ba783cfe9b7fb30bed0a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTM4LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIwMGY2NjgyZDMzYmZjMTM4M2VlMjc5MDZiZDdjYjBmYzViZTVmM2Q1ZWNmMzc3MjRmY2Q0YzRjMTVkNjI1OGFkIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIwOTRmYzBjMTczZDFlYzNmYzUwMWQ3ZGZhOTI4NTUwMWM1MjdjZmI0NzEyNTgzZGEzY2MzNjE4MDU2NmI0YmUzIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIyNGZjMmE4NGQ0ZjM5ZjJlOTVmODA2NWIyOWY3OTlkOWM1MTFmMmIyYzNlMzQyZmU0ZTNmMmQxNzAwNWQ5MzJlIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_234cc291cf5d4cdd9bef0bdc5465a446",
+      "statement": "StartRound requires a confirmation dialog, only appears for handlers allowed to approve over limit, and calls api.startRound() before waiting for the new round to appear.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/pages/ImprovementPage.tsx#L79-L138",
+          "version": "repo-lines-v1:sha256:09a98bd8cc01205f647464ccf84d2e888eda783593c27a0cb42560d078253297:eyJzZWxlY3RlZExpbmVDb3VudCI6NjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAwZjY2ODJkMzNiZmMxMzgzZWUyNzkwNmJkN2NiMGZjNWJlNWYzZDVlY2YzNzcyNGZjZDRjNGMxNWQ2MjU4YWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA5NGZjMGMxNzNkMWVjM2ZjNTAxZDdkZmE5Mjg1NTAxYzUyN2NmYjQ3MTI1ODNkYTNjYzM2MTgwNTY2YjRiZTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVkM2JkOTg4YjNhYTk1ZDRiZDI1NDRmODk3MTM3NDY5NWQ2MzAxNjRiOGIzMTUzMzkzNWQzYzg0ZDQ4MzdmNWMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_982bf83bf6ea46df8f93ff0dfb944d87",
+      "statement": "Open rounds expose a stop action for senior handlers and pass any waiting proposal to ProposalReview for approval or rejection.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/components/ProposalReview.tsx#L50-L156",
+          "version": "repo-lines-v1:sha256:cd03dcfe05bb84a85c0f2791de052bcb2e6cae460126fe6332ab3d531e8b169c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTA3LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI5NmNhYjNmZWJiOTcxMTJiOTc4YzhmYmViMmU2OTQ0MWJiODg3YWZkZWU0ZWM4NzhlNzBjNzUzOTdkNWNiNGYxIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI5NWVmMDFiYzA4ZGJjM2I2M2U0ZTc1ZWEzZDI2YTViOTQxODkxODc3ZTI3YWQ4OTEzMjljODQxMWQ3ZDhkYzRkIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIwOTRmYzBjMTczZDFlYzNmYzUwMWQ3ZGZhOTI4NTUwMWM1MjdjZmI0NzEyNTgzZGEzY2MzNjE4MDU2NmI0YmUzIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MSwiZm9sbG93aW5nQ29udGV4dEhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIn0"
+        },
+        {
+          "resource": "repo://dashboard/src/pages/ImprovementPage.tsx#L140-L215",
+          "version": "repo-lines-v1:sha256:30aecd795a345f42b4f9b2c55dac32f19bc5d42946f1d25a84feabf11c0ec080:eyJzZWxlY3RlZExpbmVDb3VudCI6NzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZiOWQ4ODk2ZmFkNDhhNWFhNzZiOTk3MjFlZGIyMTM1NzRmOGRiYmQ1M2ViZjEyODRkNjU0NjllZjFlY2JlYzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk1ZWYwMWJjMDhkYmMzYjYzZTRlNzVlYTNkMjZhNWI5NDE4OTE4NzdlMjdhZDg5MTMyOWM4NDExZDdkOGRjNGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA5NGZjMGMxNzNkMWVjM2ZjNTAxZDdkZmE5Mjg1NTAxYzUyN2NmYjQ3MTI1ODNkYTNjYzM2MTgwNTY2YjRiZTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQwYTIyNmE5ZjRhYWJhNDk2MGQ5MGY0ZDY3MDdiNzBiYjdjYmE3M2ExZjFhNDQxZDZkMTUwOGJmMTc0MDQxODgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_fc99840a85e94b6692b83903ee90089a",
+      "statement": "ProposalReview requires a senior handler to approve or reject a proposal, sends reject reasons through api.decideProposal(roundId, proposalId, decision, reason), and shows a confirmation dialog before committing either decision.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/components/ProposalReview.tsx#L50-L156",
+          "version": "repo-lines-v1:sha256:cd03dcfe05bb84a85c0f2791de052bcb2e6cae460126fe6332ab3d531e8b169c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTA3LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI5NmNhYjNmZWJiOTcxMTJiOTc4YzhmYmViMmU2OTQ0MWJiODg3YWZkZWU0ZWM4NzhlNzBjNzUzOTdkNWNiNGYxIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI5NWVmMDFiYzA4ZGJjM2I2M2U0ZTc1ZWEzZDI2YTViOTQxODkxODc3ZTI3YWQ4OTEzMjljODQxMWQ3ZDhkYzRkIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIwOTRmYzBjMTczZDFlYzNmYzUwMWQ3ZGZhOTI4NTUwMWM1MjdjZmI0NzEyNTgzZGEzY2MzNjE4MDU2NmI0YmUzIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MSwiZm9sbG93aW5nQ29udGV4dEhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_c7d07cc774a64d7a8c6fa1ade1786fab",
+      "statement": "SettingsPage loads the current settings and allowed model list, shows models as read-only data from data/models.json, and renders SettingsForm for changing platform settings.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/pages/SettingsPage.tsx#L15-L49",
+          "version": "repo-lines-v1:sha256:5355e516ae461888b734cb3b7c7066c2e4a9642abc62018456960396407c7e8a:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkwZTJkNmRmN2UyYzQ0ZjE2ZTY0NDRmZTU2OTExZjRjNDJlY2ZiMmU1NzZiYWUzZWJiMWYxYWNjNzgyYTI0ODIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgyZjNjZmQxMWRhNjE1MDE5N2FjZWVkMDg0MDZhYzY0YjA1MDM0MGRlN2JjMDQxMjRhNGNiN2VmYTY3MTM0MGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFkOWFkNDg5MDc1ZWE2ODcyODBkM2FlODk1MzMxMWE2OGU3YWJlNDQzMDkzZjk0MTdiYjA2MDdkMzQ0NmJhOGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYzMzI5Njc4NjBhYjgyMjdkZWQzNjk4Yjk2ODMxZDJiNTIzZjgwODMzMmExOTIxYTExYzdiNjcyZDBmODgyNmIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_43477d7f240942eca28bd5f5c96b554c",
+      "statement": "SettingsForm keeps an editable draft of current settings, blocks saving until the draft is changed and valid, and requires a senior handler before opening the save confirmation dialog.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/components/SettingsForm.tsx#L207-L369",
+          "version": "repo-lines-v1:sha256:9e9d29ac0c28f3b0db2a1ac77465ba6627e490a53cdc18265490cfda2f39ff51:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYzLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI2NzRlMDM5ZjczZWNjMzNhMmUxMDI3NWUzMjM1NWZlN2YzZGU2Y2Y0Y2Y3ZDI3MDk4OGU3NTdhMGMyZTNjMTA2IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIwOTRmYzBjMTczZDFlYzNmYzUwMWQ3ZGZhOTI4NTUwMWM1MjdjZmI0NzEyNTgzZGEzY2MzNjE4MDU2NmI0YmUzIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MCwiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_e377cff2ba534041a26e82ac9d477ae8",
+      "statement": "The dashboard uses periodic refresh on queue, claim, evaluation, dispatch, and improvement views so the UI stays synchronized with backend state.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/components/DispatchPanel.tsx#L18-L162",
+          "version": "repo-lines-v1:sha256:a62c37993768513faa68373ea095fc77b2a13c401125be244d7ba834cc56425d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQ1LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIwM2QzNmZkYmZjNzQ5ODRkMGRiNjFkN2Q0YzllYzE4NTQ1NTFlMmE1OTI4ZDNhY2E3YjM0NDY3OGZlOTk2ZGU4IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI0MjY3MGE1NjE5ZGQyYTkzNGQ4OTg4NmNjYTQwY2NmNGEwMzZmZWQzYmFhYTViYzI0ZjFlZDI2NTJmNTg0OTQzIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MCwiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1In0"
+        },
+        {
+          "resource": "repo://dashboard/src/pages/ClaimPage.tsx#L15-L70",
+          "version": "repo-lines-v1:sha256:04dae926bbd0627fcf0e14f021050ee1dff4c70a96d81c03845b2664bee31e2f:eyJzZWxlY3RlZExpbmVDb3VudCI6NTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRjMjVkOWJhZDk0Y2E0ODlhYzMxYmRmZDIyODhjZjIzZDYxODBmZmJiN2NhZGM0N2NjNDU3YjBhOTcxZTE2NTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ3MzY5NTY4MzljNjM1YmFkNzRmZTM3NmY5ODhmM2Y1ZWNiOTAyMmRmZmY3MzUyZTg4MzZkMTA3N2Q1MmUyN2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM2N2JjMGEwMWVkYTBkM2MyYjJhMWEwZjM5NjRiODdlODdjMjIzMDJmMWYyZmIxNjQzNDllYjQyNTY5NDdjYjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA5NGZjMGMxNzNkMWVjM2ZjNTAxZDdkZmE5Mjg1NTAxYzUyN2NmYjQ3MTI1ODNkYTNjYzM2MTgwNTY2YjRiZTMifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/pages/EvaluationPage.tsx#L30-L199",
+          "version": "repo-lines-v1:sha256:dd19285df89784490735a0cf8ddeeb95fa4dae4b800a8e535bfb16f9971a4c76:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcwLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIxMmM5ZGJlNDFlZTIyNTVjOGY5MTg2MWU0ZjU5ZTE5NGZmYWI5NjIxNWRjOWY3MTJlNmMxNTUwYTExOGEzOWM5IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI5YjA0MzRkZWIxNjQyMjEwN2YzZmVlN2E3NWU3ODM4MWY3ZTAyZDc1MTRiZjgzMzUyNDM0NDUyYTU0ZGY5OWNkIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MCwiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1In0"
+        },
+        {
+          "resource": "repo://dashboard/src/pages/ImprovementPage.tsx#L31-L76",
+          "version": "repo-lines-v1:sha256:2a632e61156ff9aaa6a27ccd47eed725f318f1408d778d985e1abea5a0fe4649:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUxMWU2MjE1MTZkMTJkZmU4ODgxY2FmYmZlN2I5NjllNmM3NDY1MTgyMmE5NjEyNDFiZWUzOGVkODRiYWMyZWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk1ZWYwMWJjMDhkYmMzYjYzZTRlNzVlYTNkMjZhNWI5NDE4OTE4NzdlMjdhZDg5MTMyOWM4NDExZDdkOGRjNGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkwZWE2MDc5OGQzNzRhZTBjY2JmOTZiYzc0NTczYzQ2MTA2N2I0ZTcxMGU1ZDRlODVjOTQwN2MwYTczYmQ1OTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImViMTI4NzNhMzVjODA3ZDVlMThiZjQ0YzlhYmY1OGExYTAxOWE0YjU0MDgzMmFlZDA2OGFmYjBhNDUyODJiMDIifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/pages/QueuePage.tsx#L10-L77",
+          "version": "repo-lines-v1:sha256:4da998cb634906cf94ef0288768081a9cfaa6c455af601c13d6327f79827474c:eyJzZWxlY3RlZExpbmVDb3VudCI6NjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRjMmRlOTY5NGYzZDFkNzc2NzBkY2I5MjBiMWRkNjMxMjMwZDE4MzMyZDAxMTgxYjkzZmEwZjk2OWVlMDQ0MjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk1ZWYwMWJjMDhkYmMzYjYzZTRlNzVlYTNkMjZhNWI5NDE4OTE4NzdlMjdhZDg5MTMyOWM4NDExZDdkOGRjNGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM2MWRhYjVlMzgyMzE0ZjljZjcyNGMxYzYwYTU1YjFjMmRlZTI1Y2RkYWNkMjIyNDJkMGYxMTU0NGIyYzIzODEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-10-25T14:37:18.902Z"
+  }
+}

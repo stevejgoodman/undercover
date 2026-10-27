@@ -1,0 +1,150 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:c4cc0e81a7042c595b75ada6d253d76d5ca96666d89b3cbfc8c09582c9ba8e77",
+  "claims": [
+    {
+      "id": "claim_70d3e09af9f149e38f31b2f789f8c7f2",
+      "statement": "UnderCover has three user-facing runtime pieces and one shared persistence layer: the backend API is the authoritative application layer, the agent service orchestrates dispatches, evaluations, claim resumes, and improvement rounds, the dashboard is the browser UI, and persistent state lives in the backend database and the agent checkpoint pool.",
+      "evidence": [
+        {
+          "resource": "repo://README.md#L7-L10",
+          "version": "repo-lines-v1:sha256:feda00911225d33e02f9c31699b3c7bc461ef5f028c88b6d9cf8bb64f77170af:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTNiZGY4ZGE5M2JlYjA1YjBlMTNkNWMwNDE3ZThjOWQ5MTdlZjZiYTNiZTY0MWU3NDY1MjQ5MWI0MGI5YWJmYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWYzM2E4MmI5Y2UxY2VlZGM1MzBkY2EwZjkyZDRkMzI4NWJjYTgxZWNjZWM1MmJjZGJhOTZlNTQxMWM4ZTcyYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzM3YTRmZWQyMDVmNDgyNWYzZjkyZDcwNjY1ZjIzMDc2MDc1ZDRlZGI3ODYyNGQ1MzRlYzUxNmUyZTBjMDA3NiJ9"
+        },
+        {
+          "resource": "repo://agent/service.py#L51-L63",
+          "version": "repo-lines-v1:sha256:e38db8a140956836a2797d7f9462ce205abb4ce19d87c3fe4ccea36e04562b0a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg3Y2ZmM2YxNzg0MmRlYzZlN2U5MWMzZTNiOGZjZTBhODIyZmMzMTEyNzM4MWIwMGY0NGE5ZjEzMzMzMDNhMmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFjZjU4N2UxNWE2NjhkMzUwZGM5NTFhY2ZiY2E1Y2M4YmE5M2ZiODJmNDk4MGM2YTZmMTRiM2FkNmQ2MDI4YTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI3MDliMTVlZjkxODNhOGI2N2Y3YzM5MWM4OGI4NWE5MDc3NTcwNjkwY2Y0MDYzNmE1MDVlMjc3NTQzNGZlOWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRjY2NiNjI4NTQwNGU0NTQxODBmZjUxY2ZmZmY3YzQ5Y2EyZDBhMGEzMjUyYjdmNWVhZjkyNGI5MmM5ZTdiMmYifQ"
+        },
+        {
+          "resource": "repo://backend/main.py#L78-L91",
+          "version": "repo-lines-v1:sha256:0e272d14f4956681a52af151ab2e5d4a84b28d9c4d7a5ddd879ecf838e83177c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg3Y2ZmM2YxNzg0MmRlYzZlN2U5MWMzZTNiOGZjZTBhODIyZmMzMTEyNzM4MWIwMGY0NGE5ZjEzMzMzMDNhMmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ2MDBiNmRkMWZlZTBjMWU2NzA3OGJmZjc0NTkzMWQxOTRhNTgzMTQzMmQzNGU3MzQxMjI5M2M4MTMyMGQ2MjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVlNjg5YTMxOGVjYzZkZjQ2OTYxODI1OTAyMjdkNjJkNzRhMDk3ZTk0ODRlMjFmYTE1YTE5OTlhNWQzOGYxNWUifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/App.tsx#L43-L80",
+          "version": "repo-lines-v1:sha256:5b829c39a5fe6ad1123c48de2ff0c41d992908935bea1d9091a27cebe9fedee7:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg1YzEzMGZhZTU5YjA5MDUzM2JjOTMzYjkzYTU5ZTIxZTAyMzVjNzIxNjFhNTI0YjIyYWRlMWNlNGEwYjEwZmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk1ZWYwMWJjMDhkYmMzYjYzZTRlNzVlYTNkMjZhNWI5NDE4OTE4NzdlMjdhZDg5MTMyOWM4NDExZDdkOGRjNGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA5NGZjMGMxNzNkMWVjM2ZjNTAxZDdkZmE5Mjg1NTAxYzUyN2NmYjQ3MTI1ODNkYTNjYzM2MTgwNTY2YjRiZTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7e331d004d324409bf6e7805202bc53c",
+      "statement": "The backend is the system of record for claims, payouts, runs, rounds, configuration, and handler identity; it seeds the database on startup when no tables exist yet and enforces the domain's 404 and 409 behavior for missing rows, invalid state, and exhausted round budget.",
+      "evidence": [
+        {
+          "resource": "repo://backend/main.py#L104-L153",
+          "version": "repo-lines-v1:sha256:4f4dc623e042541399ceba7b1eed216f7502f6ba1d102983368c5aff8949f8dd:eyJzZWxlY3RlZExpbmVDb3VudCI6NTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc4MWNlYWJlOGUwYTdhZDMyMWQ1Nzc4YmI2NWU1YWZjZTI4MzVkZGRiOTYyZWI0NDQwNDk4ZWRhNjE3MWM3ODUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFlYjljNTRiNmJiNmU2OTU2MTYzMjRjMzlmZjlhZTgyZTE0NzM1Yjg1ZjUwZDIxMTI2ZTAxYjFjYTNjYmQxODQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVhYjhkMGIxODk3NzFhNjU3MzZkYjMzODg4YTIxMjExYmUxZTFmNjRhNGJiZDA1MmE3ZmVhMGVjMjk0NmVlNDAifQ"
+        },
+        {
+          "resource": "repo://backend/main.py#L173-L250",
+          "version": "repo-lines-v1:sha256:2fb4ea1eb43b523b3fc4e90ec0776327a371014a0a43e21a899954c6a1a70743:eyJzZWxlY3RlZExpbmVDb3VudCI6NzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMyMWQzNTdmZDk1MThkZDczYTFmYWU1Yzc0NGVhMzhmNTNkNjJhYmEwNzEzMDZhMGRhZGM3NTY2YmE4ZTNkZjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRiZjRlNDY5YzY3MzY3MzFkZWJhM2E5YTZkNTQxMTc1N2VhYzdmMGY1ZjM3ZTJjN2MxNmQzN2E5NDYyYzY0MTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAxY2ZmMmVjZjE1NWE2NWNkYzc1N2MyYjJhODQyN2FlMGE3ZGQyMDg5YzFhYjcwNmIyYjQ4NTVkMjVhNWEyYWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ1ZjkzZGZlMTllZGM2OGMyNDkyMGFlNDYyZThmZTVmOGU5MmQyYjNhNDJiNDU0YjgwMWM2Y2FkMmZmYjNhOWEifQ"
+        },
+        {
+          "resource": "repo://backend/main.py#L78-L91",
+          "version": "repo-lines-v1:sha256:0e272d14f4956681a52af151ab2e5d4a84b28d9c4d7a5ddd879ecf838e83177c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg3Y2ZmM2YxNzg0MmRlYzZlN2U5MWMzZTNiOGZjZTBhODIyZmMzMTEyNzM4MWIwMGY0NGE5ZjEzMzMzMDNhMmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ2MDBiNmRkMWZlZTBjMWU2NzA3OGJmZjc0NTkzMWQxOTRhNTgzMTQzMmQzNGU3MzQxMjI5M2M4MTMyMGQ2MjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVlNjg5YTMxOGVjYzZkZjQ2OTYxODI1OTAyMjdkNjJkNzRhMDk3ZTk0ODRlMjFmYTE1YTE5OTlhNWQzOGYxNWUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_72b0249304414a76865bb2d47f10f27e",
+      "statement": "The agent service is a separate FastAPI process started alongside the backend and dashboard during local development; it owns background orchestration for dispatches, evaluations, claim resumes, and improvement rounds, and it uses a one-at-a-time gate to prevent concurrent stretches of work.",
+      "evidence": [
+        {
+          "resource": "repo://agent/service.py#L118-L133",
+          "version": "repo-lines-v1:sha256:a1a53a261b4c6a953fc4962377ff1c13ea7c74c0a4871ad5e54fea0fb1d57b79:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU0Y2FkYTEwODM3YWJiMGUyODM3OWI4ZjhjODU5ODdjODhiMzMyYzJhMGJiZDkzODg1YTQ5YjQxNTQxMDliYWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgxMDZhNDUzYTNkMDI2ZDM5NWQ4MDQwMTkzZDI0YmMwZDM2OTQ2Y2JjODM0MmQ4NDdmMzNjYWY0OGQ2YzdhMTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY4MWI0YmQ5YWE5NjM2MDgwNGQxZTljZmY0NDJlYTlhNWI3NWIwZDAyN2Q5YzQwNjgxNTcyNGVjYzNhOWQ1ZDQifQ"
+        },
+        {
+          "resource": "repo://agent/service.py#L141-L241",
+          "version": "repo-lines-v1:sha256:d0b3959441a80c325eaafb0f477d3ea430e9de25b4cad5541e1904b5ad1af48f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAxLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI2NDVmNWI4YjIzYjljZjQ0MzVjNGNjZTEyZjI2MWE2ZDI1NzUyY2E4ZWMyYmNiM2Q2MGZkMTM5MDVjODdlYjZlIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJkZGZiZjg5OTMzZjBiNDJhMTMyYTQzMDY0YmIyY2I3NjNlNzlhZTI3ZjMxYzdkMTQ4ZjI3ZWJhNjJkYmQ3ODA2IiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI4Yzg2MGIwNWIzNWNmYzkwNzEzOWEwODQzNmY3NzU1ODA1MjAyNTBhMWI5M2Y5YzJjMjgyNWNmNWVmZGQ4MDAzIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI2NmJiZTUwMGRlMTdhY2QyOWZkZDY3Y2JlMmU2YzdiZTFiMDhkZDA2YTJkYTNhNWE3YjM3ZThmZmQ3ZGZmN2RkIn0"
+        },
+        {
+          "resource": "repo://agent/service.py#L51-L63",
+          "version": "repo-lines-v1:sha256:e38db8a140956836a2797d7f9462ce205abb4ce19d87c3fe4ccea36e04562b0a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg3Y2ZmM2YxNzg0MmRlYzZlN2U5MWMzZTNiOGZjZTBhODIyZmMzMTEyNzM4MWIwMGY0NGE5ZjEzMzMzMDNhMmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFjZjU4N2UxNWE2NjhkMzUwZGM5NTFhY2ZiY2E1Y2M4YmE5M2ZiODJmNDk4MGM2YTZmMTRiM2FkNmQ2MDI4YTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI3MDliMTVlZjkxODNhOGI2N2Y3YzM5MWM4OGI4NWE5MDc3NTcwNjkwY2Y0MDYzNmE1MDVlMjc3NTQzNGZlOWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRjY2NiNjI4NTQwNGU0NTQxODBmZjUxY2ZmZmY3YzQ5Y2EyZDBhMGEzMjUyYjdmNWVhZjkyNGI5MmM5ZTdiMmYifQ"
+        },
+        {
+          "resource": "repo://agent/service.py#L66-L87",
+          "version": "repo-lines-v1:sha256:5969c5ae6b192e03550607e9c8eca3f7cbc4f1db673890f6d0d00d4efa81cb75:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjllYTE3ZTlmYTI5MWE2NjA2NzViZDdjYjliZmUwNzkxNzdhMzA4OThhMDdjYmEwM2UxOTcyYjZjNGMyY2Y0MTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFhZDJjNWZmZDRhMzZmNTkzZTIzNmUzMTQ2MTNkNjYzYTdiNDFjOTI5NzM3YTdhOTM2NjczZmM4MDZiMzRiMjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhjY2ZkOTY0ZTdhNDQ1NTM2MWY5NjZhMTJlMDM2MzU2NDdlYzVhNTUzNDY3ZTM2NGU2ZDA5NTEyYTVhM2JhZDQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_81bd4297944b4e79bde30c80e8fdb97f",
+      "statement": "The agent service opens a shared checkpoint pool once per process and uses it for claim and round orchestration so that paused work can resume after a restart, while startup cleanup stops leftover runs and rounds from a previous process.",
+      "evidence": [
+        {
+          "resource": "repo://agent/service.py#L152-L170",
+          "version": "repo-lines-v1:sha256:0107804c90de18f28485fa13978cedd5680bf338c81e95b17c57c93f56dd4a44:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA0ODg3ZjBmMGQ1ZDM5NjFiZWIzNThjY2U3ZTlhMzMyNjRlNGE0ZDUzMDMzZGM4ZWE1YTExMmZmNGEyMGIzMmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFjNDM5OGYwYmU1ZTM3NDIwMjIwMjRhMDJmYzU3MDJkMzdhNmJlYjIxMzE4YzgyY2I3YzZmYzc1ODRmMjk4NzIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc4ZjRkYmU4NWIyNjljYmFkMzgxY2I2OTU4YTlkY2IxNmNjOGRmZTBlMDVjMmJjODI3MmUxYzA2OTUyZGQ4OWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc4ZjRkYmU4NWIyNjljYmFkMzgxY2I2OTU4YTlkY2IxNmNjOGRmZTBlMDVjMmJjODI3MmUxYzA2OTUyZGQ4OWEifQ"
+        },
+        {
+          "resource": "repo://agent/service.py#L212-L241",
+          "version": "repo-lines-v1:sha256:a80bc17f347bb4a279b753179bfa946c369cc0bff80c2926dd720ee69d93f34c:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIyMjI2Zjc5M2FiODNkYjgwMzU4NzIyMTM5Y2FjMWI1OWI2NTAyZjcxY2I4ZjQzNzMzOTdlMjg1ZTQ1YzE2MTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRkZmJmODk5MzNmMGI0MmExMzJhNDMwNjRiYjJjYjc2M2U3OWFlMjdmMzFjN2QxNDhmMjdlYmE2MmRiZDc4MDYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZkMGJkMmY3ZmE5NjA3OGY1NGRkZjM1NTZkZjJmNTIyNjNkOWExMzU3OTZiYjk2ZDY3ZThhNTQ2YjY3MzJlOTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY2YmJlNTAwZGUxN2FjZDI5ZmRkNjdjYmUyZTZjN2JlMWIwOGRkMDZhMmRhM2E1YTdiMzdlOGZmZDdkZmY3ZGQifQ"
+        },
+        {
+          "resource": "repo://agent/service.py#L51-L60",
+          "version": "repo-lines-v1:sha256:3ee10fc097e129276b919d414636a6b7edec276a5397f07f2091bec553292854:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg3Y2ZmM2YxNzg0MmRlYzZlN2U5MWMzZTNiOGZjZTBhODIyZmMzMTEyNzM4MWIwMGY0NGE5ZjEzMzMzMDNhMmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJiNDQ2MGRiOTA0NDY3Y2U1NWRhMDZlYTU3YTY4YjFhN2QzMDllNzMwMzBiMDE5MGVhZDQ3NTcwZjk3NmYxNTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI3MDliMTVlZjkxODNhOGI2N2Y3YzM5MWM4OGI4NWE5MDc3NTcwNjkwY2Y0MDYzNmE1MDVlMjc3NTQzNGZlOWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE1ODFhNGMxN2ExOTg1ZWFmM2QwYThjMDlhYjY3YThhZmEyOTlkYTcwZjVmYTc3ZjU3NTViZmJmODc4MjY5YjUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d5c4830eeb7d4a87ba3dc614f1020d06",
+      "statement": "The dashboard is route-driven around queue, claim, scoreboard, evaluation, configuration, improvement, and settings pages, and all protected pages are wrapped in SessionGate so the app waits for Supabase session state, fetches the signed-in handler from the backend, and only then renders the protected tree.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/App.tsx#L1-L80",
+          "version": "repo-lines-v1:sha256:75cd28f6081a40ca34aedf4837d5e119e7dbc82a827e99000c4724b4f6c01186:eyJzZWxlY3RlZExpbmVDb3VudCI6ODAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJhNDQ1NzZkYWIwMzkyNjZlMDE4Y2I2OWUwNjBjMDBiNjA0NjBhMzc3MzE1MWJkMDNhMzUwZmEzOWViYWE0YmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk1ZWYwMWJjMDhkYmMzYjYzZTRlNzVlYTNkMjZhNWI5NDE4OTE4NzdlMjdhZDg5MTMyOWM4NDExZDdkOGRjNGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/App.tsx#L43-L80",
+          "version": "repo-lines-v1:sha256:5b829c39a5fe6ad1123c48de2ff0c41d992908935bea1d9091a27cebe9fedee7:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg1YzEzMGZhZTU5YjA5MDUzM2JjOTMzYjkzYTU5ZTIxZTAyMzVjNzIxNjFhNTI0YjIyYWRlMWNlNGEwYjEwZmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk1ZWYwMWJjMDhkYmMzYjYzZTRlNzVlYTNkMjZhNWI5NDE4OTE4NzdlMjdhZDg5MTMyOWM4NDExZDdkOGRjNGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA5NGZjMGMxNzNkMWVjM2ZjNTAxZDdkZmE5Mjg1NTAxYzUyN2NmYjQ3MTI1ODNkYTNjYzM2MTgwNTY2YjRiZTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_71885c47ac80477789dd577ca61972be",
+      "statement": "The dashboard's shared API client converts the Supabase access token into backend authorization, signs the user out locally on HTTP 401, and times out requests after 30 seconds so a stalled backend call does not freeze the UI indefinitely.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/api.ts#L1-L2",
+          "version": "repo-lines-v1:sha256:007c12d4069c65cf1386aeeb3c1029a8f958e5283b57904d6d4ec4401c648baf:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWZiZTU1YmNiZTAzMTFlNzI0MWE2MjEyMDIwOWJhOGIwY2VmZjY3NzdhZTgxYTI3MmI2YjI2YTc1NTczZjMxNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzgyOGZhOGZiZjAxNTU3YjZmNjM4ZDk1NDRlYjg4Yjk2OWE0M2FiNGJhYmYxYmM0MzJmZTdhYjI2NzFmYzkyNSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_9018cde22f0e43d5a59d3891d9b29846",
+      "statement": "The backend database stores authoritative business data such as claims, decisions, payments, runs, rounds, and versioned configuration, while the agent checkpoint pool stores orchestration state for LangGraph and LangChain work.",
+      "evidence": [
+        {
+          "resource": "repo://agent/service.py#L51-L60",
+          "version": "repo-lines-v1:sha256:3ee10fc097e129276b919d414636a6b7edec276a5397f07f2091bec553292854:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg3Y2ZmM2YxNzg0MmRlYzZlN2U5MWMzZTNiOGZjZTBhODIyZmMzMTEyNzM4MWIwMGY0NGE5ZjEzMzMzMDNhMmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJiNDQ2MGRiOTA0NDY3Y2U1NWRhMDZlYTU3YTY4YjFhN2QzMDllNzMwMzBiMDE5MGVhZDQ3NTcwZjk3NmYxNTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI3MDliMTVlZjkxODNhOGI2N2Y3YzM5MWM4OGI4NWE5MDc3NTcwNjkwY2Y0MDYzNmE1MDVlMjc3NTQzNGZlOWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE1ODFhNGMxN2ExOTg1ZWFmM2QwYThjMDlhYjY3YThhZmEyOTlkYTcwZjVmYTc3ZjU3NTViZmJmODc4MjY5YjUifQ"
+        },
+        {
+          "resource": "repo://backend/main.py#L19-L35",
+          "version": "repo-lines-v1:sha256:6dcb41e239d841b491fc22e5d84822a99ff7753ab6b0b9b22ee11b1dcb22bd7f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNiNTg4YjA5ODdlZmY1YjYzZDAzZDZiMjI4ZWI1ZWM2MmUyOWU5ODAxNDU4MTk2MTUxZGIzMzVhNjVkN2M2OGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZhZmJhMDUyN2MzOTUzYzRiNmUwZTViNTczOWJhODM2MTJmODA1M2JjZGM5NDY2NzMwMTkzY2QxZDU5MGI0MDgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZhYWEwNzg0ZGViYjliN2VmYWU1OTJmNjYzNTU4NmQ1ODI5MDllM2QzZjg5YzZhOWJkOTZlMmE0N2MyMjZhYmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhiMTdhNDdhNDY0ZjI1NGE1OGJiN2JlODVlMTE2ZjEwZmI4MjE4ZGM5MmNhODMzZTk1ZTljYjI0NDY2ODMyMWYifQ"
+        },
+        {
+          "resource": "repo://backend/main.py#L93-L101",
+          "version": "repo-lines-v1:sha256:cbbaee3bc5a57362569da320b643d980d6cd9a4be8c829cca62447bb33397558:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiY2Y1MmZmZTI0Y2Y4YWY3ZWE3YWQwOTI4NjViMWFmODU3MTAxNDA5N2YxNzYwMzZhZDIxZGU4MWRkN2E4ZTg2NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZGE5ZWU4ZjE3MTRjZmYxMDI2NWEwZmEwMDQyNGFkMjU1NDc2M2IxNjYwOTAyYWQ4NmIyNWE5Zjc4Yzg4MGUzMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzU0MzcwNGI1ZTQxMDQxYmM0NWYwNmNkZmZkYjg1YjYzMjNkM2ZiZWFiYjFhMTNjZjI3N2QyMDM2NmI3ZWYwYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGVlYmM1NzI1OTIzNjM5ZjVmYjNjMDk5NjAyN2U1MTYwZTQwOTNjNTRkYTkxMTUwNDI5YTdlMGQyNzdjNWMxNyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_2219b1e8b14d419582c0285a4df6996c",
+      "statement": "The main external integrations are Supabase Auth for browser sessions and access tokens, and Supabase/Postgres for the backend database and the agent's checkpoint pool.",
+      "evidence": [
+        {
+          "resource": "repo://README.md#L21-L27",
+          "version": "repo-lines-v1:sha256:ab740dd2cd3afdba8d9aa9050477f2f1ed07945a34190763634f53c74712d6b7:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjNmOWQ4ZDViMjg4NjI5ODVkMjQwMjc4NTBjMGJiN2QxYjBiMzg0YjFjN2Y3MmQ5MTU4ZjhlMjZiZGMzNTlhMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiY2MyM2RiYmY1Y2IzMzY5MDJlZjhmMWZkMDU2NDZmZGM2YWY5OWVjMzM0MTUyZDA4YzJjNTkwNDRkMjI1YmE0NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWY2ZGQ1MGFjMGIxNTNlZmM3YTIzMjY4ZTY4ZGUwZDE2MmE3NDJiNTRmYWMzYjI1MGJjMDBkMThhYmQ2NjFkNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjhjNjM3YjU1ZDcyNTJjZTg3NGVkZWFjNjJjZTgzY2NhNGVlMjY5OGE2N2FiYjBlMjFhOWQ3NDZkYThiNzlhNCJ9"
+        },
+        {
+          "resource": "repo://agent/service.py#L15-L17",
+          "version": "repo-lines-v1:sha256:89762998ba70dd69313e731a8ffb03a72d4c138c11bfd7a44f1d720c726292cd:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTFhYWVlYjllYzdmOTQ1NTJhNjYwMGU2NTBiOGJjNmMzOWU3MmZkNmNmODIxYmFiYWFkYWE2NGUwNzY0MjNmMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2JmM2M2YzgxOTZhYzEwZmE2ODdmMjA0OGFmODE4ZTc2NjBjMzcyYWQxNWE0Njk4OGYwOTU4ZDExNzkzMGE4YSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTZlODhlNDE2NzYzZDQ5MzczNmQ3ZGYwMTE2OTVlMDBmMTM3MjBiMzc1ZDQ1MWM4MWExYjdkYjVmNzZlMGU2MCJ9"
+        },
+        {
+          "resource": "repo://dashboard/src/App.tsx#L18-L20",
+          "version": "repo-lines-v1:sha256:14f4388cea1cb57bd2518aa6663b513eec2a62d9f23d4c97e6e5e4ef9f4b4aea:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2NjN2FhODU5ZjZkNmM5OTI2NjA4YWUzZGMzZmQ1NDM5ZDk5NzRkMzI0Nzg1MmZiNmFmNGM1YzFkY2ZmOTUxMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZWIyNWI2ZDczMTVmMTk3MzE1YTQyZTE1YTZhYmY5M2Y5YzlkOTAwYTgzN2U3ZmViMWJjNTkyNWMzYTZjNWMyNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGZmZTE1ZjQ3ZTE2MDNhZWNjNmZjNThjMzM2MGIwZTYwZTk4YTgyMzExMzllYTg5NDY3YjUxOGZiMDgxOGRjNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTkwZDc2NDRkNTA2MjUzMTdhYmM3NjdmOTMyYThmYTFjNjlhNTY4M2RiN2RiMjc0MGRkODE3YjRhY2MxMmNiZiJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-10-25T14:37:18.902Z"
+  }
+}

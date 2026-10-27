@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:332cc3b43900377c65573a72c693381695189e610a998edc2b5ca03d252e908c",
+  "claims": [
+    {
+      "id": "claim_2d709b2fa3bd4d6983397aab63395889",
+      "statement": "`npm run dev` starts the backend, the agent service, and the dashboard together; the backend runs on reload, the agent service runs on port 8002 with reload, and both Python processes read the root `.env` file through `uv run --env-file .env`.",
+      "evidence": [
+        {
+          "resource": "repo://README.md",
+          "version": "repo-file-v1:sha256:9bcd0e5e4184216f50037484ab4c8e4f4bfc14c14dbfe273ca5714c20e5ff12b"
+        },
+        {
+          "resource": "repo://package.json",
+          "version": "repo-file-v1:sha256:4b9eda0df63a1649d75dbc1b7f47cd9c8d8ac003e131106f48d7a45d3408139d"
+        }
+      ]
+    },
+    {
+      "id": "claim_a0eca9e8628d408fba607e0856f7e8be",
+      "statement": "The backend talks to the agent service through `backend/agent_service.py`, which defaults to `http://127.0.0.1:8002` via `UNDERCOVER_AGENT`; if the service cannot be reached the backend returns a 503, and if the agent service returns 409 the backend passes through the conflict detail.",
+      "evidence": [
+        {
+          "resource": "repo://backend/agent_service.py",
+          "version": "repo-file-v1:sha256:bd465c6e43ca6c299b15f87e2cb9bbf5bde6326737b3fe1fd1d7a7425bfa739b"
+        }
+      ]
+    },
+    {
+      "id": "claim_8af7d8902fc0499fb7ead8452568767e",
+      "statement": "The agent service opens its checkpoint pool on startup and immediately marks any previously running runs and rounds as stopped before serving requests, so a restarted process does not silently continue stale in-memory work.",
+      "evidence": [
+        {
+          "resource": "repo://agent/service.py",
+          "version": "repo-file-v1:sha256:e140090189eaa6e2614d88d61b944acf0584cc88b29c54eebd95108d8cc82807"
+        }
+      ]
+    },
+    {
+      "id": "claim_26cf5ea27acf489c932633ed1888bcda",
+      "statement": "The agent service enforces a single active dispatch, evaluation, or round stretch at a time with `OneThing`, returning 409 when another job is already running, and it releases the lock after the background work ends or fails.",
+      "evidence": [
+        {
+          "resource": "repo://agent/service.py",
+          "version": "repo-file-v1:sha256:e140090189eaa6e2614d88d61b944acf0584cc88b29c54eebd95108d8cc82807"
+        }
+      ]
+    },
+    {
+      "id": "claim_643c7e70f0134c1080a8c50078bff5da",
+      "statement": "The backend seeds the database automatically on startup only when `is_seeded(engine())` is false, and the separate `npm run seed` command exists to rebuild the database from `data/` explicitly.",
+      "evidence": [
+        {
+          "resource": "repo://backend/database.py",
+          "version": "repo-file-v1:sha256:2266df7540930caf998dfd36aac8474ddfb055e5c580c673bf72518a140f16da"
+        },
+        {
+          "resource": "repo://backend/main.py",
+          "version": "repo-file-v1:sha256:baadc766299f5e1a498d01c512f26fd30843193745c4f591ecd14c5ea42deb68"
+        },
+        {
+          "resource": "repo://package.json",
+          "version": "repo-file-v1:sha256:4b9eda0df63a1649d75dbc1b7f47cd9c8d8ac003e131106f48d7a45d3408139d"
+        }
+      ]
+    },
+    {
+      "id": "claim_24441b4b0ffa44549d79dac9f470c3c5",
+      "statement": "The repository’s production story is split between an AWS path and a free Render path: the README says Week 3 goes to AWS while the free route uses Render, and the AgentCore CDK README shows the AWS deployment is managed through the AgentCore CLI and CDK app without fully specifying every runtime detail in this page.",
+      "evidence": [
+        {
+          "resource": "repo://README.md",
+          "version": "repo-file-v1:sha256:9bcd0e5e4184216f50037484ab4c8e4f4bfc14c14dbfe273ca5714c20e5ff12b"
+        },
+        {
+          "resource": "repo://labs/undercoverlab/agentcore/cdk/README.md",
+          "version": "repo-file-v1:sha256:e560b877eb472e583f2fc1776e659ecc68abdd6564969748b79350b8ee9b09ca"
+        }
+      ]
+    },
+    {
+      "id": "claim_4cab978564e04d04ad436b03c871c17d",
+      "statement": "`uv run monitor.py` is a separate AWS spend-monitoring helper that reads daily budgets and refreshes on a timer; it is not part of the backend or agent runtime.",
+      "evidence": [
+        {
+          "resource": "repo://README.md",
+          "version": "repo-file-v1:sha256:9bcd0e5e4184216f50037484ab4c8e4f4bfc14c14dbfe273ca5714c20e5ff12b"
+        },
+        {
+          "resource": "repo://monitor.py",
+          "version": "repo-file-v1:sha256:1bf724d13b0904ebf8517f80fbd3203b38934c3f983cf77e09dc0f224a8ec1c0"
+        }
+      ]
+    },
+    {
+      "id": "claim_1301d76372e7423bb9bfb66b886353b5",
+      "statement": "If the agent service is down, the backend can still keep the sign-off decision because the resume call is made after the backend records its own change, and failures are logged rather than rolled back.",
+      "evidence": [
+        {
+          "resource": "repo://backend/agent_service.py",
+          "version": "repo-file-v1:sha256:bd465c6e43ca6c299b15f87e2cb9bbf5bde6326737b3fe1fd1d7a7425bfa739b"
+        },
+        {
+          "resource": "repo://backend/main.py",
+          "version": "repo-file-v1:sha256:baadc766299f5e1a498d01c512f26fd30843193745c4f591ecd14c5ea42deb68"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-10-25T14:37:18.902Z"
+  }
+}

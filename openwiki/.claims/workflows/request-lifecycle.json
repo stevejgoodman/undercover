@@ -1,0 +1,206 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:db307769c62910cbbb1b093cfcbe978fd16c0eef64b4295684c648f716813512",
+  "claims": [
+    {
+      "id": "claim_0f29d0d4496f4e98bd365409f2fc5330",
+      "statement": "The backend owns durable claim transitions and validation, while the agent service only orchestrates runs and claim resumes by calling backend APIs.",
+      "evidence": [
+        {
+          "resource": "repo://agent/service.py#L141-L171",
+          "version": "repo-lines-v1:sha256:4288bf462d91657349c7b6dc946ceeb15e9cdbcd1789cc26097e71b8b2b1fc6c:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0NWY1YjhiMjNiOWNmNDQzNWM0Y2NlMTJmMjYxYTZkMjU3NTJjYThlYzJiY2IzZDYwZmQxMzkwNWM4N2ViNmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRkZmJmODk5MzNmMGI0MmExMzJhNDMwNjRiYjJjYjc2M2U3OWFlMjdmMzFjN2QxNDhmMjdlYmE2MmRiZDc4MDYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhjODYwYjA1YjM1Y2ZjOTA3MTM5YTA4NDM2Zjc3NTU4MDUyMDI1MGExYjkzZjljMmMyODI1Y2Y1ZWZkZDgwMDMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFhNDY3MDVhN2Q4YmFlNDBiYjI2YTNiOGViMTVmMTVhNjYzMjViYjFkMzRjNTRiMmY3OTY2MTQzOWQ5MzFmZDEifQ"
+        },
+        {
+          "resource": "repo://backend/main.py#L82-L97",
+          "version": "repo-lines-v1:sha256:5aa99bc73f03f7b639dc54b5477b0834c03b96a910b07a4636607239ff49c489:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUxZjNmMGMwNDQzNGVkNDUxNjRmOWEzYmI3NDRiNjgzN2QyNTYyMDI4Y2I4NzU1NTRmOTFhN2M3Y2ZlYjc2MzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA4MmUyNTA3Njc4OTRlNGNjMWFhNzhhOWUzZmY2MTk0MWZjZDI5ZWViMzU1NTA2YTk0NDQ4YjBmZTljNDQwNTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI1YTg4MmQ2MTVlODQ1OTcyYjdkZjIyZDAxM2VkMDhmMWRkZThkODdlMWNlZDdhMmRlZmIyZjk2NjkzNmVlOGIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b771400860c142c99f3ba3f4a6849925",
+      "statement": "The agent service serializes top-level dispatch, evaluation, and round work with a one-at-a-time gate, returns HTTP 409 when another job is already running, and always releases the gate when background work exits.",
+      "evidence": [
+        {
+          "resource": "repo://agent/service.py#L118-L133",
+          "version": "repo-lines-v1:sha256:a1a53a261b4c6a953fc4962377ff1c13ea7c74c0a4871ad5e54fea0fb1d57b79:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU0Y2FkYTEwODM3YWJiMGUyODM3OWI4ZjhjODU5ODdjODhiMzMyYzJhMGJiZDkzODg1YTQ5YjQxNTQxMDliYWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgxMDZhNDUzYTNkMDI2ZDM5NWQ4MDQwMTkzZDI0YmMwZDM2OTQ2Y2JjODM0MmQ4NDdmMzNjYWY0OGQ2YzdhMTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY4MWI0YmQ5YWE5NjM2MDgwNGQxZTljZmY0NDJlYTlhNWI3NWIwZDAyN2Q5YzQwNjgxNTcyNGVjYzNhOWQ1ZDQifQ"
+        },
+        {
+          "resource": "repo://agent/service.py#L66-L87",
+          "version": "repo-lines-v1:sha256:5969c5ae6b192e03550607e9c8eca3f7cbc4f1db673890f6d0d00d4efa81cb75:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjllYTE3ZTlmYTI5MWE2NjA2NzViZDdjYjliZmUwNzkxNzdhMzA4OThhMDdjYmEwM2UxOTcyYjZjNGMyY2Y0MTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFhZDJjNWZmZDRhMzZmNTkzZTIzNmUzMTQ2MTNkNjYzYTdiNDFjOTI5NzM3YTdhOTM2NjczZmM4MDZiMzRiMjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhjY2ZkOTY0ZTdhNDQ1NTM2MWY5NjZhMTJlMDM2MzU2NDdlYzVhNTUzNDY3ZTM2NGU2ZDA5NTEyYTVhM2JhZDQifQ"
+        },
+        {
+          "resource": "repo://agent/tests/test_service.py#L133-L152",
+          "version": "repo-lines-v1:sha256:2b479508c7fbde71bf3e1338015f22e43dac9e5bbb36d73f05d4a39e2227ed7e:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJiMmYzOGU5ZWM1ZTJiNzU3MTQ4MGZiODZjNTNmZjY0OTRlOGNlMjNiMjk2NWU3M2ZkNTdiZjk3NjVkZDUyYmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJmMzE2NWM4NmZlODM0NmRiYzA0MmY4NmFjYThmNDBlYzBiMTI4Nzg2MWM4MDUyMjI3OWQ1MTQ4YjY4OTkyMjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRlNjg4MzgxMDlmMDViOTM2MzI4ZTk5NWNhZjZhNjYzYTgyZjU1MzRhMWM1OTBlNDYwM2UyMGRmNjg5NzJkYjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhhZmJlNTQ0MDgxNzg0ZjRjMTEzNzQ3NmQ0YjBiZWFmMjc4ZWYzNTBmOTExMGM4OGMyNDg5OWQ4ZDNmMDlmMGIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a52564cdc14d435d9ffcb483cf6a3766",
+      "statement": "Dispatch runs select backend queue claims by submission time and claim id, keep only waiting or in-progress claims, and exclude claims currently being resumed; evaluation runs instead use the run's preselected claims.",
+      "evidence": [
+        {
+          "resource": "repo://agent/dispatcher.py#L135-L141",
+          "version": "repo-lines-v1:sha256:b197a5511cfb90eefae626e0b473e07832c64ae74ec6a0d5ac1b74379f721f2e:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjYzODNlMjc0NDI2NDk5ZjczYzIzNGRjYWM2YzljNmVjNDBkNTRiMzNiYmYyMzI5NDZmNTg1MzdiNDhiNTFhMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjUyY2U1YWU2OTUxNzQ5OTUyZGZhYWRhMzgzOWIzMDk2ZGY0YTk1NWJhNGM2MjkxYWNjN2I3ZDkxNTIyMzM1ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDdhZGQwOTFmMzAyNjc1NDUxNjM5ZTUwNzg5MGU3NWVkZmE5ZTNiMTQzOTFhNzU0M2M3N2M3YTFiNzMwODc3ZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://agent/dispatcher.py#L66-L80",
+          "version": "repo-lines-v1:sha256:a075a31a67b60a81e0c7d0efe13ff7698cb0997936ce5bfea60d72d421130b35:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkxYjg2NjQ3ZGIyNWJhMTQyNTY0ZWNkMzkzZjQyYmJkNTNmNzk2MjE3YmY0NGVjNjI0OTViOTFiMDNjOWFlNGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVjYzZjNjE0MjM3YWQ2NGU2N2Q5ZWI0OTYwN2Y4MzMyMTQxMGNiNzc4ZmMzZDdkYTQwNDRiNWZkYWQzYmFjYjEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAyNmEzN2MzOGE1OGEyMDhjMzAxNzExNmJiNjhkYWIwMjU3ZDYwNDI4MGM3YzMyOGE0ODczOThlMmIwMTg1N2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE2YTg5ZDQ0ZWI5NDQ3ZDIyOGRlYjY0NWU4YTM1N2JlOTJlMDI3MmU5M2VlMmZlNWU2ODY2MWUwYmE3YzViM2UifQ"
+        },
+        {
+          "resource": "repo://agent/tests/test_dispatcher.py#L74-L90",
+          "version": "repo-lines-v1:sha256:73815da0c696fd2bf3c87ec0b4029e2aac6ee3e150ba6b11692cb931392c2c7f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgzMTE2OGRlZDU4NWFlZTExNjJiYTQyMjU1MDg2MTA4NTNhYmY5NzM0ZGI0NmNlMGQyNDdhMzg3YjY1MzU1YTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNmZTRmYTgzYjlmNzljZWMxMWM3ZGU0YTZhNjI1NjAwMDhhNzNiM2ExMTE2Mjc1ZmE0ZDdiNzIxMGI2OGQ4ZTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ0ZGMzOTdiYWRhNjlkYmViNzAwODhkNzQ1MTY5N2I3MWRmMDkyNWZhNWM5M2IzYmJhYzAyYWRjY2E1MzY4NzEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_de1d1d6104c24f0b95f62b7c872a1e2b",
+      "statement": "Dispatches fan out one claim per Send, cap parallel claim agents at the run's configured agent count, and finish the backend run after all claims return.",
+      "evidence": [
+        {
+          "resource": "repo://agent/dispatcher.py#L83-L141",
+          "version": "repo-lines-v1:sha256:d4a22f7e9f1a0912a1995275bc7dfdfb2f78f49fa577e75637f0943bfdc63dce:eyJzZWxlY3RlZExpbmVDb3VudCI6NTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEyYjU3ZDBkMzljNGQ3ZDYwODQ4YTg4Y2FiNWFlODQyNzhlYmYwNGMwZDk4NWIxYzUzYTQ0M2FhZWJkYWVmYTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY1MmNlNWFlNjk1MTc0OTk1MmRmYWFkYTM4MzliMzA5NmRmNGE5NTViYTRjNjI5MWFjYzdiN2Q5MTUyMjMzNWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRmYWZiZTNmZDlkMDE5NjhhNTBkN2Q2N2E5ZDkwMzE3MWJlODg2ZTBkMzE5ODQxNjk4ODg1NDM0N2I0YWU5NTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://agent/tests/test_dispatcher.py#L58-L72",
+          "version": "repo-lines-v1:sha256:52ba98aa9edb73aac22a533da22bf76d0f0d7db4f4a4cde49e8d49b360da53d0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYwMjk4ZWEzYjI3Y2M1NDU1YjFiNmUyMGE5M2Y1ZWJjMTNmNTUyZGI3ZDhiZWU3NWQ2YzQyZTc2MDE5MzNhMTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIxZjJlZjkzZDZmMjBiMTFhY2U3ZWU4ODY3ZDQ1OWVmM2M4ZTU1MTM4YzhkMDM5NzI3YjhmYTYxNDBhODIwODUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc3MjViY2YxZmY4YWZjOTc4NDE4NjZkMzRjYzBlZGNjNjQ1NDk4OTg3YmZlYjVmNTU1MWU1Nzg0NjJkMDk3ZTAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0ffe24e11c9b403c81a5ded2d0b9459f",
+      "statement": "The claim harness checkpoints claim progress with a Postgres-backed saver, records model calls and tool results to the backend, and saves after each step so resumed work can continue from the last checkpoint.",
+      "evidence": [
+        {
+          "resource": "repo://agent/harness.py#L118-L176",
+          "version": "repo-lines-v1:sha256:b47f1a27db31722155c2b79cd193760836f4a5c72de368d4fae71f411bcabba1:eyJzZWxlY3RlZExpbmVDb3VudCI6NTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJhZDI2ZjI1MzkyZDE1OWVkODc3NzllZDM1MzA4YjM1ZTc5ZjMzNjBjMTJkMjJjNzk5Y2FkMTdiZWY1NDM1YWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg3N2ZjMWFiZGQxMTQ4YTIxNDJhNDg3YzU5OGUwMjNhY2JlNWM4ZGZjNzZmNDIxNmU5YmQ1YmQ0MGM5NDk4N2YiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg3YzIwNWYwZWM5ZTgzNDU0MWViZmEyMThhOTE1OGQxNTNmNThjZTFiM2E0ZjdiMDQ5MWY1YjdiMmVkMjkxYTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEyNzdjYzYzMzcyZmY5OWQwYTIzZWVjZGM5MDVjN2Y2NzFiNjAwNGJkYzJkMjFjNDg1YmQxMDdmZWVlY2RmNTQifQ"
+        },
+        {
+          "resource": "repo://agent/harness.py#L84-L106",
+          "version": "repo-lines-v1:sha256:6f26c21edc2a313a6c53a9be1de72c094f239717c65cbb6217e903b0d29fa2a7:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU2MWYzM2MxMzI1NjlhNzQ5NDZiMmZjZjU0NmNhM2M0NDI1ZGEwY2E1Y2Y2YjY4NmMyNjA5MGZhYTlkMTEyYjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRhMDE5ZmE4NzYyZWMxOGM0YTUxOWY0MmEyNTUyZTY4NDU5YTg0ZDNmMGU2MWZlNzIzNjY3YmMzNDZkYmZlMDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI0NjkyZTBhYjIyZTE2MWI4NzkyMDM5MjJhNDA0OTQyMjk0ODdiZjU2MjFmOTFlNTUzMDE1NzlmYjg4MmIwN2MiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE3ZjU4ZGRkMGY1ZTQ5MDNmZTE4NDZmYTBjNzY5YmZjYWMxMWZlOGU3MTMzZWEyNjM5MzVjZGRkY2Y1NzVjNjMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0dc897ea3efc40b8bef70f59308392ee",
+      "statement": "Transient model rate limits and timeouts are retried up to three attempts, but other claim-level failures are reported and do not stop the rest of the dispatch.",
+      "evidence": [
+        {
+          "resource": "repo://agent/dispatcher.py#L26-L29",
+          "version": "repo-lines-v1:sha256:d2abe0462e5a6e4288b15fa74b0246f22cf2feed815ed70fc13888154b840515:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzNkZDAyNTRkNTNiM2ZjZTFhMDYwMTQ1YTFlODdlY2FiOTRiMTU0ODc0ODU4MTQxMjg4ZjdlYTgzMTJlNWQ2MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGU2OTQzOGIxYmEwMTMwNzczYjk0MjliNDYwYzhkMTRhYjk0NDIzMzBlZjc2OGRmODA3ZTExNmEyNzA0Njg1MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDRjNjVmNzliODg4MWJhNTRmNTBlNjEzMDNlNTliNTI2NThmYzU0OTU5ODY2ZWFlZjQ2ZTk0ZmNlOGE1ZWI0YSJ9"
+        },
+        {
+          "resource": "repo://agent/dispatcher.py#L99-L115",
+          "version": "repo-lines-v1:sha256:5899ae2e0213650aac8d38bfa5db6b6d637a464bc3d4bc31d88f3b665360eafc:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBhNTU2YWJkYjJmYzY1MDNiMmU5NzQ4OGRiY2UwY2M2ODc5ZTY1NGU1OTkwNWUzZWFmMGI0MjYyZDNkMDEwYzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY0OWQ5NTBlYWZiMDYxYzQxYjcyZjQ5ZDg1MzcyM2Q3ODQ2NTI2N2ZmNzA1NThlZTJlODlhMmI4Mjc4YmZkMzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI4YzAxOWEzYWJhNzRhYzE5NTJiZGM3NjRiNGExNmRkNTA3NGYwMWNkYWQ2YzYyYWQ3OWU2YzgzNTEwMmViMzEifQ"
+        },
+        {
+          "resource": "repo://agent/tests/test_dispatcher.py#L92-L170",
+          "version": "repo-lines-v1:sha256:9620ac68e6d4b05f50f8517cad5d87c0db05b4535521076360172b9b71714f32:eyJzZWxlY3RlZExpbmVDb3VudCI6NzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE1MWZjODViNDdhMDYyYzBiM2Q5N2UxMWFlMjYyYzEzZTE1M2EzNmUyNWRiNDhiY2Y0ODY2ZjM0NjQ3MzVkODQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZjNzFkY2UwM2VjOTY5ODU2NGU0ZWQwYmY5M2MzZWQ4ZTA4MzllODMxZjNhMzZmOTlmOWZmMmNkNmQ0YzFiNDQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM2MWE5ZjE4YzgwOGQ3ZTY1ZTA1YmU3NjdjMzhiYzljNjYxYjRjYTdjZWFhZTAzMTZmZGFlYzEyMzIzOWI0NGIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2f2703b8b77f4fb698f57553dd51a328",
+      "statement": "A claim paused for handler sign-off is resumed only after the agent service verifies the claim is in progress and has signed_off_by metadata, then adds the claim id to the resuming set before scheduling background carry_on work.",
+      "evidence": [
+        {
+          "resource": "repo://agent/service.py#L152-L171",
+          "version": "repo-lines-v1:sha256:cafffab428edb7a1ee7b1c586d6ee3964d5b876bcec31baddd31fb760084a396:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA0ODg3ZjBmMGQ1ZDM5NjFiZWIzNThjY2U3ZTlhMzMyNjRlNGE0ZDUzMDMzZGM4ZWE1YTExMmZmNGEyMGIzMmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRkZmJmODk5MzNmMGI0MmExMzJhNDMwNjRiYjJjYjc2M2U3OWFlMjdmMzFjN2QxNDhmMjdlYmE2MmRiZDc4MDYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc4ZjRkYmU4NWIyNjljYmFkMzgxY2I2OTU4YTlkY2IxNmNjOGRmZTBlMDVjMmJjODI3MmUxYzA2OTUyZGQ4OWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFhNDY3MDVhN2Q4YmFlNDBiYjI2YTNiOGViMTVmMTVhNjYzMjViYjFkMzRjNTRiMmY3OTY2MTQzOWQ5MzFmZDEifQ"
+        },
+        {
+          "resource": "repo://agent/tests/test_service.py#L36-L93",
+          "version": "repo-lines-v1:sha256:b2cb8dc67d9edcc663e0ae489a7ba1f178e739e445853952760d9b59f29b0209:eyJzZWxlY3RlZExpbmVDb3VudCI6NTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJkNjYwYWQ1NzZkY2JkY2ViN2ZmMTA1YjYyYzRkOTM1YTM4MDMzYTAyODk2YzI2ODBhMmE3Mzg5MTVlZjM5YWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNkY2FlMDRiYmRmOWM5ZmVlNmMwNjBiMTI0OWIxNjk5YzlmZjFhYjE0OWRhNTJmNWViMjE1M2JhNTk1MmVkZjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ5MDUwNTE5YjdmOWE3NWYzNDc5YWUxMGJjYzA2NDY3YTFhYTUxOTc1NWY4YzcxOTVlZTRhMDA2ZDdjZDFjOWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIzMTJlNjE3NjJiOTJkZWZlNDdlMzMyZjUzOWNiZmQxYWQxNzZhNmVkNjkxMDA0Y2Q0MWM2YzZjYTJkZWM5YTkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_210ee200f3fc4a01b4f4af88b11b7bfa",
+      "statement": "The dispatcher excludes claim ids in the service's resuming set, which prevents a sign-off-resumed claim from being picked up by a fresh dispatch while carry-forward work is still running.",
+      "evidence": [
+        {
+          "resource": "repo://agent/dispatcher.py#L54-L80",
+          "version": "repo-lines-v1:sha256:fe148f4ec0d52d9efc77175acceb154dbea375475de39fe5e88ce5bc5e787f94:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlkMDE3MDNiZTljMmYzNTkzMWU4MTE5MWI2MzQ1Njc5ZWJkYmM4NTczYTEwZDA2ZmYzZDE1MzJkYzBjNTE4NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVjYzZjNjE0MjM3YWQ2NGU2N2Q5ZWI0OTYwN2Y4MzMyMTQxMGNiNzc4ZmMzZDdkYTQwNDRiNWZkYWQzYmFjYjEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZjMWYwMmZkN2VjMWQ0NjJjMGNiODE4Yjk0OGZmZTRmNzE1YjJjMmM0MzI2MzBjMjMyZGZlMzRkNDI3NDNmYTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE2YTg5ZDQ0ZWI5NDQ3ZDIyOGRlYjY0NWU4YTM1N2JlOTJlMDI3MmU5M2VlMmZlNWU2ODY2MWUwYmE3YzViM2UifQ"
+        },
+        {
+          "resource": "repo://agent/service.py#L89-L91",
+          "version": "repo-lines-v1:sha256:1e4247b42a004fe26afe61cd96945f274128233bf71f2494e9f8e7dcd040f579:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTk2OTM3MWJkNmUzMDllZmE0M2Q3YjJkMThkOWEwMTgwMzE1ZDQyMDE3MGI3MmYxMTdiZjJhNzhkN2FlOTQxMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjMyNTc5MjI3N2Q5MmZjYmNkYzk5MTJiYmEwN2MxOGFkODFiZjhhMmNhNTQzZDRiZmNmNWY5NTM0N2NkY2MxZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYmM1NGUxNTM4OWUyNTEwZWY0YWE4ZTY1ZmJiYWY2Y2JhODZiMTZiMzY3Njc0Mzg1NjlkMjg5ZmJkNmE3N2IxMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjM0ZDY0ZTQzMWYwNWMzOTAzOWUzODRjODRkYjg1MmJmYTllNmQ3MjllNjA0OTg2OTQ0YjQwNmIyN2FiNjU4ZiJ9"
+        },
+        {
+          "resource": "repo://agent/tests/test_dispatcher.py#L246-L253",
+          "version": "repo-lines-v1:sha256:a41853f098e3ce8b2dd6c7fbe6c2fcb88a16a9be7a86cee246282feef10fb0d0:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2YwMzlhZjg0ZWYyZmE0YzMxN2UwNmVkMzk4NjA1OTU1MWQ0YTE2ODVjYTljMGIzYWRlZjgxMmYyZGQ4YmZmNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWNjYmFhMThlM2Y5MTEzY2NmZDc0MmI0MTRmNDI4NzVkZTBjZjQ0Njg3NDM5MWQzNGUzNGQ5MzRhOGE1ZmQ0OSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOWVkNzViZGY1OWQwNDhhNDI1NTY1Zjg2MTk0YTgwN2Q2N2FjZTkyMDEyOTEzYTZjY2M4ZGYwMzBjMjE4ZjVmOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWRjM2RjYTU0Zjc5Mjk3MzQ2ZDFmZmNiMzgyYjc1NTIzOTFhM2ZiYWI1ODY0MTdkNzEzZTZkZTE1ZGI2NGM5NCJ9"
+        },
+        {
+          "resource": "repo://agent/tests/test_service.py#L64-L80",
+          "version": "repo-lines-v1:sha256:0397883ca5d4540a93bbc962c3ac83e63130941540a5394e9fec53cba3afbedd:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImViYWE5ODM1NTFkY2Y5ZjI0NGNiMDhiNmJlNmQyYTJlMGJiNjcxZDUwMzMxOTQ0YjY0YTM2MTAyZDgyYzhkNTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0MmRmZjU0MmY1OTllYzdjYmI1NjZlNGEzZWJlNDliN2RkMWNjMmI3ZTc4MTU4MTVlNmZkNWQ5MTlkYjJmMWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQxNmE1Njg1MmJjYmU0MzBiYTkyZTY4MzllMjUwM2Y0OTg1OTdlMGI1NGExZjkwY2I2ZmVhZGEwMDRkMmM1OGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMzODg2OWJiNzU4ODIyMzg3OWM1OTVmNGRlYjRhM2QyMzM2YmM4YTFhZDA4ZjNiODk2MGU3NmI2YzBiZDRjZWQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a21d919947be4bf1a633dbc04ec9a544",
+      "statement": "The claim graph interrupts at wait_for_sign_off, and its pay step calls the backend payout endpoint so the backend, not the agent, decides whether a payout is allowed and whether sign-off is needed.",
+      "evidence": [
+        {
+          "resource": "repo://agent/harness.py#L179-L208",
+          "version": "repo-lines-v1:sha256:f9b1d49fe0da3969ab911cad0857a88dba1d61b7b63abdbf3af9159ce2a48dc9:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFlMjc0NmZiODM2OWE1ZTE5ODUzNzUxNTMzZmYyYmI5ZjgxNjU5NjNkNGEzOWViNjJiZTBjZjI0NGZiODcwNTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJjNWE4NTgwYjc3YmU4MTNjMmYwNzQxYTViZTJlYzZlMzQxZjc4ZDBlMjc4YmM1OThlMDY2YzE2ZTAyY2Q2NTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAyMjU4NWM5ZWNlODBiMWY5YTEzYTUzMDY3NDFlNDg5NGViY2JiMTFjNWJjZjFkYmIyYTUwZjE0NWI0MDI0YTAifQ"
+        },
+        {
+          "resource": "repo://backend/payout.py#L46-L49",
+          "version": "repo-lines-v1:sha256:5e8db38c0a6646c973545d8a2c1a529f4d6d15806cbc9288d0ed750c85d1ab13:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjkxMjJjY2NiNzkwZGJmNzc4ZGQ4NmUwNDViOGMxNzc3ZDNmZmRhZGNkNDNjYjI3NDkxNmNjYTZjNzM4MDgyMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGUxZWQzYjYyODAyOGNhZDEyZTlhZmZhYTAyOTFjYTM1ZjRhM2I0YTIyOGUxYjIwOWUzNjM2NGE0YTM5OWZkOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDIzZjUyZjRkZTgzZDEzOGZlNjM2MmIzMWEzYmJkMDZkZWIzNDQyZWVhMDQ2Y2I2NDEyODYyY2M0NTI2MzQwMSJ9"
+        },
+        {
+          "resource": "repo://backend/payout.py#L99-L147",
+          "version": "repo-lines-v1:sha256:d4687cd70620f361b524a55f2fde693501abd33c4e8fb876c81768e87c9f3dd4:eyJzZWxlY3RlZExpbmVDb3VudCI6NDksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdhODY0NTU5ZTkyOGEzOGIwOWI2Mzc4MjU5YTdjMTVmNDNkZWMwNTI2MTJlYWVjMzlkNGM5MDYyYjEwNzA5NGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwYzFmMTg4ZjE0MmVkN2E4MjQ2ODBiMjA3MTcyYzU1MTliYzYxNGE0OGZkYTdjZjE2N2VkYjhkZGY3OTk1NmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNlNzE3N2E2MGE3YmQwYjM1Yzk2YTY1ODA1NDU1MGFkNTliN2Y3ZDRhMmQ3MWRiNjY0MDVjNzRkNWFjMzc0MTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_aa7f37670e2d41e8b3b71f30c4d3423e",
+      "statement": "The backend payout engine computes payout independently from policy and claim data, caps or reduces the amount according to benefit rules, and reports whether the result needs sign-off.",
+      "evidence": [
+        {
+          "resource": "repo://backend/main.py#L115-L130",
+          "version": "repo-lines-v1:sha256:07e0992b007843b250a4c1c7945ef535ec356c00cda52f536182e58a769b5c9a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc1NDUxODQyZjYyMGJhNDIzM2ZkNmY1MTYzMDRkMWY2ZjA3NTI2NTRmMzExODViZmI0YjdhNzZjNjQ0YzdlYmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM5ZTM4NTI5NDBjZWUxYWVhNmMzODMzNjAyYzMwOGZlODQzMTNiOTRlYzMzOTYzOGMzM2RiYTk5MmE2MWJmOTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNiZGJlODUyNTQ0NGNiYzUyNTczNWVhZjZjODMyNzYzYmVlZTFlYTUzMzY5YjBlMThlYzQ1NmRiZWJkMGQwYjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEyMDllNTgxOGRjNDJhZTA3N2UxZWMzNjY3YjYxNGNjNzliOGQ3ZjhhZTQwODkyMTNjZWI5NmFlZDZkNDVhMmIifQ"
+        },
+        {
+          "resource": "repo://backend/payout.py#L56-L147",
+          "version": "repo-lines-v1:sha256:486f999c03f55adb9f004d7849c9126b8ee3b103d1d69523bea5e371a8dea885:eyJzZWxlY3RlZExpbmVDb3VudCI6OTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmOTMzNjhlMmVjZjkxMDg4ZDkwNDA1ZjcxZjJjNTYxNWM0ZGZlYzY5MjNkNWY5NDdjOTE4NDc4ZmRiN2M2MjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwYzFmMTg4ZjE0MmVkN2E4MjQ2ODBiMjA3MTcyYzU1MTliYzYxNGE0OGZkYTdjZjE2N2VkYjhkZGY3OTk1NmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQxNGYwMzFhMzk0ZGJjYmUyMmU2NGUyZDg2NWU1MmIzNzljOWU2ZTIzNzM2ODc4ZmM4YTZiNmRkZmZhM2I4MzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_75345caf5194446ca8aa2676e3d02d0f",
+      "statement": "Unexpected failures in background dispatch or round work are logged and converted into stopped backend work so the system does not keep advertising a live job that actually failed.",
+      "evidence": [
+        {
+          "resource": "repo://agent/service.py#L118-L133",
+          "version": "repo-lines-v1:sha256:a1a53a261b4c6a953fc4962377ff1c13ea7c74c0a4871ad5e54fea0fb1d57b79:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU0Y2FkYTEwODM3YWJiMGUyODM3OWI4ZjhjODU5ODdjODhiMzMyYzJhMGJiZDkzODg1YTQ5YjQxNTQxMDliYWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgxMDZhNDUzYTNkMDI2ZDM5NWQ4MDQwMTkzZDI0YmMwZDM2OTQ2Y2JjODM0MmQ4NDdmMzNjYWY0OGQ2YzdhMTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY4MWI0YmQ5YWE5NjM2MDgwNGQxZTljZmY0NDJlYTlhNWI3NWIwZDAyN2Q5YzQwNjgxNTcyNGVjYzNhOWQ1ZDQifQ"
+        },
+        {
+          "resource": "repo://agent/service.py#L212-L224",
+          "version": "repo-lines-v1:sha256:185f63ba79a24b8fd698d08b3a5c79f4f78836e0b54a78f05fe8ec9dd6cf1d40:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIyMjI2Zjc5M2FiODNkYjgwMzU4NzIyMTM5Y2FjMWI1OWI2NTAyZjcxY2I4ZjQzNzMzOTdlMjg1ZTQ1YzE2MTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM0MjNhYmZiM2Q4YWU2NmU2NjY5MmRiM2VkNGFjYTY2NGM4MjZmNDZlY2VhMDdlY2Q1YzkyNGVlZGMzNjQyOTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZkMGJkMmY3ZmE5NjA3OGY1NGRkZjM1NTZkZjJmNTIyNjNkOWExMzU3OTZiYjk2ZDY3ZThhNTQ2YjY3MzJlOTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFjOTAwNjM2NzlhN2EwNDYyNTVmMjAzMWQ0NWIxNmMwYjAwMGZhODc0MTY2MzhjZTBkZmUxY2FlYzY0OWVkNzgifQ"
+        },
+        {
+          "resource": "repo://agent/tests/test_service.py#L155-L169",
+          "version": "repo-lines-v1:sha256:c013e0d98bd317e843a8814e746b0503e48ac92673adbdad367b931a51bc05d3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU4NmIwMDA2OTZhYzUzMGZkYTZiNGVmN2NjNmY5MDY0NThiMmVhMDQzNjBhY2E5YjVhYTUxNDA4YzFhZWE5MjAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFkMjdmYmNlOTAxNzkxZjQ4NDk5OWNlYTJlM2ZlN2NlZTIxNzk0MTgyYjBlMTYwM2Y4ZWZlNzUzYTIyZmNlMzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYyZTM4MDVjYzNiNzBkYzFkYzEwYWYyNWJiYjBlZTQ4YzJmNzZlMGNiMTUwODRhZWEwMDg5NjA1YzMxNWRmNTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJlNDg5YTYwOGYzODYzMjcxYzA2NGY0NTU2MmVkZWQxN2FmZWFhYzQwM2Q4NTAzMjFhYWU5MmJjODM1YjZhZGMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ba6d0ccc70ea4ba1a350094f97e3b3ab",
+      "statement": "Service startup keeps the checkpoint pool open, stops any leftover runs, and marks leftover working rounds as stopped so a restarted process does not inherit half-finished work.",
+      "evidence": [
+        {
+          "resource": "repo://agent/service.py#L51-L60",
+          "version": "repo-lines-v1:sha256:3ee10fc097e129276b919d414636a6b7edec276a5397f07f2091bec553292854:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg3Y2ZmM2YxNzg0MmRlYzZlN2U5MWMzZTNiOGZjZTBhODIyZmMzMTEyNzM4MWIwMGY0NGE5ZjEzMzMzMDNhMmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJiNDQ2MGRiOTA0NDY3Y2U1NWRhMDZlYTU3YTY4YjFhN2QzMDllNzMwMzBiMDE5MGVhZDQ3NTcwZjk3NmYxNTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI3MDliMTVlZjkxODNhOGI2N2Y3YzM5MWM4OGI4NWE5MDc3NTcwNjkwY2Y0MDYzNmE1MDVlMjc3NTQzNGZlOWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE1ODFhNGMxN2ExOTg1ZWFmM2QwYThjMDlhYjY3YThhZmEyOTlkYTcwZjVmYTc3ZjU3NTViZmJmODc4MjY5YjUifQ"
+        },
+        {
+          "resource": "repo://agent/tests/test_service.py#L172-L177",
+          "version": "repo-lines-v1:sha256:646a17f8297027f6242c584fe1f32eefe674aafa96626acda4c12cb2879caf9f:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmZlOGVkNmRhZGI3NjkxZWRjMTY3NTY0ZTQ3N2EyNTg4YzAzNTVjYzNjZDg0NDg0ZmRjYzI2MGEwOWM3MzlmZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjNhYzU3MGVhNmYyYjliMTBhZTZhY2JiZjAwN2E2ZjJlMjM4ZWQ2MDhjODI0YjdjZDYzMTgwYzQ2MWQ1ZTc4YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOWFiZTFiZDI3N2UxMWM5ZThmZDMyNGFkOTY1ODAyMTk1OTA3NjM1NGY3MWRhMWEzNDI1MDkwMjNmYmNiOTU3YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODg4NTg1MzVlMjA5NTI2ODFjOWRhN2JlYWQ2OTZhOTFmNzRjMDc0OGY1NTNkYTI3NzU1ZDZmODhiNmJhM2QxYyJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-10-25T14:37:18.902Z"
+  }
+}

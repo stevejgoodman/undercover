@@ -1,0 +1,210 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:05efbadc0bd6b6b92492fea83d68042cda1033a6d7ddb018621ba42f487d636b",
+  "claims": [
+    {
+      "id": "claim_84da106517744c9d8dc1060700931964",
+      "statement": "The backend is the authoritative application layer for UnderCover: it owns the FastAPI API surface, the SQLAlchemy schema, and the domain rules for claims, payouts, runs, rounds, and document access.",
+      "evidence": [
+        {
+          "resource": "repo://backend/database.py#L64-L218",
+          "version": "repo-lines-v1:sha256:2016a74f4f3897e165d1d0819145875a73422bb1c0d03499dac2dc7aa53e403e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTU1LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI1M2NlZmE4OTIzNmM1OWEyOWExMjJjMjlhMzhhNDU1ZWU4NDUxOWYwMTE2ZmRjN2U2NmJjNWE2YjI3ODVlM2VmIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJmYWZiYTA1MjdjMzk1M2M0YjZlMGU1YjU3MzliYTgzNjEyZjgwNTNiY2RjOTQ2NjczMDE5M2NkMWQ1OTBiNDA4IiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIzNmVlNDY2OGFlYTliNzQyYjcxMjI0ODBlNTI0NTFkZWE3MGYzYzY3OWM3YzNlN2FmYWM1ZDQwNWI5ZThlMjkwIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI5OWNkNjI1Yzk1YTI3YTdkYTg2NjU0NGMxZmJkODkzYzRhYTZlNGQ3ODIyYWFiNjcwZDlmZjQ2MTYzOTE2ZjQzIn0"
+        },
+        {
+          "resource": "repo://backend/main.py#L78-L90",
+          "version": "repo-lines-v1:sha256:4a735832ae67a0bfb931a1937bfa90aa1eb959ba5ef59a4d462c3ed21dbc80aa:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg3Y2ZmM2YxNzg0MmRlYzZlN2U5MWMzZTNiOGZjZTBhODIyZmMzMTEyNzM4MWIwMGY0NGE5ZjEzMzMzMDNhMmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVkOGM5YzY2ZmZmM2VmMDQ2NWI5NjQ2OWZiZjdmMzk3MzE0Nzc0MjdjMmFmOWIyNGExZWFmNGJhNjViMjA4ZGMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ2MDBiNmRkMWZlZTBjMWU2NzA3OGJmZjc0NTkzMWQxOTRhNTgzMTQzMmQzNGU3MzQxMjI5M2M4MTMyMGQ2MjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ1ZTNlYTA5ODUyMWIyNDA0NmFmZThjMjNkZjBkY2I5ZDQ5N2MyNmE0MTlmZjAwOTgxNzE1MWI1ZmNhZjNiOTQifQ"
+        },
+        {
+          "resource": "repo://backend/rounds.py#L1-L5",
+          "version": "repo-lines-v1:sha256:2cded8590eda36fd9bc2e044365ebe2e0f95312ab79c23007518519afdbea7e9:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTRiM2FiMDczMDQ4OTU4ODA4ZjRmMDIwNjc1NGZjYWQwOTNjODdhMWVhOTY2MTA0YTBiYmI4MDgwMDU2MDBkMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjBkOTZiZTFjMjVjNDA4OWFlMTgzYzgyZjcxODY1OTM0MmQ1NmUyODM1YmM5OWQ0MGNkOWUyMTU1NDhkOGMzMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzE3ZmY1MGE1ZTJkMWEzNzA2NDk0YTZiZTg4YmMyYjQ4MmViZDkyNWYwYzcwMTgwNWFkYmRiNTQ4ZmRhZDBhOCJ9"
+        },
+        {
+          "resource": "repo://backend/runs.py#L1-L4",
+          "version": "repo-lines-v1:sha256:3fb049072ef6466b648e5bd4806c730e42b75c3d0648afb4305b833f685d7161:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODU0Mzc3ZGI3NDc0ZGNhMjY3NDdjNzkxMjM2ZGRiMDM3YTEzNzViM2E3M2QzYjA3YmFlMjIxY2RiZWRlNGVkNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYmYyZTBjNTdiYTIyMWYzYzZlNzY3NzA2Zjg4ODg0NzRkNmY3MzQ1NDE2YjEzOTZhNTcyNDBlMDFiNjU3NzVjMCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_131f8008bd604fe7a78fa5fb38d331a4",
+      "statement": "The FastAPI app seeds the database on startup only when `is_seeded(engine())` is false, by calling `seed(engine())` inside the lifespan handler.",
+      "evidence": [
+        {
+          "resource": "repo://backend/main.py#L78-L84",
+          "version": "repo-lines-v1:sha256:52d2880a4f3ffe3a3073bcf809b9692cd7fead806e898f9a9f1b9143d772a241:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODdjZmYzZjE3ODQyZGVjNmU3ZTkxYzNlM2I4ZmNlMGE4MjJmYzMxMTI3MzgxYjAwZjQ0YTlmMTMzMzMwM2EyZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDYwMGI2ZGQxZmVlMGMxZTY3MDc4YmZmNzQ1OTMxZDE5NGE1ODMxNDMyZDM0ZTczNDEyMjkzYzgxMzIwZDYyMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTM1YTkxZTNiNmRlZWRhNGQ0YTA4NTNkNjM2OGNmZjllYjM0MWFjNzcyN2I0MjNkZGJlMWM2ZTRjNDkxZjU0NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_c6c2045ea1be4963843edaef2387b5db",
+      "statement": "`find_claim`, `find_policy`, `run_row`, `round_row`, and `find_version` centralize missing-record handling by raising 404 responses, while helpers such as `started_thread` and `check_evaluation_goes_on` raise 409 for invalid claim state transitions.",
+      "evidence": [
+        {
+          "resource": "repo://backend/lookups.py#L25-L39",
+          "version": "repo-lines-v1:sha256:5c0957e7404d7b69f335eac62db413e080db0ff508b1572f87d8ece8381149c3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5ZmMyNDQwZTMzNzc3NTI1M2U4YmFmYzEyYzk0MjAwY2Q5ZWQwYjljYjQ3MDRkNmJmYjA5NGQ0ZTg5ZjQ3ZTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRiNDU0MWI1NTA1NjQwMjZkNTQ1NjNiMGM3YzgzOTdmYWVhNzAzZjdmZmFmZTBkNTY3MjNjMDhmY2Q3MzU4NTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI2M2FhYzZiOWQwMTg5MTkyYzI1NjNhZTI0NGFjMWZlMjgyNjU2ZmNjZTUyYWYzNjQxYzMzMWU4N2QzMzhjZmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc4MjU5MDZmNTc2NzViNjQ1MzE0ZGM3MzEwYzg4OWU1OTQ5ZmI4NTFkNWE5NWQ1MDg4ZmFjZDY2NzdiN2EyNmUifQ"
+        },
+        {
+          "resource": "repo://backend/main.py#L104-L140",
+          "version": "repo-lines-v1:sha256:29717e67cc053e3981118c2eab4566b9455b9a326849f9bd4ed653732340d808:eyJzZWxlY3RlZExpbmVDb3VudCI6MzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc4MWNlYWJlOGUwYTdhZDMyMWQ1Nzc4YmI2NWU1YWZjZTI4MzVkZGRiOTYyZWI0NDQwNDk4ZWRhNjE3MWM3ODUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZlMGYwYTVlMDZhYjY3Mjg2NzkyZTA0ODE1YTc1OWYzNDQ3MzM2NjVkMjE5NWZlMDc5MWRiZGQ1ZTNmMTRhZjAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFlYjljNTRiNmJiNmU2OTU2MTYzMjRjMzlmZjlhZTgyZTE0NzM1Yjg1ZjUwZDIxMTI2ZTAxYjFjYTNjYmQxODQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU3M2NlNWY0NTJjYzM4MjA0YjQ1ZDJmOWRhZGIyMTc1NWIyOTZhMjA1YzdhYTIxY2IxMWY4MjZiYmFkODAzYzcifQ"
+        },
+        {
+          "resource": "repo://backend/main.py#L143-L153",
+          "version": "repo-lines-v1:sha256:9a5b403c8b9242987279893ad161bc91b688ef4c22ca8922bdb67b28e06f4827:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI2YTM1N2JhNTFmZDIwYmNlYzI4OTZlYzY5NmZiZmM5YTMzNjQwNTVhY2MwZTM0NjgzMTY0NzQ1MmY1MzAxYzQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjUzZGZiNWI2ODkxOWEwMDJkMDhjNDY5ZTc4ZDQyNTIxM2ZhN2YwZTE4ZTA2MjU1MDA3NzdmOTQxMzA2NGRmZDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVhYjhkMGIxODk3NzFhNjU3MzZkYjMzODg4YTIxMjExYmUxZTFmNjRhNGJiZDA1MmE3ZmVhMGVjMjk0NmVlNDAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0c9c2483a45f4b2081c64097a37e39e0",
+      "statement": "The backend stores claims, policies, customers, handlers, documents, decisions, payments, steps, model calls, work times, runs, grades, rounds, proposals, recipes, and agent versions in SQLAlchemy tables, with settings, plans, allowed models, and documents represented as persisted tables rather than in-memory state.",
+      "evidence": [
+        {
+          "resource": "repo://backend/database.py#L219-L260",
+          "version": "repo-lines-v1:sha256:b9baf2084ab87f2f893acfa479ad9a05cd85964928ff73daee68eef5401037d0:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkyN2MwODVjM2Y5NmM3MmQ0NGMwNmY1ZDg0OTgzMDhlOTNjZjU4ZDIzNjk0MWIyODEwYjY1NGRjNjgzZjFhZjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkyNDcyYTBlZjM3ZmI3ZDQ0M2U3MDg4ZWFhMWJjYTQ1NTJkOGQ3OGEwOTI1OWNjNGQwODBiYTg2NWE2NmEzYTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY0ZDQ5MDhlZDI3YjEwNjU0YWQyYjZlZDE1MGU2MTZkZmUyMDZjZjgxMTk1YTBlOTc5Y2Q0ZDhmZThkMGYzMTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE4YzgxYWIxMDE0YzkxMDFjYThjZDRjMWRjMmRjYTMzNDI3YjllN2M5YTk2ZTU5ZDk0NjY5YjNjN2Q0ZWZiN2YifQ"
+        },
+        {
+          "resource": "repo://backend/database.py#L64-L218",
+          "version": "repo-lines-v1:sha256:2016a74f4f3897e165d1d0819145875a73422bb1c0d03499dac2dc7aa53e403e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTU1LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI1M2NlZmE4OTIzNmM1OWEyOWExMjJjMjlhMzhhNDU1ZWU4NDUxOWYwMTE2ZmRjN2U2NmJjNWE2YjI3ODVlM2VmIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJmYWZiYTA1MjdjMzk1M2M0YjZlMGU1YjU3MzliYTgzNjEyZjgwNTNiY2RjOTQ2NjczMDE5M2NkMWQ1OTBiNDA4IiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIzNmVlNDY2OGFlYTliNzQyYjcxMjI0ODBlNTI0NTFkZWE3MGYzYzY3OWM3YzNlN2FmYWM1ZDQwNWI5ZThlMjkwIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI5OWNkNjI1Yzk1YTI3YTdkYTg2NjU0NGMxZmJkODkzYzRhYTZlNGQ3ODIyYWFiNjcwZDlmZjQ2MTYzOTE2ZjQzIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_3549efb855b34a73933df9ec3f53e0fa",
+      "statement": "The claim API exposes list, read, document search, and policy/history endpoints, plus workflow endpoints for starting work, recording steps, model calls, work time, decisions, payouts, payments, sign-off, and failure handling.",
+      "evidence": [
+        {
+          "resource": "repo://backend/main.py#L173-L220",
+          "version": "repo-lines-v1:sha256:bff5000a3648f8f4f66b527b97f5eab240005495b8c0cb631404c215a849f0b7:eyJzZWxlY3RlZExpbmVDb3VudCI6NDgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMyMWQzNTdmZDk1MThkZDczYTFmYWU1Yzc0NGVhMzhmNTNkNjJhYmEwNzEzMDZhMGRhZGM3NTY2YmE4ZTNkZjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE1YjJhMTBkYzU0NjU3ZjEzMWFjNDc3YWI4NDQ2ZDc3OTE0M2M0MTI3ZWVmZjhlNGMxMDJjM2EyY2IyMzI5NmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAxY2ZmMmVjZjE1NWE2NWNkYzc1N2MyYjJhODQyN2FlMGE3ZGQyMDg5YzFhYjcwNmIyYjQ4NTVkMjVhNWEyYWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBkOWFiNTRlYjAyMGIxOTk1OTNlOWJhYzA3NzgxMGY5YzMwZGNmYTIyZjgyZmI1NWFkMDRiNDFhMTk5MzI1MTQifQ"
+        },
+        {
+          "resource": "repo://backend/main.py#L227-L410",
+          "version": "repo-lines-v1:sha256:207178ea7dcc17ea59efcbaf8035e0978eb3679ab116f7b5a7e614b9f1c51aa0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTg0LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJjODI2ZWNlNWZjMTE5ODcxOWIzMzBlYjU4ZDRiOGNmOTVkNzM3OWMzY2E0ODM1MzY3NmU3MmQ1ZTA3MGE5MmMxIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJkYmY0ZTQ2OWM2NzM2NzMxZGViYTNhOWE2ZDU0MTE3NTdlYWM3ZjBmNWYzN2UyYzdjMTZkMzdhOTQ2MmM2NDE4IiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI3MzViYjVmMTg1ZWQ1NTMxZDc2OTA3MDgwYTNhODU2MGY0ZjlhOTRmN2U0NjUwNmIzZTZiYThhNjRjY2RhNzNhIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MCwiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_3f24c400f10645d2ad521bd65a8fa001",
+      "statement": "Claim status transitions are backend-owned: waiting claims can start, in-progress claims can receive steps and decisions, approvals above the current limit move to `waiting_for_sign_off`, sign-off moves the claim back to `in_progress`, and repeated failures move the claim to `left_for_handler` after two attempts.",
+      "evidence": [
+        {
+          "resource": "repo://backend/main.py#L233-L250",
+          "version": "repo-lines-v1:sha256:8f05b58e1aa8370dd4ee1f55ad83fc0fad7f6e5bd29a3ac83c4c20721164e143:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJhZjE5NmUwNGI0ZDhiNDc1MjNlNjg3ZTdlZjk3MmFhODA4NmIwMWZkZGNmN2I4OTA4ZDg2MDJmNWFmMWM1MTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRiZjRlNDY5YzY3MzY3MzFkZWJhM2E5YTZkNTQxMTc1N2VhYzdmMGY1ZjM3ZTJjN2MxNmQzN2E5NDYyYzY0MTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyNTE3MDE1NTFlMGI5NWFlODljNWZkYTcwOTM2OTg2YjliNTQ5MTI0NjNlZjAyYTcwYTRmOGJjMmVjOTZiZTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ1ZjkzZGZlMTllZGM2OGMyNDkyMGFlNDYyZThmZTVmOGU5MmQyYjNhNDJiNDU0YjgwMWM2Y2FkMmZmYjNhOWEifQ"
+        },
+        {
+          "resource": "repo://backend/main.py#L308-L333",
+          "version": "repo-lines-v1:sha256:d0b786c41f8869567a65fc608310ea190cf567ad40ce29c1502dad404a65c70f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU2Y2IwYjEwYzMzOWU0NDgxYTNiZDI2OGVhZmJlNDU2ODhlMDdhMzY2MWI5MWI5ODU4NGM4Nzk0YzRlODI3ZjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRiZjRlNDY5YzY3MzY3MzFkZWJhM2E5YTZkNTQxMTc1N2VhYzdmMGY1ZjM3ZTJjN2MxNmQzN2E5NDYyYzY0MTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM1MDhiYjA3OGY1ZTYyMTM3NDZkOWU0Yjk5Njc5MmI1MmEzNzNmYjU3YjQwOTQ1ZjNmZGE2NmJhNTkxNGViMGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU3ZmUyN2QyNDY4MGM1NmNmNTQ0ZWE2NTRjMzk0OThkMTVlODI0ZDM5NzU5YjAyMjg5OTI1NGFkZTc1MzI2NmQifQ"
+        },
+        {
+          "resource": "repo://backend/main.py#L343-L394",
+          "version": "repo-lines-v1:sha256:42d6a7fbe1be27ef54747b947c9335638e0121694399da28e6e50b58de433a1a:eyJzZWxlY3RlZExpbmVDb3VudCI6NTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM5NGE0YmY0ZWI5MTkxMzVlNTI4M2UxNGVkMTg5MzlhNDhlMWEwNjUyNjYwOWMwNWJmZGUyMTdhNTE1MzI4ODEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRiZjRlNDY5YzY3MzY3MzFkZWJhM2E5YTZkNTQxMTc1N2VhYzdmMGY1ZjM3ZTJjN2MxNmQzN2E5NDYyYzY0MTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFmOGI2YzcwNDgzODc5Y2I5NTgwYTZiYTM2ODRlYmM0Mzg3MDJhMWRlODZiMWQ2OGVlZTlkMWM4YjUzYjljMDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU0ZjY1NmRjYTc5NTM5MzFlYTExMGZlZTg3OTVkNjc3NjlhNDgzMDA3MmVkZGUzNjEyYzA4NzY0NGNmZDVmZDQifQ"
+        },
+        {
+          "resource": "repo://backend/main.py#L397-L410",
+          "version": "repo-lines-v1:sha256:9c229b301554437120d58723cf76cf6dbace6957dc7b2b77ba048427ecb5e7fb:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIyNDhmYTYyNGRiNDdjMzk2MmU3MmU4YTMyOTY3MzBkNzk0NTk2NGFiZTU1MmU5NmM1NTU1ZmY2YmE5ZGE2ZWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRiZjRlNDY5YzY3MzY3MzFkZWJhM2E5YTZkNTQxMTc1N2VhYzdmMGY1ZjM3ZTJjN2MxNmQzN2E5NDYyYzY0MTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJiZTVhNTQwMzdkYmYzOWQwNWM3NDg2MmRmZDhiMDEwMWE4ODk1Y2I5ZmJiMWYwNDUwYTI5YjA2NTlmOTc3YWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bc4e70ab6e994c3fafe1c412ab68c7c8",
+      "statement": "`POST /api/claims/{claim_id}/payout` is read-only: it resolves the claim's policy and plan data and returns the payout computed by `work_out_payout` without writing any rows.",
+      "evidence": [
+        {
+          "resource": "repo://backend/main.py#L336-L340",
+          "version": "repo-lines-v1:sha256:4e98179e8998341fa657e3bcc754a9a1e5d9082a301473586f7f9ae006fe12a8:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzdmNmU2NDY4YzhhMzI0ZTkwOWZlNzk5ZTIyNDYxNzU0Y2RhMmVkZGQ1ZTI1ZmJmMDA0Y2FjNDg5MGI3MTlkNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjU2MDAyZDgwOGRkNWJmYTgyNDFmYjE3NjlkZDdhNTFiNzMzY2Q5ODdkNTlhMTc1Nzg3MzhiNTZhNDljODg5NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMmJlNWE1NDAzN2RiZjM5ZDA1Yzc0ODYyZGZkOGIwMTAxYTg4OTVjYjlmYmIxZjA0NTBhMjliMDY1OWY5NzdhYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTMwN2NhYTYyZjBhMGQ2NWNkMGEwM2E1MmNlODFkZjg1OGNjNTNkYTExNjlmYzFhODViNDllNjMyOTc0MzNiMyJ9"
+        },
+        {
+          "resource": "repo://backend/payout.py#L99-L147",
+          "version": "repo-lines-v1:sha256:d4687cd70620f361b524a55f2fde693501abd33c4e8fb876c81768e87c9f3dd4:eyJzZWxlY3RlZExpbmVDb3VudCI6NDksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdhODY0NTU5ZTkyOGEzOGIwOWI2Mzc4MjU5YTdjMTVmNDNkZWMwNTI2MTJlYWVjMzlkNGM5MDYyYjEwNzA5NGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwYzFmMTg4ZjE0MmVkN2E4MjQ2ODBiMjA3MTcyYzU1MTliYzYxNGE0OGZkYTdjZjE2N2VkYjhkZGY3OTk1NmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNlNzE3N2E2MGE3YmQwYjM1Yzk2YTY1ODA1NDU1MGFkNTliN2Y3ZDRhMmQ3MWRiNjY0MDVjNzRkNWFjMzc0MTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f8ed0c1388874a129ec09fb0c2300ea6",
+      "statement": "`work_out_payout` applies claim payout rules in a fixed order: line limits, cash cap, offsets for amounts paid by others, deductible, benefit maximum, and a zero floor; `needs_sign_off` marks any payout above the approval limit as needing handler approval.",
+      "evidence": [
+        {
+          "resource": "repo://backend/payout.py#L46-L49",
+          "version": "repo-lines-v1:sha256:5e8db38c0a6646c973545d8a2c1a529f4d6d15806cbc9288d0ed750c85d1ab13:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjkxMjJjY2NiNzkwZGJmNzc4ZGQ4NmUwNDViOGMxNzc3ZDNmZmRhZGNkNDNjYjI3NDkxNmNjYTZjNzM4MDgyMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGUxZWQzYjYyODAyOGNhZDEyZTlhZmZhYTAyOTFjYTM1ZjRhM2I0YTIyOGUxYjIwOWUzNjM2NGE0YTM5OWZkOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDIzZjUyZjRkZTgzZDEzOGZlNjM2MmIzMWEzYmJkMDZkZWIzNDQyZWVhMDQ2Y2I2NDEyODYyY2M0NTI2MzQwMSJ9"
+        },
+        {
+          "resource": "repo://backend/payout.py#L99-L147",
+          "version": "repo-lines-v1:sha256:d4687cd70620f361b524a55f2fde693501abd33c4e8fb876c81768e87c9f3dd4:eyJzZWxlY3RlZExpbmVDb3VudCI6NDksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdhODY0NTU5ZTkyOGEzOGIwOWI2Mzc4MjU5YTdjMTVmNDNkZWMwNTI2MTJlYWVjMzlkNGM5MDYyYjEwNzA5NGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwYzFmMTg4ZjE0MmVkN2E4MjQ2ODBiMjA3MTcyYzU1MTliYzYxNGE0OGZkYTdjZjE2N2VkYjhkZGY3OTk1NmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNlNzE3N2E2MGE3YmQwYjM1Yzk2YTY1ODA1NDU1MGFkNTliN2Y3ZDRhMmQ3MWRiNjY0MDVjNzRkNWFjMzc0MTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2b7aee8db14e41069fdf23655bf6ff11",
+      "statement": "`backend/runs.py` owns dispatch and evaluation lifecycle endpoints, including run creation, claim assignment to dispatches, finalization, stopping running runs, and reading the latest dispatch or evaluations.",
+      "evidence": [
+        {
+          "resource": "repo://backend/runs.py#L1-L4",
+          "version": "repo-lines-v1:sha256:3fb049072ef6466b648e5bd4806c730e42b75c3d0648afb4305b833f685d7161:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODU0Mzc3ZGI3NDc0ZGNhMjY3NDdjNzkxMjM2ZGRiMDM3YTEzNzViM2E3M2QzYjA3YmFlMjIxY2RiZWRlNGVkNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYmYyZTBjNTdiYTIyMWYzYzZlNzY3NzA2Zjg4ODg0NzRkNmY3MzQ1NDE2YjEzOTZhNTcyNDBlMDFiNjU3NzVjMCJ9"
+        },
+        {
+          "resource": "repo://backend/runs.py#L126-L253",
+          "version": "repo-lines-v1:sha256:084cc5818e060154f31f4c883ba8fca2d5a19dd7d2be7471c22d3959c692591e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTI4LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI1YjJkMWU0NjFlMmJlM2I2ZDdiYTMyMjI3YjRmMzNlZGU0NWZkNTVkYTFmNWNmYTJhNDA3MmVkODQ4YTQ3MWNlIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI1MGUzN2M4NDBhM2JjMTlhN2U0OTNiZmUwNzU1NTlmM2ZhMTVjNjI0ZDY3MzNjN2RlZTU3NDQ4NThkYjQ4ZWIwIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI4ZjBmNTg0YzE1MWM2ODYyNzg1NGFmYjA5ZDA5MjMwMTkwNjBmZjRiYzU2ZmRkOTJlNjU3OTgzODkxZWFlMDM4IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MCwiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_dfb7d650f91a4ce0914903a01e99ed54",
+      "statement": "`finish_run` protects the grading flow by checking the run is still running before and after judge grading, releasing the database connection while grading happens, and writing either a dispatch summary or evaluation grades in the final transaction.",
+      "evidence": [
+        {
+          "resource": "repo://backend/runs.py#L165-L193",
+          "version": "repo-lines-v1:sha256:15b2e63162da22e2059ceb0f77f29fe7c3f710888c4024426c250b2bf6ccb0dd:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRmYjQwNzJhOWI1MzlmNzM4YzEzNmYzNGZmNGQ3ZjA3YTU5MzlkNDFhOWYyYmQ2NWY5OGY1YTNiZjgyYjRlMDMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ0Y2YwMTEzYWYzZTg5ZTViNmI3NzNjNTY4OWFhYjllMGM4NWIzY2Y3NmUyZWU5ZjE5YmJjNzIyMzk1NTVlOTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE4NWZhZWJmZWE5MGMyZGI3MmFjOGU2NTUxOWRhMDFhZGI0NjlmYTI4MWMxYzZlNDVhMzc0M2VjMDllY2E2NzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ4MzgzNzAzYmIwOGJhOGMxMTIyZjUyYTI0YjA2NzNiZjllYWIwMTRjNzNiZmNiMmJmODQwYzk5YjM5M2NhZTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e847f56463ab49e1b441cddeea58423f",
+      "statement": "`backend/rounds.py` owns the improvement-round lifecycle and enforces stage-based writes, so only rounds in the open set accept writes and requests that do not belong to the current stage are rejected with 409.",
+      "evidence": [
+        {
+          "resource": "repo://backend/rounds.py#L101-L117",
+          "version": "repo-lines-v1:sha256:3363af9221c4951f5c8be2fd262b00c34e396acc5b3031b106467a4be3706de6:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhkNGNkMjJkZDNjZmM5YmFhNDExOWM5ZDBkNTI2ZmM1ZjYwYTVhYjEzNzRkYTRmMzM0ZDc0Zjc1NzgzNDc1NmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRiZjUyOTQ5MjM5MzJlYThmZTdlODE2NzgxODQ0ZjI5Y2NjNzQ0OTNlYTY4NzgwZmI4ZDQyMTdhNWE3MTE1MmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIyODdkMGZlYjBmZGQzYTY0ZTVhZjI2MTUzYjlhZWVlZDA0OWRkMWVlNzk5YjViODY5YmI4MmFhMTlhMzIzZWYifQ"
+        },
+        {
+          "resource": "repo://backend/rounds.py#L71-L90",
+          "version": "repo-lines-v1:sha256:e03a3875419d2d19d037abf6a7006682f780beb46598dc7db7ba0b46107d7858:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc1NTM5ZTAzNmEzMWVmYThkNGFiNDBkZDk1NTc3N2Y1ZDQyNmFiNmE4YTk1NGUzZmRmMDdlNDIwZmEzODEwMjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmOTAyMzE3ZjJiZWQwZTQxODQ5NDU3YzBiZDQwYTg3ZTUzYmI4NTNlYjY4NDQ4YzM2NGVhYWVlMGY2Y2Y4NmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEwZjI2YmRkMzFhMTI5NjU3ODViMzZhOWNiOTAyMjEyM2U0OTI4MjUxOWIwMDI1MWVkOGVkMmE0MDY1OTJmYWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg4ODBkYjAzZjkyMDVkYmZjZTg1NWUwMDRkZWJhMzk1N2QzZjU4NDQ1OWEzN2U1YjUxYTI4MDQ5NzYzZWZmNWQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c5beef06014043e3b58d7279f8787699",
+      "statement": "Round responses preserve the snapshot taken when the round started: `to_round` reconstructs the API object from stored fields, adds progress from the current run state, and includes the round's captured spending limit.",
+      "evidence": [
+        {
+          "resource": "repo://backend/rounds.py#L158-L179",
+          "version": "repo-lines-v1:sha256:ccac1860dbda993a259325a2314169bf84d5713ab958b5a11c7ed50bfe03f79e:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM1YjJmNDA0NWVlM2RmNTAzNDgxYTgyMjc1YTBlYjliOGM4NGNiMGNkZTEyY2ExNzk1ZTRjNjRiNzk2Zjg3NDEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwYzFmMTg4ZjE0MmVkN2E4MjQ2ODBiMjA3MTcyYzU1MTliYzYxNGE0OGZkYTdjZjE2N2VkYjhkZGY3OTk1NmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlhODJlYmU5ZWQ0MDdjM2E2YmE0YjAwMzQyOTJiYWE1MmMxMWNlNWFlMjg2MTA3NDAyZGU0NzkyZWVlY2FjZmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjlhNTI2NmM4MGVkOGFiMTFkYzI2YmJhY2Q5ODU0MzVkNGVjNDQ5YWIxYjZlMjcyNDc3OWRjOTczNDA5MTQwNzcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_59c2101101974ba6bb46f0631dafa4ef",
+      "statement": "The backend exposes document search and section reads from the persisted document table, so the wording and claims manual are queryable source material for payout and claim review.",
+      "evidence": [
+        {
+          "resource": "repo://backend/database.py#L177-L184",
+          "version": "repo-lines-v1:sha256:c1c03aebd4c88c4911509460615e8b2a3f3744665d5c6135084e6f2f22ec8a54:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDk1N2VmMzNjYTE2YWUxY2YwOGRmYTU0OTZlYWQ3ZGFjMzUyNWE0Y2RkY2Q4YWYwYTViMDFmZWFhMGM5NTdhYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmFmYmEwNTI3YzM5NTNjNGI2ZTBlNWI1NzM5YmE4MzYxMmY4MDUzYmNkYzk0NjY3MzAxOTNjZDFkNTkwYjQwOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjkyYjc4OThjNjhjZmU5NzIyYWExNjY0Mjk3YWYzNDk3OGU0MzgxOWJmZGM0YzI0MDU0OGM3ZTUzOWM2OTViMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjQ5MTkxZWI3N2IwMTNjOTczMTVjNDVjZjc5MzdiYTVlNzljYTYyNjU2ZTYwZDcwZTZlOTNjMjBkNDJiMzBlNiJ9"
+        },
+        {
+          "resource": "repo://backend/main.py#L209-L224",
+          "version": "repo-lines-v1:sha256:57f1b479a5b8eeae23a8b94695f3545646f47303c01618d4c6d1bed9636d1f07:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ5ODAxNzMzZjllYmEwODAxNDBiZGMzYjY0Yjk1NjBhMTA5OWQ3OTc0YTdkN2YyZGIxZDIwMjE5Mjc2ZjllMmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlmYjgyNzNhZTJiYjFlMjYxOGM2YjcwNDA0ZWUxYmZjYWQ4YjQyN2QyZGUyNzM3ZjllMTVjN2Q1MGFiMzgxNjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk2ZmIzNDY2YzUwMDA0NzU5NDhiNzdjZjMyZjVmZmNiNWM2ZmYwZDU1MjIyMTE1NDBmYTg1NTM2MDA4M2YyZjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZlZGFkOWQzMGM5ZTljZDZiN2E0MmNkZWZmOTFmMmFjNmM1YjU4ZTQ0ZTYxNDQwNDk2NTFmNDQzOTExMjhlZWQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a3f9813505db46a7af803b2ededc67d7",
+      "statement": "The OpenAPI test suite treats API shape as a contract by asserting that the generated schema contains no rule breaks.",
+      "evidence": [
+        {
+          "resource": "repo://backend/tests/test_openapi.py#L7-L8",
+          "version": "repo-lines-v1:sha256:c249c8dcbbaa57ce609bb9a4b3a160b08b0a5ae0b0b0b8658d73a0a353c456be:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2Q2MzdiMTFkOWQ3NTU1OWM4ODhkN2IyNjYwZjJiYmM1MjJiNWRkZmQ4NDI0OGUyZjEyZmU5MGU1MWM3YWFlMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZWQ4ZmFkNzQ2YjZjNGE2NzM2YjI5Nzk1OWRhZjQzNTliN2VhNDRlOWVlYzViNmMwMWQ5NDkyMTNhMmM0MGU1MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2NiNmIzOWQ3ODk5NTFlYzY3YWE4ZDBlOGVhNTk3OGQ5NzY5OGM3NTU0ZjllZTI3ZWU5MDljZjg2OGVlYjlkZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDIzOTZhZjYzOTc0NmEzMjJlMTQ0MTRiNTVmZTNhNWNhYTg2MjRhYmZlMDczMDQ4ZThmN2UyM2U5N2QwNjdjNiJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-10-25T14:37:18.902Z"
+  }
+}

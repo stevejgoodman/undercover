@@ -1,0 +1,192 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:838ef85619d676fe021615cf02a1999bfbbea6ec16938d41c99e1b653b192eef",
+  "claims": [
+    {
+      "id": "claim_65f8c007f1ce4e91a1133e2f4c382724",
+      "statement": "The dashboard is a route-driven React workflow surface for queue, claims, scoreboard, evaluations, configuration, improvement, and settings pages rather than a component-tree-centric UI.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/App.tsx#L43-L79",
+          "version": "repo-lines-v1:sha256:e2b63a31ef986cc7e3a2de9c191a741fae0a934ee95987de45ecbc3f6449fef7:eyJzZWxlY3RlZExpbmVDb3VudCI6MzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg1YzEzMGZhZTU5YjA5MDUzM2JjOTMzYjkzYTU5ZTIxZTAyMzVjNzIxNjFhNTI0YjIyYWRlMWNlNGEwYjEwZmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMWM1ZGZiYjFkZDczODYwZGE0ZTFkMWFhOTQzMjIyMGM1MGRhNzAwZmM1NzFmYjg1NmI4YmJlODZlMTkzYWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA5NGZjMGMxNzNkMWVjM2ZjNTAxZDdkZmE5Mjg1NTAxYzUyN2NmYjQ3MTI1ODNkYTNjYzM2MTgwNTY2YjRiZTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdiOGI2MDBhNWI0NDhiMWU0ZDAyZGYwOTc0NmVkM2NhMzE3MmY3NWM0YWFiYjAxZGRlMDgwZTM2Y2FiMDc0YjQifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/pages/ClaimPage.tsx",
+          "version": "repo-file-v1:sha256:2821d165cd4f57c4fc9488683c46f95a955e23738f2cb3cdc694ebce63a65a99"
+        },
+        {
+          "resource": "repo://dashboard/src/pages/ConfigurationPage.tsx",
+          "version": "repo-file-v1:sha256:17a96b711bcce871081f1c4e71c49030394f43575ae6a05035be9b0daf5ee1fd"
+        },
+        {
+          "resource": "repo://dashboard/src/pages/EvaluationPage.tsx",
+          "version": "repo-file-v1:sha256:d27c238b41bbd80ce5d2c0982b908dff987f9cac4a7a92eed4eed654a96170cc"
+        },
+        {
+          "resource": "repo://dashboard/src/pages/ImprovementPage.tsx",
+          "version": "repo-file-v1:sha256:2c9b2c738d2872b4d9187d4b30c48117d552a75fc67da7e469c6de859b9b69d5"
+        },
+        {
+          "resource": "repo://dashboard/src/pages/QueuePage.tsx",
+          "version": "repo-file-v1:sha256:664f7b0b69554883bef5b71fa0434a1ad4f1fe506e4eec6259f8097f6043f8f7"
+        },
+        {
+          "resource": "repo://dashboard/src/pages/ScoreboardPage.tsx",
+          "version": "repo-file-v1:sha256:79f621ce40fe7a18293141365005dcdf21d4da3c337f2fd3042ece6fa6373ec7"
+        },
+        {
+          "resource": "repo://dashboard/src/pages/SettingsPage.tsx",
+          "version": "repo-file-v1:sha256:10af9dafce1b66e297f6e6cc09270462fdb38841a5ff9b547f96ee4a409f13af"
+        },
+        {
+          "resource": "repo://dashboard/src/paths.ts#L3-L15",
+          "version": "repo-lines-v1:sha256:8bbd6b171ef5113eabc1aa1281a364d37c733b4af20eefd2226be590cef2f1e0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIzNTk1OGM1YTc2ZjE0YTE1MWE2ZmQ3ZjQwMWI2ZDU0NGZhOTFlZDBjNzczN2YxZGYyYjBkOGUyZmZlMDM2MTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVjZWY0MmM0MDdiZTczODA0OGI3YzVlMmMzN2VjYzcxNzVhYTI3ZDBhYzkzODVjZTQwOGViYWM1YTg4ZjhjZjgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIyZDRjN2JmNzgxZjY2NmI1YzE4ODBjOTY0ODJjYWU0ZTI0YTczNTRhMGZlMjMyZTU5ODZlNWExNjM0N2M0NTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f5d371f248974d22a928bf551ed8666a",
+      "statement": "SessionGate is the protected entrypoint for the dashboard: it waits for Supabase auth state, shows the sign-in page when there is no session, and only renders protected routes after loading the backend handler record for the active session.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/api.ts#L445-L495",
+          "version": "repo-lines-v1:sha256:aa6229bf6d6bf1e90439d85d6cbb34cdbc4163c32bbb3f15d0f48e6ce27e4c08:eyJzZWxlY3RlZExpbmVDb3VudCI6NTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcxYjQ5YzRmNjU5MTA1ZDg5NGM3ODVlMWM2ODA3YTNmZjJjNmJlNmUzNjFhZWUzNGY0ZTY0OGQ5NGQ5Yzc2MTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhMWQxYTYzMzkwMjI5Yzc5ODM0N2U4M2EwNDA1NDQxYzk0MDAwMzUyODRhZDE2OGMxYmY2Y2RmMWQ3MGEzNzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhjNzUyNzc2NWQ2N2QzZjc0YmExN2Y4OGUyM2E4NmVmMzczZWMwYjA3ZmRhMDhlOTk0NWFkOGJiN2NmNzcxZDIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/components/SessionGate.tsx#L10-L45",
+          "version": "repo-lines-v1:sha256:ce10674320a0ae871e2d9882686933740821a22ebc8b81c5b1c793844d2ad3fa:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3NWI4NTIwZjdkYzYwMjNhNmJlZjM1YmYwYjRkMWE4YTg2ZWU1NzRiNjdmNzE4MTU2YjFhMWY4NDFkZWI0YzciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRiOGQ3Y2Y5NDAxMDkyZDM2ZjFiZDdmOWM5MzEwOTBjNGRkMWNmMzM5OWM2YjRkMDQ3ODQ5NmY0NDE1ZDYwMDIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/supabase.ts#L32-L49",
+          "version": "repo-lines-v1:sha256:79854d091cc099845473b0f397240e04c00915d9220273b3f37e285d9f10de44:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEyMjZiOGJhZDY4YTQ5ZDVhM2Q2NGRmOWY3NmMzODUxZjMxNmZlMDNhMjAwMmZkMDk1YWI2ZjIxZjMxMjQ4ZWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM5Njc5ZDc3YzZiNDQ0OGI0MzAwNGVkYzlmNmI5Yzk5YmE5NmI1NDY2NDQ5MGU5MDU4MGYwMjJkYzVmOGM1NjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_fb21fbb54a604af587293bce2af0c89a",
+      "statement": "The dashboard uses Supabase Auth as the browser-session authority, but it still asks the backend for the signed-in handler record and exposes that handler through React context to protected pages.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/api.ts#L445-L479",
+          "version": "repo-lines-v1:sha256:b57d2892907203e329c6b412f6086ce020e821d82bfb3579890d7bd47e7561f8:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcxYjQ5YzRmNjU5MTA1ZDg5NGM3ODVlMWM2ODA3YTNmZjJjNmJlNmUzNjFhZWUzNGY0ZTY0OGQ5NGQ5Yzc2MTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkxYjljYjVhOGFiMThmYzZlMWZhN2UwZDMwN2ExMGM2NjU3NDRiMDcwOTM1N2JmZTBlMWQ5ZDdlMmFmM2IzMTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhjNzUyNzc2NWQ2N2QzZjc0YmExN2Y4OGUyM2E4NmVmMzczZWMwYjA3ZmRhMDhlOTk0NWFkOGJiN2NmNzcxZDIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE4ZDliZWI4MjNkMzc1MjFiMTlmNmU2ZDlhMzY5OGFlMWEzYmU0NjdmNzY2YzM4MTg0MTZmYWEzNDBiMmM2NmEifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/components/SessionGate.tsx#L10-L45",
+          "version": "repo-lines-v1:sha256:ce10674320a0ae871e2d9882686933740821a22ebc8b81c5b1c793844d2ad3fa:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3NWI4NTIwZjdkYzYwMjNhNmJlZjM1YmYwYjRkMWE4YTg2ZWU1NzRiNjdmNzE4MTU2YjFhMWY4NDFkZWI0YzciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRiOGQ3Y2Y5NDAxMDkyZDM2ZjFiZDdmOWM5MzEwOTBjNGRkMWNmMzM5OWM2YjRkMDQ3ODQ5NmY0NDE1ZDYwMDIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/session.ts#L1-L11",
+          "version": "repo-lines-v1:sha256:29022dbb3e7899a79f76b04b5d2d32bb173f359c5d7dacb349b164ce9abb47e8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhiNTc5ZDhlYTgxNDgzNzJmM2RhNGM2MGE4NzQ3Mjk1YWFlNzMwODVmNGNmYzlmOTU2ZTU0MGMyMGY3ZjNhMWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f92b427d018841b1b4cd076967fa81eb",
+      "statement": "The shared API client is the dashboard's single backend request abstraction: it reads the current Supabase access token, sends it as a Bearer token when present, times out requests after 30 seconds, and signs the user out locally if the backend responds with 401.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/api.ts#L388-L423",
+          "version": "repo-lines-v1:sha256:4ab67d54a23dba0805da9a0128b167b1e4742a173819b7e398a7ab5f68283d0b:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRiODY0NTdmMjljMzQ3MWZjMTA0YzgwMzY4YmMzMjQwMzQyMjI4YTUwM2ZhMWY0NzA4N2ZmMjc3ZGY5ZGM1NTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVjNjhhNTk5OWNkZTRkZDMyYzVmNDdiNmQ2YTFjMzBlNWJlNzAzM2NkOTI1NTkxZDg3ZDFlMWFmNzU1Mjk1YjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRkZWE1OTNhNDAxZTEzZGExMTllOGU2ZGU1YmQzOTM2MjI5YTcwYTYyNTRmOTY3NTNiYTdkOTZjY2E5MzAzZjAifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/supabase.ts#L45-L49",
+          "version": "repo-lines-v1:sha256:4b97021b33495534372c026c2afd1cd38496c7fb58cd9203eefbc24086a7e84e:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDFkY2I3Y2NlMGU0YzRmYzAyOTk3Njc2YzYwMDVlMTFiNTM4ZTE5MzFmNjNlZDM0MTJlODlhMWNiNDQ5MDNjYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTIwNDBlMDk1YTk0ZTJhZGE3NGU0MjFmMzcxODc1MWE5MWE4MTBiZmQ2NmY0OGY0ZTkzOWM3Yjc0ODBlYjY3MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_3ea194673b2f47b5b239485253c87123",
+      "statement": "`supabase.ts` centralizes the browser-side Supabase client, local session storage key, sign-in/out helpers, auth-state subscription, and access-token lookup, which makes it the only module that should change when Supabase configuration or auth behavior changes.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/supabase.ts#L7-L49",
+          "version": "repo-lines-v1:sha256:cc6910db31d998044adc636f83f1f1010b9dc211e34a30dac0d08ba38594325d:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE4YmYyZGFlNTYwZmYyYmY0MjJmOTk4ZGNkZWY5YmVlMDlhZTFkN2RlYmY2YjM3ZGYxMDdmYjA5NmU5NWIxZjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE1ODU2Y2JlNTdjY2E0NWNjNjg2MGU0YWZkZTA5M2Y1YjdlNDA2NGQzNzkxNzc0ZTBjOWMxNmRhNTAwZTU5NDEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_fa18034042bb4ba283f0fc0c48dfc677",
+      "statement": "`paths.ts` is the source of truth for dashboard route patterns and route-link helpers, so navigation and route matching stay consistent across the app.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/App.tsx#L43-L79",
+          "version": "repo-lines-v1:sha256:e2b63a31ef986cc7e3a2de9c191a741fae0a934ee95987de45ecbc3f6449fef7:eyJzZWxlY3RlZExpbmVDb3VudCI6MzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg1YzEzMGZhZTU5YjA5MDUzM2JjOTMzYjkzYTU5ZTIxZTAyMzVjNzIxNjFhNTI0YjIyYWRlMWNlNGEwYjEwZmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMWM1ZGZiYjFkZDczODYwZGE0ZTFkMWFhOTQzMjIyMGM1MGRhNzAwZmM1NzFmYjg1NmI4YmJlODZlMTkzYWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA5NGZjMGMxNzNkMWVjM2ZjNTAxZDdkZmE5Mjg1NTAxYzUyN2NmYjQ3MTI1ODNkYTNjYzM2MTgwNTY2YjRiZTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdiOGI2MDBhNWI0NDhiMWU0ZDAyZGYwOTc0NmVkM2NhMzE3MmY3NWM0YWFiYjAxZGRlMDgwZTM2Y2FiMDc0YjQifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/paths.ts#L3-L15",
+          "version": "repo-lines-v1:sha256:8bbd6b171ef5113eabc1aa1281a364d37c733b4af20eefd2226be590cef2f1e0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIzNTk1OGM1YTc2ZjE0YTE1MWE2ZmQ3ZjQwMWI2ZDU0NGZhOTFlZDBjNzczN2YxZGYyYjBkOGUyZmZlMDM2MTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVjZWY0MmM0MDdiZTczODA0OGI3YzVlMmMzN2VjYzcxNzVhYTI3ZDBhYzkzODVjZTQwOGViYWM1YTg4ZjhjZjgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIyZDRjN2JmNzgxZjY2NmI1YzE4ODBjOTY0ODJjYWU0ZTI0YTczNTRhMGZlMjMyZTU5ODZlNWExNjM0N2M0NTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_73e76b043d1a4815ace0f3f7ddcf8c12",
+      "statement": "The route pages map directly to backend-aligned workflows: the queue loads claim summaries, the claim page loads a claim and its related detail data, the scoreboard and evaluation pages load and start evaluation runs, the configuration page reads version history and version detail, the improvement page manages rounds and recipes, and the settings page reads and updates settings plus allowed models.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/api.ts#L445-L495",
+          "version": "repo-lines-v1:sha256:aa6229bf6d6bf1e90439d85d6cbb34cdbc4163c32bbb3f15d0f48e6ce27e4c08:eyJzZWxlY3RlZExpbmVDb3VudCI6NTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcxYjQ5YzRmNjU5MTA1ZDg5NGM3ODVlMWM2ODA3YTNmZjJjNmJlNmUzNjFhZWUzNGY0ZTY0OGQ5NGQ5Yzc2MTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhMWQxYTYzMzkwMjI5Yzc5ODM0N2U4M2EwNDA1NDQxYzk0MDAwMzUyODRhZDE2OGMxYmY2Y2RmMWQ3MGEzNzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhjNzUyNzc2NWQ2N2QzZjc0YmExN2Y4OGUyM2E4NmVmMzczZWMwYjA3ZmRhMDhlOTk0NWFkOGJiN2NmNzcxZDIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/pages/ClaimPage.tsx",
+          "version": "repo-file-v1:sha256:2821d165cd4f57c4fc9488683c46f95a955e23738f2cb3cdc694ebce63a65a99"
+        },
+        {
+          "resource": "repo://dashboard/src/pages/ConfigurationPage.tsx",
+          "version": "repo-file-v1:sha256:17a96b711bcce871081f1c4e71c49030394f43575ae6a05035be9b0daf5ee1fd"
+        },
+        {
+          "resource": "repo://dashboard/src/pages/EvaluationPage.tsx",
+          "version": "repo-file-v1:sha256:d27c238b41bbd80ce5d2c0982b908dff987f9cac4a7a92eed4eed654a96170cc"
+        },
+        {
+          "resource": "repo://dashboard/src/pages/ImprovementPage.tsx",
+          "version": "repo-file-v1:sha256:2c9b2c738d2872b4d9187d4b30c48117d552a75fc67da7e469c6de859b9b69d5"
+        },
+        {
+          "resource": "repo://dashboard/src/pages/QueuePage.tsx",
+          "version": "repo-file-v1:sha256:664f7b0b69554883bef5b71fa0434a1ad4f1fe506e4eec6259f8097f6043f8f7"
+        },
+        {
+          "resource": "repo://dashboard/src/pages/ScoreboardPage.tsx",
+          "version": "repo-file-v1:sha256:79f621ce40fe7a18293141365005dcdf21d4da3c337f2fd3042ece6fa6373ec7"
+        },
+        {
+          "resource": "repo://dashboard/src/pages/SettingsPage.tsx",
+          "version": "repo-file-v1:sha256:10af9dafce1b66e297f6e6cc09270462fdb38841a5ff9b547f96ee4a409f13af"
+        }
+      ]
+    },
+    {
+      "id": "claim_cc1550b54de54123ba5e45b8f725f49c",
+      "statement": "A backend 401 response causes the dashboard to sign out locally, which returns the UI to the sign-in flow instead of leaving a stale authenticated state visible.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/api.ts#L402-L423",
+          "version": "repo-lines-v1:sha256:05f98c1c8baec80ebebcb2a5981115751448b3a1687a5986c79897fbfe8d23fb:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVlYWE5MGU3ZWNmODg5MDRlMTFmNzcxZjZjZTE1MzNmYmE1ZGFkMmNhNzRkZTM2MDhjNTYyZjk1MDdiZTllYTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZiNTgwZTk2NGY4M2E0NzNmNDNkNDQzODQ2Mjk0OWQ2OGI1NjAwZmRhNzg3ZjE2Mzc0NWQwMGRlODljYmYzNmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRkZWE1OTNhNDAxZTEzZGExMTllOGU2ZGU1YmQzOTM2MjI5YTcwYTYyNTRmOTY3NTNiYTdkOTZjY2E5MzAzZjAifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/components/SessionGate.tsx#L35-L45",
+          "version": "repo-lines-v1:sha256:832bb69659ebfc9774d5038e5b1e5fa18cd195f7629d511b31fac45f03630415:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAwNDZkY2Y2NjViODJiMjg3NDQ4YjYwMGVlNGU4NWM5ZTliNWJhYTBmYWQ2YWQ1NzE4ZGUyZmVjZGNmMmYwZTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA5NGZjMGMxNzNkMWVjM2ZjNTAxZDdkZmE5Mjg1NTAxYzUyN2NmYjQ3MTI1ODNkYTNjYzM2MTgwNTY2YjRiZTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_3739dd74e31240f3b0778574ae51b9dc",
+      "statement": "The dashboard treats individual claim pages as part of the queue workflow for navigation purposes, keeping the queue tab active while a claim detail route is open.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/App.tsx#L43-L66",
+          "version": "repo-lines-v1:sha256:e1ca147b3ad3e572e944e476febbe9b904cf5248e63d4dd8e1349ac86ef2030f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg1YzEzMGZhZTU5YjA5MDUzM2JjOTMzYjkzYTU5ZTIxZTAyMzVjNzIxNjFhNTI0YjIyYWRlMWNlNGEwYjEwZmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVkMTQ5ZjRhOTEyYTJlOTA2MjJiMDgzODZjNzFjMzc0NTM4N2ZhZTM3ZjQwODQxNDM0ZTk2ZGFiNjQwNDRiMDciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA5NGZjMGMxNzNkMWVjM2ZjNTAxZDdkZmE5Mjg1NTAxYzUyN2NmYjQ3MTI1ODNkYTNjYzM2MTgwNTY2YjRiZTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU4OTJmODA5MDA5ZDliYjFlYWYyNWJkOTIxYzMwYjRjY2U3YmNkM2Q0MjIzZTMxMDkzOWY3NzFhNDE4YmEyZDEifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/paths.ts#L3-L15",
+          "version": "repo-lines-v1:sha256:8bbd6b171ef5113eabc1aa1281a364d37c733b4af20eefd2226be590cef2f1e0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIzNTk1OGM1YTc2ZjE0YTE1MWE2ZmQ3ZjQwMWI2ZDU0NGZhOTFlZDBjNzczN2YxZGYyYjBkOGUyZmZlMDM2MTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVjZWY0MmM0MDdiZTczODA0OGI3YzVlMmMzN2VjYzcxNzVhYTI3ZDBhYzkzODVjZTQwOGViYWM1YTg4ZjhjZjgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIyZDRjN2JmNzgxZjY2NmI1YzE4ODBjOTY0ODJjYWU0ZTI0YTczNTRhMGZlMjMyZTU5ODZlNWExNjM0N2M0NTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-10-25T14:37:18.902Z"
+  }
+}

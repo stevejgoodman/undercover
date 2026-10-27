@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:71ef4becfdb327840ab422c5441e43ac0991ff763adcad7641244c11e3079cf0",
+  "claims": [
+    {
+      "id": "claim_19dc97c8f6434acdb7f2673bf4993c0a",
+      "statement": "`npm run dev` starts the backend, agent, and dashboard together, and the individual `dev:backend`, `dev:agent`, and `dev:dashboard` scripts run the same services separately for local development.",
+      "evidence": [
+        {
+          "resource": "repo://README.md#L33-L47",
+          "version": "repo-lines-v1:sha256:b6975e003ec20b38393ab552e204ef6370f7dd4acc31ff1727fe0ef9c7640ed9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVmMDEyOTdmY2IwYWQxMjUzYzYwMTQ5NTA0YWViYTdjODRlMGMxYTk1MWYzZjMyOTg1NGUxNzVlNTA3ZWNkNjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhkMWZkNDVmOTViODgzMTg2ODhjMGE4M2Q0NWQ2MmViZjZhNjkyYzU3MzY0ZGM1NWE1Y2E4MDY2YmZkNDQxYzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI4MTEzMDc3MWJlYzdmMGNkZTUzYzlkODU1MzQxODAwMGZiOGJlZDI2ODM4N2Y1YWFiN2RlOWRiYTYyNDg3NTUifQ"
+        },
+        {
+          "resource": "repo://package.json#L8-L19",
+          "version": "repo-lines-v1:sha256:42558caef92922b0fd2cd91ad3a59508237aca0cde710b346e9b42fae8c69254:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM0ODMzZDU5NDljMDNhNDBjYTk1MjQ5MTYxMGE2NjU5NjQ0YjNhYTQ2NjM2MmY3OTkwMjBkYmYxOTgxNTQ3ZGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVhYWU4NjU2ODUyNmJjZTQyOGE1MjIxZjRmOTRjZTc4Njk5NmUyZGM4ZGUxMzZiOTRjNDU0ZmY3ZWNjYTA2YzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJmY2RjMWVkM2RhZDBmNmZlY2I4ZTJiYTlkMzc1MjNlZGE2MWU4NmIyNTNjZjhjZWU4ZGJmY2MyZTk1Y2MzNWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMwM2E1YjQyYmMzMGMyMmE1NGJhZmIxMTNjMTA2YzMzMTAwN2NjNTczZDA3YThmMDk3Yjc0ZTUyNWFjMDI2NjAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_da1cb301e047474ba2c364c1ee553c29",
+      "statement": "The backend and agent development scripts read the root `.env` file through `uv run --env-file .env`, while the README notes that `.env` persists across branch switches.",
+      "evidence": [
+        {
+          "resource": "repo://README.md#L39-L47",
+          "version": "repo-lines-v1:sha256:fa7581687d92a2007cb2304b391c5c93f6200c848321a65c30a2d2253be7f984:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTY0NzY1Y2MyZWY0MmRhMThkZDU0ZDQyMTVjODY5YzlkMzE0MzQ0ZGVlNDcwMzBhNGQ3MDI2NTg3YjViNGFlMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzMyOWNjNTZkOGRhMDVmMGEzMGM4MThlODk1MWZhMGMxMDdlMjA1YmJkODg4MDUwZWVhOWJmMjQxZTQ3MTRmOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjgxMTMwNzcxYmVjN2YwY2RlNTNjOWQ4NTUzNDE4MDAwZmI4YmVkMjY4Mzg3ZjVhYWI3ZGU5ZGJhNjI0ODc1NSJ9"
+        },
+        {
+          "resource": "repo://package.json#L10-L14",
+          "version": "repo-lines-v1:sha256:50911f9ca4e187bfe60af6cfb3ce025f8d9fc77362fc4d0d795c53d256447b2c:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTMzZjZkZTRhYmRkYWQxZDMwZDdmMmJjNDI1MmFkM2YzMDNlZmY2NzVjY2U1YWExZWQxNzI4OTY0NDcyODI4ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjljYzMzODRhZmYxNGY3MjM5OWIwMTAwMmVkNTI4YjgzNTM5NzNkOWVhMDM5MzI2YTUxNjU3MTkwNjJiNzgxYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2JmMWJmNTEwOTBmODdhNDA3Mzc2MmI1YTcxZTRiOGIzNjM1NTA5NDMyYzVjY2E4YjM3OTgzNzc5MTliMjgzNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjA4ODdjZmVhYjU0YTI0ZDY1NzljYzU3YTkyN2JkYzY0MzY3M2Q0M2E1ODYzMTg0YjRmMTFjZDJiOTBmYThhYiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_f550add5fdbf43f8a1c8e5007e688d2a",
+      "statement": "`npm run check:python` is the Python gate: it runs Ruff formatting and lint checks, Pyright, and `pytest`, with pytest configured to collect tests from `backend` and `agent`, enforce coverage, and use Python 3.12.",
+      "evidence": [
+        {
+          "resource": "repo://package.json#L15-L19",
+          "version": "repo-lines-v1:sha256:2ed10e30edc6557c642f9e0409979ae2b37b4cfe4c58bdba347462ca33e925d6:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTc0MjYxMDY2MjY4YzA2NjQ1NzBkODlhMGIxOWZkYjFmNjU3N2E5MmRiM2FlN2NmOTcxNGYwNzkxMjllNTMyOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNWFhZTg2NTY4NTI2YmNlNDI4YTUyMjFmNGY5NGNlNzg2OTk2ZTJkYzhkZTEzNmI5NGM0NTRmZjdlY2NhMDZjMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODBlZjE4MDg2OTEyODVkODg5NDlmNWFjODc4ZWQ2ZmVkZmM4MTBjNDdhYWYyOGExMWZkYzRjYzVjYWRlNzUzNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzAzYTViNDJiYzMwYzIyYTU0YmFmYjExM2MxMDZjMzMxMDA3Y2M1NzNkMDdhOGYwOTdiNzRlNTI1YWMwMjY2MCJ9"
+        },
+        {
+          "resource": "repo://pyproject.toml#L68-L84",
+          "version": "repo-lines-v1:sha256:65ec33c861158ef13a01aa9106548cb33bb20c8b9af49b0ffc89dfb1a6b3cca7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2NzZlNjQxNDY1YTY1NTFlOWU5Y2ZmZDdmYWExZTZhNDJmOWI3MjQ4MDk4MTNjOTAzZDdlZGNiNTJmMzAwNmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdkYzI2MDBlZGRiYWZlOWU5YTkxMGQyMmM0MjI5MTVmY2RjZWU2MTkxMWQzOWI1ZWYwNGM4YmMxMjRmNjU1ZDgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNlZjljZTI4YjIzMGI0OTYxOTZhNjVkYmFlZGYwNTdjNDMwMmU0NDVkZWFjNThhNGVlNThiNzRmZmExYTcyN2IiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2b175ec986a145fa8ccfdc95c21ad195",
+      "statement": "The shared `conftest.py` fixtures isolate Python tests from external services by seeding a fresh SQLite database per test, mocking the agent service, replacing the judge client, and substituting test sign-in keys.",
+      "evidence": [
+        {
+          "resource": "repo://conftest.py#L17-L24",
+          "version": "repo-lines-v1:sha256:d4cd915ba087859b655240b06526e7ad755335551bb799f4e43b42142e396f36:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNmYwODY2ZjQwMTFlNTg1ZmZjMDkwOTJlZGYwODMyZTE3YjUyZjRjOTBjNGNhMGI0MmRjZmEwNTBmYTM3NWI1YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWFjYmMyNTQ0NTQ5Y2Y5Njg4ZTNmMjA2OGE2YWNjZjdhYTMyYzM4ZDZiMWQwNGFhNjVjYjMzZmIxNTZlMTU3YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzVmODY3OGQ1YWNmZGIxZDQ2MDdmZTczZDViNjc4N2I1NmFkM2VhYzM5OTdhNDA2MTc3NjY5NGJmZGE1NjVjNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODFjMTQyNmJlYTdmYWJhMDVhMTJjMWUxYzg2MGRhNjdjNjE3MzhmZmNjY2NhNGY2NzZlNGI5MjZkZWE2NmUwMiJ9"
+        },
+        {
+          "resource": "repo://conftest.py#L27-L70",
+          "version": "repo-lines-v1:sha256:9f56b4f0a75f1ccd255ff72dc413f65ee78fdce249433376b23573f1444764c4:eyJzZWxlY3RlZExpbmVDb3VudCI6NDQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIzZjM2NmI5YmQ5YThkMGYzNDBhMmJjMGJlMWUyMmVlYTIwNTY4ZGQ3OGE0NTI4MWI3MjFiMzBmMjJkMDg3ZjAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFkNmM2MDZiNmY2NWM2MTExZjQ2Y2RkZGMzZjRhNWRiZDFmNWE5NDM5YzI4ZmVjY2ZjZjM0ZjVkMDAwNGRlM2UiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc5MjNmYTY5MmJjYmNhY2ZjMGVkOTIyYWU4OTQ5ZGI1ZmFiYjkwZGZlNzdhMjJkYzI0YTkzZjBmYTM0MDllYTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgxYzE0MjZiZWE3ZmFiYTA1YTEyYzFlMWM4NjBkYTY3YzYxNzM4ZmZjY2NjYTRmNjc2ZTRiOTI2ZGVhNjZlMDIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9dde4f41c98649c1958ebc73d0b62ee6",
+      "statement": "`npm run check:ts` is the TypeScript and dashboard gate: it runs Prettier, ESLint, `tsc`, and Vitest coverage against the dashboard, `e2e`, and root config files.",
+      "evidence": [
+        {
+          "resource": "repo://package.json#L15-L19",
+          "version": "repo-lines-v1:sha256:2ed10e30edc6557c642f9e0409979ae2b37b4cfe4c58bdba347462ca33e925d6:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTc0MjYxMDY2MjY4YzA2NjQ1NzBkODlhMGIxOWZkYjFmNjU3N2E5MmRiM2FlN2NmOTcxNGYwNzkxMjllNTMyOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNWFhZTg2NTY4NTI2YmNlNDI4YTUyMjFmNGY5NGNlNzg2OTk2ZTJkYzhkZTEzNmI5NGM0NTRmZjdlY2NhMDZjMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODBlZjE4MDg2OTEyODVkODg5NDlmNWFjODc4ZWQ2ZmVkZmM4MTBjNDdhYWYyOGExMWZkYzRjYzVjYWRlNzUzNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzAzYTViNDJiYzMwYzIyYTU0YmFmYjExM2MxMDZjMzMxMDA3Y2M1NzNkMDdhOGYwOTdiNzRlNTI1YWMwMjY2MCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_a96afdf6e3784d0a853539abe785e911",
+      "statement": "`dashboard/src/test_setup.ts` patches `HTMLDialogElement.showModal()` and `close()` so jsdom-based dashboard tests can exercise dialog behavior without a real browser top layer.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/test_setup.ts#L1-L10",
+          "version": "repo-lines-v1:sha256:7ec7e341893ea09bf885a11dcd80965eb9284aeeea70863b74c34b8791da81ba:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM4MGJhNzhiYTEyNDA4NmEyMDUxZWQ2ZDIyOWRmNjEyM2RiOGE1ZGI4OTMzMDc1OTE2ODU5MzA4YmFlODAzNDYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhMWQxYTYzMzkwMjI5Yzc5ODM0N2U4M2EwNDA1NDQxYzk0MDAwMzUyODRhZDE2OGMxYmY2Y2RmMWQ3MGEzNzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_12321352e34444008e13b9fa63ff6971",
+      "statement": "`npm run e2e` runs Playwright, and the Playwright config boots its own auth, judge, backend, agent stand-in, and dashboard servers with test-specific environment variables so browser checks stay isolated from the developer's `.env`, Supabase, OpenRouter, and the normal dev servers.",
+      "evidence": [
+        {
+          "resource": "repo://playwright.config.ts#L9-L60",
+          "version": "repo-lines-v1:sha256:658b08b3675a7296d1a7773f144f2a8e5abeb5174e9fbfee3666ed54eed0ac9c:eyJzZWxlY3RlZExpbmVDb3VudCI6NTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImExMGE5NjAzOWVlMjgxN2NmNzdlNDNjNDBhOWVkN2NhZWE1NGUyMTk3NGNhMWIwNWNjOThjZTk4ZDAwZjk3MGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk2NGQ4YzA3MzQyOTg5MzEwMTU3NmQ4OGQ5OTEyN2U4OWQ2ODkxZDNiMTdlODlkZjAyZWM5YWU3MDcwNWQ4YmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhkYTJkN2ViMjY2NzQ3NDBmOTBjZjQ1NTU1MmM3MjAyNmM0ODFmMzNlMTk4MjgyOGE4MmEzMmRlMGVkZDk4MTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY2ZjViNDBiMTU4NDU3ZDE3ODY0ZjIxNzkwNzg2ZGQ1YTJlY2RiNjRiNjZhNjUxZjc4OGQ0ZTI1Y2QzMzAzZDIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5e587ccc92524f74b58487448db354ce",
+      "statement": "The README identifies `uv run monitor.py` as the command for checking AWS spend during Week 3 and points developers to `setup/INSTRUCTIONS.md` for environment setup.",
+      "evidence": [
+        {
+          "resource": "repo://README.md#L33-L35",
+          "version": "repo-lines-v1:sha256:1a20b2abe6e6cdd4301c79b34f13266814fc80188da4b801bfa79adb21922dd2:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWYwMTI5N2ZjYjBhZDEyNTNjNjAxNDk1MDRhZWJhN2M4NGUwYzFhOTUxZjNmMzI5ODU0ZTE3NWU1MDdlY2Q2NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjFhYmI5YTY0MjBiOTQ5MWVhN2E5MWM0ZmE5ZGY5ZWNjZWQ2ODc2ODIyNjRiNThiMGYwNTI1NDJiMjA1NDkwMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGQxZmQ0NWY5NWI4ODMxODY4OGMwYTgzZDQ1ZDYyZWJmNmE2OTJjNTczNjRkYzU1YTVjYTgwNjZiZmQ0NDFjNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzMyOWNjNTZkOGRhMDVmMGEzMGM4MThlODk1MWZhMGMxMDdlMjA1YmJkODg4MDUwZWVhOWJmMjQxZTQ3MTRmOSJ9"
+        },
+        {
+          "resource": "repo://README.md#L99-L105",
+          "version": "repo-lines-v1:sha256:b8640d54b42a11c2147a8af78471f9ab1ce9096f4240b73b17e2ffe441c08a85:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNmIzMDUyZDM5MDE3YTBjNTgwNzg1OWU1MmRlZjA2ZjIyNmM3NjQ5MDU5ZDg4MGFlZjgxMzU3NGM4YjIyOTc3ZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGVjYmNjZWE2ZTE1ZWM5ZDUxY2UwZTllMWU4NDZhNDgyNGRmOTc2OWQ3Mjk4YWNjYjM4YTI2NTA4N2E4YTAyYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDNjNDgzZWRkNjFlOGI3NjdlYjhiNGU3NzIyMDU3YWQ3NGJmMTJlZDYzMWZiODI1MDE0MjBhNmRlNmVlMThkMiJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-10-25T14:37:18.902Z"
+  }
+}
